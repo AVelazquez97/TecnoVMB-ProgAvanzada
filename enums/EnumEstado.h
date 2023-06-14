@@ -1,0 +1,10 @@
+#ifndef ENUMESTADO_H_
+#define ENUMESTADO_H_
+
+enum Tipo {
+  Abierta,
+  Cerrada,
+  Cancelada
+};
+
+#endif // ENUMESTADO_H_
