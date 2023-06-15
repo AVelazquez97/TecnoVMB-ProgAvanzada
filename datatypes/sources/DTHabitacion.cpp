@@ -9,11 +9,11 @@ DTHabitacion::DTHabitacion(){
 
 }
 
-DTHabitacion::DTHabitacion(int numero, float precio, int capacidad,Hostal pertenece){
+DTHabitacion::DTHabitacion(int numero, float precio, int capacidad,Hostal* puntero_hostal){
     this -> numero = numero;
     this -> precio = precio;
     this -> capacidad = capacidad;
-    this -> pertenece = pertenece.get_nombre();
+    this -> nombre_hostal = puntero_hostal -> get_nombre();
 }
 
 int DTHabitacion::get_numero(){
@@ -28,8 +28,8 @@ int DTHabitacion::get_capacidad(){
     return this -> capacidad;
 }
 
-string DTHabitacion::get_pertenece(){
-    return this -> pertenece;
+string DTHabitacion::get_nombre_hostal(){
+    return this -> nombre_hostal;
 }
 
 #endif // DTHABITACION_CPP_

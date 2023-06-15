@@ -1,7 +1,7 @@
 #ifndef ENUMESTADO_H_
 #define ENUMESTADO_H_
 
-enum Tipo {
+enum Estado {
   Abierta,
   Cerrada,
   Cancelada

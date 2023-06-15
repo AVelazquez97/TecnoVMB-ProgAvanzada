@@ -4,17 +4,18 @@
 
 Habitacion::Habitacion(){}
 
-Habitacion::Habitacion(int numero, float precio, int capacidad, Hostal pertenece){
+Habitacion::Habitacion(int numero, float precio, int capacidad, Hostal* puntero_hostal){
     this -> numero = numero;
     this -> precio = precio;
     this -> capacidad = capacidad;
-    this -> pertenece = pertenece;
+    this -> puntero_hostal = puntero_hostal;
 }
 
 Habitacion::Habitacion(const Habitacion& original){
     numero = original.numero;
     precio = original.precio;
     capacidad = original.capacidad;
+    puntero_hostal = puntero_hostal;
 }
 
 Habitacion::~Habitacion(){
@@ -33,8 +34,8 @@ void Habitacion::set_capacidad(int capacidad){
     this -> precio = precio;
 }
 
-void Habitacion::set_pertenece(Hostal pertenece){
-    this -> pertenece = pertenece;
+void Habitacion::set_puntero_hostal(Hostal* puntero_hostal){
+    this -> puntero_hostal = puntero_hostal;
 }
 
 int Habitacion::get_numero(){
@@ -49,12 +50,12 @@ int Habitacion::get_capacidad(){
     return this -> capacidad;
 }
 
-Hostal Habitacion::get_pertenece(){
-    return this -> pertenece;
+Hostal* Habitacion::get_puntero_hostal(){
+    return this -> puntero_hostal;
 }
 
 DTHabitacion Habitacion::get_DT(){
-    return DTHabitacion(this->get_numero(),this -> get_precio(),this -> get_capacidad(), this -> get_pertenece());
+    return DTHabitacion(this->get_numero(),this -> get_precio(),this -> get_capacidad(), this -> get_puntero_hostal());
 }
 
 #endif // HABITACION_CPP_

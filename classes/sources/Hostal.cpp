@@ -10,6 +10,7 @@ Hostal::Hostal(string nombre, string direccion, string telefono){
     this -> nombre = nombre;
     this -> direccion = direccion;
     this -> telefono = telefono;
+    this -> habitaciones = new OrderedDictionary();
 }
 
 Hostal::Hostal(const Hostal& original){

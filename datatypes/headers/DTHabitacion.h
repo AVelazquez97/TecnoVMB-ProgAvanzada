@@ -1,19 +1,22 @@
 #ifndef DTHABITACION_H_
 #define DTHABITACION_H_
+#include "../../classes/headers/Hostal.h"
+#include <iostream>
+using namespace std;
 
 class DTHabitacion{
     private:
         int numero;
         float precio;
         int capacidad;
-        string pertenece; //el nombre del hostal al que pertenece
+        string nombre_hostal; //el nombre del hostal al que pertenece la hab
     public:
         DTHabitacion();
-        DTHabitacion(int numero, float precio, int capacidad, Hostal pertenece);
+        DTHabitacion(int numero, float precio, int capacidad, Hostal* puntero_hostal);
         int get_numero();
         float get_precio();
         int get_capacidad();
-        string get_pertenece();
+        string get_nombre_hostal();
 };
 
 

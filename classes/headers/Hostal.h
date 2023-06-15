@@ -1,6 +1,7 @@
 #ifndef HOSTAL_H_
 #define HOSTAL_H_
 #include "../../datatypes/headers/DTHostal.h"
+#include "../../ICollection/collections/OrderedDictionary.h"
 #include <iostream>
 using namespace std;
 
@@ -9,7 +10,7 @@ class Hostal{
         string nombre;
         string direccion;
         string telefono;
-        /*aca va a ir la lista de habitaciones que pertenecen al hostal*/
+        IDictionary* habitaciones;/*aca va a ir la lista de habitaciones que pertenecen al hostal*/
     public:
         Hostal();
         Hostal(string nombre, string direccion, string telefono);
