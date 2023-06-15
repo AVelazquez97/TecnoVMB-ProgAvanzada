@@ -9,6 +9,7 @@ class Hostal{
         string nombre;
         string direccion;
         string telefono;
+        /*aca va a ir la lista de habitaciones que pertenecen al hostal*/
     public:
         Hostal();
         Hostal(string nombre, string direccion, string telefono);

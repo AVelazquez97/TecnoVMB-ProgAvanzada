@@ -5,15 +5,14 @@
 #include "../fabrica/Fabrica.h"
 #include "functions.h"
 
-/*Tanto si la fabrica se utiliza acá como en el fichero de funciones se debería utilizar de la siguiente manera:
+/*
+    Tanto si la fabrica se utiliza acá como en el fichero de funciones se debería utilizar de la siguiente manera:
     Fabrica fab;
     IControlador* controlador = fab.getInterface();
     controlador->operacion
 */
 
 // En el main no debería importarse ninguna clase
-#include "../datatypes/headers/DTHabitacion.h" // Esto debería importarse en IControlador.h
-#include "../classes/headers/Habitacion.h" // Esto debería importarse en Controlador.h
 
 int main(int argc, char* argv[]){
     int opcion = 0;
