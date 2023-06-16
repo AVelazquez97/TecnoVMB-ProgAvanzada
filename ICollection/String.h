@@ -21,7 +21,6 @@ private:
 public:
     // construye el Datatype a partir de un puntero a caracter
     String(const char *s = "");
-    
     // da el valor del string
     const char *getValue() const;
     

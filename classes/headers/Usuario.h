@@ -1,9 +1,11 @@
 #ifndef USUARIO_H_
 #define USUARIO_H_
+
+#include "../../ICollection/interfaces/ICollectible.h"
 #include<iostream>
 using namespace std;
 
-class Usuario{
+class Usuario: public ICollectible{
     protected:
         string nombre;
         string email;

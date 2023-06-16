@@ -74,4 +74,16 @@ int eleccion_menu_principal() {
 	return stoi(cadena_inicio + cadena_agregada);
 }
 
-//void modificar_fecha(){}
+void alta_usuario(){
+	bool existe_email = true;
+	bool cancelar = false;
+	bool continuar = true;
+	string entrada;
+
+	while(existe_email && continuar){
+		cout << "Ingrese un email o ingrese 'salir' para volver al menu principal: " << endl;
+		cin >> entrada;
+		existe_email = controlador -> verificar_email(entrada);
+		if(entrada == "salir"){continuar = false;}
+	}
+}

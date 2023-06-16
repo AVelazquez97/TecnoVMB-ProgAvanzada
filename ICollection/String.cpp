@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string.h>
 #include "String.h"
+using namespace std;
 
 
 String::String(const char* str){

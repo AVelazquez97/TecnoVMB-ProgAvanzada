@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-class Hostal{
+class Hostal: public ICollectible{
     private:
         string nombre;
         string direccion;

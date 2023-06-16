@@ -9,7 +9,9 @@
 #include "../classes/headers/Hostal.h"
 #include "../classes/headers/Huesped.h"
 #include "../classes/headers/Usuario.h"
-
+#include "../ICollection/collections/OrderedDictionary.h"
+#include "../ICollection/String.h"
+#include <string.h>
 
 class Controlador: public IControlador{
 	private:
@@ -20,10 +22,10 @@ class Controlador: public IControlador{
         //Acá pueden ir pseudoatributos a utilizar
 
         //También colecciones. Ejemplo:
-	//IDictionary* usuarios = new OrderedDictionary();
-        /*diccionarios de hoteles*/
-        /*diccionarios de usuarios*/
-        /*diccionarios de empleado*/
+
+        IDictionary* hostales;
+        IDictionary* huespedes;
+        IDictionary* empleados;
 
 	public:
         ~Controlador();
@@ -34,8 +36,9 @@ class Controlador: public IControlador{
         void setFechaSistema(tm*);
 
         //Cabeceras de las opers
-        //void alta_huesped();
-        //void alta_empleado();
+        void alta_huesped();
+        void alta_empleado();
+        bool verificar_email(string entrada);
 };
     
 #endif

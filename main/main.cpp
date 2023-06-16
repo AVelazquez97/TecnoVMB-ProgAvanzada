@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
 		opcion = eleccion_menu_principal();
 		switch (opcion){
 			case 1: { //Alta usuario
-
+                alta_usuario();
                 break;
 			}
             case 2: { //Alta hostal
