@@ -3,6 +3,7 @@
 
 void mostrar_menu_principal();
 int eleccion_menu_principal();
+void function_saludar();
 // void modificar_fecha();
  
 #endif // FUNCTIONS_H_

@@ -4,7 +4,11 @@
 #include "../iControlador/IControlador.h"
 
 // Acá se deben importar las clases del DCD
+#include "../classes/headers/Empleado.h"
 #include "../classes/headers/Habitacion.h"
+#include "../classes/headers/Hostal.h"
+#include "../classes/headers/Huesped.h"
+#include "../classes/headers/Usuario.h"
 
 
 class Controlador: public IControlador{
@@ -17,6 +21,9 @@ class Controlador: public IControlador{
 
         //También colecciones. Ejemplo:
 	//IDictionary* usuarios = new OrderedDictionary();
+        /*diccionarios de hoteles*/
+        /*diccionarios de usuarios*/
+        /*diccionarios de empleado*/
 
 	public:
         ~Controlador();
@@ -25,6 +32,10 @@ class Controlador: public IControlador{
         //Modificar fecha del sistema
         time_t* getFechaSistema();
         void setFechaSistema(tm*);
+
+        //Cabeceras de las opers
+        //void alta_huesped();
+        //void alta_empleado();
 };
     
 #endif

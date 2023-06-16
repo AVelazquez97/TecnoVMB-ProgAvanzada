@@ -9,18 +9,38 @@ using namespace std;
 #include "../iControlador/IControlador.h"
 #include "../fabrica/Fabrica.h"
 
+/*
+    Tanto si la fabrica se utiliza acá como en el fichero de funciones se debería utilizar de la siguiente manera:
+    Fabrica fab;
+    IControlador* controlador = fab.getInterface();
+    controlador->operacion
+*/
+
+Fabrica fab;
+IControlador* controlador = fab.getInterface();
 
 void mostrar_menu_principal() {
 	cout << "╔════════════════╗\n";
 	cout << "║ Menú principal ║\n";
 	cout << "╚════════════════╝\n";
-	cout << "  1. Gestión de Usuarios\n";
-	cout << "  2. Gestión de Hostales\n";
-	cout << "  3. Gestión de Reservas\n";
-	cout << "  4. Gestión de Estadías\n";
-	cout << "  5. Modificar fecha del sistema\n";
-	cout << "  6. Cargar de Datos de Prueba\n";
-	cout << "  7. Salir\n";
+	cout << "  1. Alta usuario\n";
+	cout << "  2. Alta hostal\n";
+	cout << "  3. Alta habitacion\n";
+	cout << "  4. Asignar empleado a hostal\n";
+	cout << "  5. Realizar reserva\n";
+	cout << "  6. Consultar top 3 de hostales\n";
+	cout << "  7. Registrar estadia\n";
+	cout << "  8. Finalizar estadia\n";
+	cout << "  9. Calificar estadia\n";
+	cout << "  10. Comentar calificacion\n";
+	cout << "  11. Consulta de usuario\n";
+	cout << "  12. Consulta de hostal\n";
+	cout << "  13. Consulta de reserva\n";
+	cout << "  14. Consulta de estadia\n";
+	cout << "  15. Baja de reserva\n";
+	cout << "  16. Modificar fecha del sistema\n";
+	cout << "  17. Cargar de Datos de Prueba\n";
+	cout << "  18. Salir\n";
 }
 
 int eleccion_menu_principal() {
@@ -41,15 +61,15 @@ int eleccion_menu_principal() {
 
 	mostrar_menu_principal();
 	do{
-	cout << ("Ingresa una opción(1..7): ");
+	cout << ("Ingresa una opción(1..18): ");
 	cin >> cadena_agregada;
 
-	if (stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 7){
+	if (stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 18){
 		cout << "La opción que has ingresado no es válida. Inténtalo otra vez.\n";
 	}
 	}
 
-	while(stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 7);
+	while(stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 18);
 
 	return stoi(cadena_inicio + cadena_agregada);
 }

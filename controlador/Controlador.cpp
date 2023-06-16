@@ -1,6 +1,7 @@
 #include "Controlador.h"
 #include <iostream>
 #include <stdlib.h>
+using namespace std;
 
 
 Controlador *Controlador::instance = nullptr;

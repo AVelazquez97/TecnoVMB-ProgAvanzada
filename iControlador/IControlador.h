@@ -35,7 +35,6 @@ class IControlador {
         //Cambiar fecha del sistema
         virtual void setFechaSistema(tm*) = 0;
         virtual time_t* getFechaSistema() = 0; 
-
 };
 
 #endif

@@ -5,39 +5,68 @@
 #include "../fabrica/Fabrica.h"
 #include "functions.h"
 
-/*
-    Tanto si la fabrica se utiliza acá como en el fichero de funciones se debería utilizar de la siguiente manera:
-    Fabrica fab;
-    IControlador* controlador = fab.getInterface();
-    controlador->operacion
-*/
-
 // En el main no debería importarse ninguna clase
 
 int main(int argc, char* argv[]){
     int opcion = 0;
-    while(opcion != 7){
+
+    while(opcion != 18){
 		opcion = eleccion_menu_principal();
 		switch (opcion){
-			case 1: { //Gestión de Usuarios
+			case 1: { //Alta usuario
+
                 break;
 			}
-            case 2: { //Gestión de Hostales
+            case 2: { //Alta hostal
+            
                 break;
 			}
-            case 3: { //Gestión de Reservas
+            case 3: { //Alta habitacion
                 break;
 			}
-            case 4: { //Gestión de Estadías
+            case 4: { //Asignar empleado a hostal
                 break;
 			}
-            case 5: { //Modificar fecha del sistema
+            case 5: { //Realizar reserva
                 break;
 			}
-            case 6: { //Cargar de Datos de Prueba
+            case 6: { //Consultar top 3 de hostales
+                break;
+            }
+            case 7: { //Registrar estadia
+                break;
+            }
+            case 8: { //Finalizar estadia
+                break;
+            }
+            case 9: { //Calificar estadia
+                break;
+            }
+            case 10: { //Comentar calificacion
+                break;
+            }
+            case 11: { //Consulta de usuario
+                break;
+            }
+            case 12: { //Consulta de hostal
+                break;
+            }
+            case 13: { //Consulta de reserva
+                break;
+            }
+            case 14: { //Consulta de estadia
+                break;
+            }
+            case 15: { //Baja de reserva
+                break;
+            }
+            case 16: { //Modificar fecha del sistema
+                break;
+            }
+            case 17: { //Cargar de Datos de Prueba
                 break;
 			}
-            case 7: { // Salir
+            case 18: { // Salir
                 return 0;
             }
         }

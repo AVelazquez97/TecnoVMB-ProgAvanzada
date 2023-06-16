@@ -2,6 +2,7 @@
 #define EMPLEADO_H_
 #include "Usuario.h"
 #include "../../enums/EnumCargo.h"
+#include "../../datatypes/headers/DTEmpleado.h"
 #include "Hostal.h"
 
 class Empleado: public Usuario{
