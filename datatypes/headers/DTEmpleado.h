@@ -9,13 +9,16 @@ class DTEmpleado {
     private:
         string nombre;
         string email;
+        string contrasena;
         string nombre_hostal;
         Cargo cargo;
     public:
         DTEmpleado();
-        DTEmpleado(string nombre, string email, string nombre_hostal, Cargo cargo);
+        DTEmpleado(string nombre, string email, string contrasena, Cargo cargo);
+        DTEmpleado(string nombre, string email, string contrasena, string nombre_hostal, Cargo cargo);
         string get_nombre();
         string get_email();
+        string get_contrasena();
         string get_nombre_hostal();
         Cargo get_cargo();
 };

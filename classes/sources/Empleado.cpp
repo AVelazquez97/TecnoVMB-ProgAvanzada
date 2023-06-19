@@ -3,22 +3,24 @@
 #include "../headers/Empleado.h"
 #include "../../datatypes/headers/DTEmpleado.h"
 
-Empleado::Empleado(){
+Empleado::Empleado():Usuario(){
 
 }
 
-Empleado::Empleado(string nombre, string email, string password, Cargo cargo, Hostal* puntero_hostal){
-    this -> nombre = nombre;
-    this -> email = email;
-    this -> password = password;
+Empleado::Empleado(DTEmpleado nuevo_empleado):Usuario(nuevo_empleado.get_nombre(), nuevo_empleado.get_email(),nuevo_empleado.get_contrasena()){
+    this -> cargo = nuevo_empleado.get_cargo();
+    this -> puntero_hostal = nullptr;
+}
+
+Empleado::Empleado(string nombre, string email, string contrasena, Cargo cargo, Hostal* puntero_hostal):Usuario(nombre, email, contrasena){
     this -> cargo = cargo;
-    this -> puntero_hostal = puntero_hostal;
+    this -> puntero_hostal = nullptr;
 }
 
 Empleado::Empleado(const Empleado& original){
     nombre = original.nombre;
     email = original.email;
-    password = original.email;
+    contrasena = original.contrasena;
     cargo = original.cargo;
     puntero_hostal = original.puntero_hostal;
 }

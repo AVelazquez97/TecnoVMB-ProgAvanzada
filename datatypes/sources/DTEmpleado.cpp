@@ -6,10 +6,10 @@ DTEmpleado::DTEmpleado(){
 
 }
 
-DTEmpleado::DTEmpleado(string nombre, string email, string nombre_hostal, Cargo cargo){
+DTEmpleado::DTEmpleado(string nombre, string email, string contrasena, Cargo cargo){
     this -> nombre = nombre;
     this -> email = email;
-    this -> nombre_hostal = nombre_hostal;
+    this -> contrasena = contrasena;
     this -> cargo = cargo;
 }
 
@@ -19,6 +19,10 @@ string DTEmpleado::get_nombre(){
 
 string DTEmpleado::get_email(){
     return this -> email;
+}
+
+string DTEmpleado::get_contrasena(){
+    return this -> contrasena;
 }
 
 string DTEmpleado::get_nombre_hostal(){

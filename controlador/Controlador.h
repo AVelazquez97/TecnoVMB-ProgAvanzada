@@ -11,6 +11,12 @@
 #include "../classes/headers/Usuario.h"
 #include "../ICollection/collections/OrderedDictionary.h"
 #include "../ICollection/String.h"
+
+/*datatypes*/
+#include "../datatypes/headers/DTUsuario.h"
+#include "../datatypes/headers/DTHuesped.h"
+#include "../datatypes/headers/DTEmpleado.h"
+
 #include <string.h>
 
 class Controlador: public IControlador{
@@ -36,8 +42,8 @@ class Controlador: public IControlador{
         void setFechaSistema(tm*);
 
         //Cabeceras de las opers
-        void alta_huesped();
-        void alta_empleado();
+        void alta_huesped(DTHuesped nuevo_huesped);
+        void alta_empleado(DTEmpleado nuevo_empleado);
         bool verificar_email(string entrada);
 };
     

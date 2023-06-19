@@ -4,6 +4,10 @@ using namespace std;
 #include <cmath>
 #include <cstring>
 
+/*datatypes*/
+#include "../datatypes/headers/DTHuesped.h"
+#include "../datatypes/headers/DTEmpleado.h"
+
 #include "functions.h"
 
 #include "../iControlador/IControlador.h"
@@ -77,7 +81,6 @@ int eleccion_menu_principal() {
 void alta_usuario(){
 	bool existe_email = true;
 	bool cancelar = false;
-	bool continuar = true;
 	bool es_tecno;
 	string entrada = "";
 	string email;
@@ -97,10 +100,10 @@ void alta_usuario(){
 	getline(cin,nombre);
 	if(nombre == "salir"){return;} /* en caso de que desee salir*/
 
-	while(existe_email && continuar){
+	while(existe_email){
 		cout << "Ingrese el email: " << endl;
 		getline(cin,email);
-		if(email == "salir"){continuar = false;} /* en caso de que desee salir*/
+		if(email == "salir"){return;} /* en caso de que desee salir*/
 		existe_email = controlador -> verificar_email(email); //! manejar una excepcion aca
 	}
 
@@ -125,7 +128,9 @@ void alta_usuario(){
 					es_tecno = true;
 				}
 		}
-		entrada = ""; /*vacio la variable para reutilizarla en el caso de que sea empleado*/	
+		/*hacer la llamada al sistema con el DTHuesped*/
+		DTHuesped nuevo_huesped(nombre, email, contrasena, es_tecno);
+		controlador -> alta_huesped(nuevo_huesped);
 	}else{
 		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
 		cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
@@ -150,5 +155,8 @@ void alta_usuario(){
 					break;
 				}
 			}
+		/*hacer la llamada al sistema con el DTEmpleado*/
+		DTEmpleado nuevo_empleado(nombre, email, contrasena, cargo);
+		controlador -> alta_empleado(nuevo_empleado);
 	}
 }

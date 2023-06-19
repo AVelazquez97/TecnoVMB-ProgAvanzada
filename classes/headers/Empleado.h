@@ -11,7 +11,8 @@ class Empleado: public Usuario{
         Cargo cargo;
     public:
         Empleado();
-        Empleado(string nombre, string email, string password, Cargo cargo, Hostal* puntero_hostal);
+        Empleado(string nombre, string email, string contrasena, Cargo cargo, Hostal* puntero_hostal);
+        Empleado(DTEmpleado nuevo_empleado);
         Empleado(const Empleado &Empleado);
         ~Empleado();
         Hostal* get_puntero_hostal();
