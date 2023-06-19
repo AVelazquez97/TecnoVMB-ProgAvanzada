@@ -1,30 +1,6 @@
-# program: main.o Persona.o collections.o interfaces.o string.o integer.o
-# 	g++ -o programa *.o
-# 	make clean
-
-# main.o: main.cpp
-# 	g++ -c main.cpp
-
-# Persona.o: Persona.h Persona.cpp
-# 	g++ -c Persona.cpp
-
-# collections.o: ICollection/collections/*.h ICollection/collections/*.cpp 
-# 	g++ -c ICollection/collections/*.cpp
-
-# interfaces.o: ICollection/interfaces/*.h  ICollection/interfaces/*.cpp
-# 	g++ -c ICollection/interfaces/*.cpp
-
-# string.o: ICollection/String.h ICollection/String.cpp
-# 	g++ -c ICollection/String.cpp
-
-# integer.o: ICollection/Integer.h ICollection/Integer.cpp
-# 	g++ -c ICollection/Integer.cpp
-
-# clean:
-# 	rm -f *.o
-
 program: main.o functions.o fabrica.o controlador.o icontrolador.o collections.o interfaces.o string.o integer.o objetos.o datatypes.o
 	g++ -o programa *.o
+	make clean
 
 main.o: main/main.cpp
 	g++ -c main/main.cpp

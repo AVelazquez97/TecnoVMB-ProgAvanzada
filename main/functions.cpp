@@ -78,12 +78,77 @@ void alta_usuario(){
 	bool existe_email = true;
 	bool cancelar = false;
 	bool continuar = true;
-	string entrada;
+	bool es_tecno;
+	string entrada = "";
+	string email;
+	string nombre;
+	string contrasena;
+	string tipo = "";
+	Cargo cargo;
+	/*el unico proposito de esta variable es guardar
+	en ella lo que sea que traiga el buffer asi nos evitamos que se salte
+	pedir por el nombre*/
+	string limpiar_buffer; 
+	getline(cin,limpiar_buffer);
+
+	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	
+	cout << "Ingrese el nombre: " << endl;
+	getline(cin,nombre);
+	if(nombre == "salir"){return;} /* en caso de que desee salir*/
 
 	while(existe_email && continuar){
-		cout << "Ingrese un email o ingrese 'salir' para volver al menu principal: " << endl;
-		cin >> entrada;
-		existe_email = controlador -> verificar_email(entrada);
-		if(entrada == "salir"){continuar = false;}
+		cout << "Ingrese el email: " << endl;
+		getline(cin,email);
+		if(email == "salir"){continuar = false;} /* en caso de que desee salir*/
+		existe_email = controlador -> verificar_email(email); //! manejar una excepcion aca
+	}
+
+	cout << "Ingrese la contraseña: " << endl;
+	getline(cin,contrasena);
+	if(contrasena == "salir"){return;} /* en caso de que desee salir*/
+
+	while(tipo != "0" && tipo != "1"){
+	cout << "Ingrese el tipo de usuario que quiere registrar: 0 = Huesped | 1 = Empleado" << endl;
+	getline(cin,tipo);
+	if(tipo == "salir"){return;} /* en caso de que desee salir*/
+	}
+
+	if(tipo == "0"){
+		while(entrada != "0" && entrada != "1"){
+			cout << "El Huesped es Tecno?: 0 = No | 1 = Si" << endl;
+			getline(cin,entrada);
+			if(entrada == "salir"){return;} /* en caso de que desee salir*/
+				if(entrada == "0"){
+					es_tecno = false;
+				}else{
+					es_tecno = true;
+				}
+		}
+		entrada = ""; /*vacio la variable para reutilizarla en el caso de que sea empleado*/	
+	}else{
+		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
+		cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
+		getline(cin,entrada);
+		if(entrada == "salir"){return;} /* en caso de que desee salir*/
+		}
+			switch(stoi(entrada)){
+				case 0:{
+					cargo = Cargo::Administracion;
+					break;
+				}
+				case 1:{
+					cargo = Cargo::Limpieza;
+					break;
+				}
+				case 2:{
+					cargo = Cargo::Recepcion;
+					break;
+				}
+				case 3:{
+					cargo = Cargo::Infraestructura;
+					break;
+				}
+			}
 	}
 }
