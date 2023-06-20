@@ -18,49 +18,62 @@ int main(int argc, char* argv[]){
                 break;
 			}
             case 2: { //Alta hostal
-            
+                alta_hostal();
                 break;
 			}
             case 3: { //Alta habitacion
+                alta_habitacion();
                 break;
 			}
             case 4: { //Asignar empleado a hostal
+                asignar_empleado_hostal();
                 break;
 			}
             case 5: { //Realizar reserva
+                realizar_reserva();
                 break;
 			}
             case 6: { //Consultar top 3 de hostales
+                consultar_top_3();
                 break;
             }
             case 7: { //Registrar estadia
+                registrar_estadia();
                 break;
             }
             case 8: { //Finalizar estadia
+                finalizar_estadia();
                 break;
             }
             case 9: { //Calificar estadia
                 break;
             }
             case 10: { //Comentar calificacion
+                comentar_calificacion();
                 break;
             }
             case 11: { //Consulta de usuario
+                consulta_usuario();
                 break;
             }
             case 12: { //Consulta de hostal
+                consulta_hostal();
                 break;
             }
             case 13: { //Consulta de reserva
+                consulta_reserva();
                 break;
             }
             case 14: { //Consulta de estadia
+                consulta_estadia();
                 break;
             }
             case 15: { //Baja de reserva
+                baja_reserva();
                 break;
             }
             case 16: { //Modificar fecha del sistema
+                modificar_fecha();
                 break;
             }
             case 17: { //Cargar de Datos de Prueba

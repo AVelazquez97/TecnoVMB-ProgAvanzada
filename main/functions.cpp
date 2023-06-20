@@ -161,6 +161,62 @@ void alta_usuario(){
 	}
 }
 
+void alta_hostal(){
+
+}
+
+void alta_habitacion(){
+
+}
+
+void asignar_empleado_hostal(){
+
+}
+
+void realizar_reserva(){
+
+}
+
+void consultar_top_3(){
+
+}
+
+void registrar_estadia(){
+
+}
+
+void finalizar_estadia(){
+
+}
+
+void comentar_calificacion(){
+
+}
+
+void consulta_usuario(){
+
+}
+
+void consulta_hostal(){
+
+}
+
+void consulta_reserva(){
+
+}
+
+void consulta_estadia(){
+
+}
+
+void baja_reserva(){
+	
+}
+
+void modificar_fecha(){
+	
+}
+
 void datos_prueba(){
 	/*empleados*/
 	controlador -> alta_empleado("Emilia","emilia@mail.com","123",Recepcion);
