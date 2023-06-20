@@ -38,10 +38,12 @@ class IControlador {
         virtual void setFechaSistema(tm*) = 0;
         virtual time_t* getFechaSistema() = 0; 
         virtual void alta_huesped(DTHuesped nuevo_huesped) = 0;
-        virtual void alta_huesped(string nombre, string email, string contrasena, bool es_tecno) = 0;
         virtual void alta_empleado(DTEmpleado nuevo_empleado) = 0;
-        virtual void alta_empleado(string nombre, string email, string contrasena, Cargo cargo) = 0;
+        virtual void alta_hostal(DTHostal nuevo_hostal) = 0;
+    
+        /*funciones auxiliares*/
         virtual bool verificar_email(string entrada) = 0;
+        virtual void existe_hostal(string nombre) = 0;
 };
 
 #endif

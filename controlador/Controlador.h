@@ -43,10 +43,12 @@ class Controlador: public IControlador{
 
         //Cabeceras de las opers
         void alta_huesped(DTHuesped nuevo_huesped);
-        void alta_huesped(string nombre, string email, string contrasena, bool es_tecno);
         void alta_empleado(DTEmpleado nuevo_empleado);
-        void alta_empleado(string nombre, string email, string contrasena, Cargo cargo);
+        void alta_hostal(DTHostal nuevo_hostal);
+
+        /*funciones auxiliares*/
         bool verificar_email(string entrada);
+        void existe_hostal(string nombre);
 };
     
 #endif

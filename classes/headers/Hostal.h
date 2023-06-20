@@ -11,8 +11,11 @@ class Hostal: public ICollectible{
         string direccion;
         string telefono;
         IDictionary* habitaciones;/*aca va a ir la lista de habitaciones que pertenecen al hostal*/
+        IDictionary* reviews; /*lista de reviews en ese hostal*/
+        IDictionary* empleados; /*lista de empleados en ese hostal*/
     public:
         Hostal();
+        Hostal(DTHostal nuevo_hostal);
         Hostal(string nombre, string direccion, string telefono);
         Hostal(const Hostal &Hostal);
         ~Hostal();

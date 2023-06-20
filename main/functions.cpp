@@ -162,7 +162,41 @@ void alta_usuario(){
 }
 
 void alta_hostal(){
+	string nombre;
+	string direccion; 
+	string telefono;
+	bool existe_hostal;
+	string limpiar_buffer; 
+	getline(cin,limpiar_buffer);
 
+	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	
+	cout << "Ingrese el nombre: " << endl;
+	getline(cin,nombre);
+	if(nombre == "salir"){return;} /* en caso de que desee salir*/
+	
+	/*
+	si existe el hostal => tira excepcion
+	si no existe hostal => no tira excepcion
+	*/
+	try{
+		controlador -> existe_hostal(nombre);
+
+		cout << "Ingrese la direccion: " << endl;
+		getline(cin,direccion);
+		if(direccion == "salir"){return;} /* en caso de que desee salir*/
+
+		cout << "Ingrese el telefono: " << endl;
+		getline(cin,telefono);
+		if(telefono == "salir"){return;} /* en caso de que desee salir*/
+
+		DTHostal nuevo_hostal(nombre,direccion,telefono);
+		controlador -> alta_hostal(nuevo_hostal);
+
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << "ERROR:" << Excepcion.what() << endl;
+	}
+	
 }
 
 void alta_habitacion(){
@@ -214,22 +248,27 @@ void baja_reserva(){
 }
 
 void modificar_fecha(){
-	
+
 }
 
 void datos_prueba(){
 	/*empleados*/
-	controlador -> alta_empleado("Emilia","emilia@mail.com","123",Recepcion);
-	controlador -> alta_empleado("Leonardo","leo@mail.com","123",Recepcion);
-	controlador -> alta_empleado("Alina","alina@mail.com","123",Administracion);
-	controlador -> alta_empleado("Barliman","barli@mail.com","123",Recepcion);
+	controlador -> alta_empleado(DTEmpleado("Emilia","emilia@mail.com","123",Recepcion));
+	controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Recepcion));
+	controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Administracion));
+	controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Recepcion));
 	/*huespedes*/
-	controlador -> alta_huesped("Sofia","sofia@mail.com","123",true);
-	controlador -> alta_huesped("Frodo","frodo@mail.com","123",true);
-	controlador -> alta_huesped("Sam","sam@mail.com","123",false);
-	controlador -> alta_huesped("Merry","merry@mail.com","123",false);
-	controlador -> alta_huesped("Pippin","pippin@mail.com","123",false);
-	controlador -> alta_huesped("Seba","seba@mail.com","123",true);
-
+	controlador -> alta_huesped(DTHuesped("Sofia","sofia@mail.com","123",true));
+	controlador -> alta_huesped(DTHuesped("Frodo","frodo@mail.com","123",true));
+	controlador -> alta_huesped(DTHuesped("Sam","sam@mail.com","123",false));
+	controlador -> alta_huesped(DTHuesped("Merry","merry@mail.com","123",false));
+	controlador -> alta_huesped(DTHuesped("Pippin","pippin@mail.com","123",false));
+	controlador -> alta_huesped(DTHuesped("Seba","seba@mail.com","123",true));
+	/*Hostales*/
+	controlador -> alta_hostal(DTHostal("La posada del finger","Av de la playa 123,Maldonado","099111111"));
+	controlador -> alta_hostal(DTHostal("Mochileros","Rambla Costanera 333,Rocha","42579512"));
+	controlador -> alta_hostal(DTHostal("El Pony Pisador","Bree (preguntar por Gandalf)","000"));
+	controlador -> alta_hostal(DTHostal("Altos del FIng","Av del Toro 1424","099892992"));
+	controlador -> alta_hostal(DTHostal("Caverna Lujosa","Amaya 2515","233233235"));
 }
 

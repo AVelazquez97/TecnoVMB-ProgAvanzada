@@ -6,6 +6,15 @@ Hostal::Hostal(){
 
 }
 
+Hostal::Hostal(DTHostal nuevo_hostal){
+    this -> nombre = nuevo_hostal.get_nombre();
+    this -> direccion = nuevo_hostal.get_direccion();
+    this -> telefono = nuevo_hostal.get_telefono();
+    this -> habitaciones = new OrderedDictionary();
+    this -> reviews = new OrderedDictionary();
+    this -> empleados = new OrderedDictionary();
+}
+
 Hostal::Hostal(string nombre, string direccion, string telefono){
     this -> nombre = nombre;
     this -> direccion = direccion;
