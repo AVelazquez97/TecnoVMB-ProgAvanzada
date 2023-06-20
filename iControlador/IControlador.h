@@ -44,6 +44,7 @@ class IControlador {
         /*funciones auxiliares*/
         virtual bool verificar_email(string entrada) = 0;
         virtual void existe_hostal(string nombre) = 0;
+        virtual OrderedDictionary* obtener_hostales() = 0;
 };
 
 #endif

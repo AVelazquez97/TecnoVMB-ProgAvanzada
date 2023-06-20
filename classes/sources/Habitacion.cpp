@@ -4,11 +4,22 @@
 
 Habitacion::Habitacion(){}
 
+Habitacion::Habitacion(DTHabitacion nueva_habitacion, Hostal* puntero_hostal){
+    this -> numero = nueva_habitacion.get_numero();
+    this -> precio = nueva_habitacion.get_precio();
+    this -> capacidad = nueva_habitacion.get_capacidad();
+    this -> puntero_hostal = puntero_hostal;
+    this -> estadias = new OrderedDictionary();
+    this -> reservas = new OrderedDictionary();
+}
+
 Habitacion::Habitacion(int numero, float precio, int capacidad, Hostal* puntero_hostal){
     this -> numero = numero;
     this -> precio = precio;
     this -> capacidad = capacidad;
     this -> puntero_hostal = puntero_hostal;
+    this -> estadias = new OrderedDictionary();
+    this -> reservas = new OrderedDictionary();
 }
 
 Habitacion::Habitacion(const Habitacion& original){

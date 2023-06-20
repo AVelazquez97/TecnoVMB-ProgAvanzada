@@ -49,6 +49,7 @@ class Controlador: public IControlador{
         /*funciones auxiliares*/
         bool verificar_email(string entrada);
         void existe_hostal(string nombre);
+        OrderedDictionary* obtener_hostales();
 };
     
 #endif

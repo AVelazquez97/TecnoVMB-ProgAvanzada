@@ -1,9 +1,10 @@
 #ifndef DTHOSTAL_H_
 #define DTHOSTAL_H_
+#include "../../ICollection/interfaces/ICollectible.h"
 #include <iostream>
 using namespace std;
 
-class DTHostal{
+class DTHostal: public ICollectible{
     private:
         string nombre;
         string direccion;

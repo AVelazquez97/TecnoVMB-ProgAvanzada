@@ -10,8 +10,11 @@ class Habitacion: public ICollectible {
         float precio;
         int capacidad;
         Hostal* puntero_hostal; //hostal al que pertenece
+        IDictionary* estadias;
+        IDictionary* reservas;
     public:
         Habitacion();
+        Habitacion(DTHabitacion nueva_habitacion,Hostal* puntero_hostal);
         Habitacion(int numero, float precio, int capacidad,Hostal* puntero_hostal);
         Habitacion(const Habitacion &Habitacion);
         ~Habitacion();

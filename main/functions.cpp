@@ -78,6 +78,23 @@ int eleccion_menu_principal() {
 	return stoi(cadena_inicio + cadena_agregada);
 }
 
+/*esta funcion va hasta el controlador
+trae los DTHostales y los imprime, sirve tenerla como
+funcion ya que se pide en distintas operaciones*/
+void obtener_hostales(){
+	OrderedDictionary* DTHostales = new OrderedDictionary();
+	DTHostales = controlador -> obtener_hostales();
+
+	cout << "| Lista de hostales |" << endl;
+
+	for(IIterator* it = DTHostales -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
+        cout << hostal->get_nombre() << "|" <<
+		hostal -> get_direccion() << "|" <<
+		hostal -> get_telefono() << "|" << endl;
+    }
+}
+
 void alta_usuario(){
 	bool existe_email = true;
 	bool cancelar = false;
@@ -200,7 +217,7 @@ void alta_hostal(){
 }
 
 void alta_habitacion(){
-
+	obtener_hostales();
 }
 
 void asignar_empleado_hostal(){

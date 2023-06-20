@@ -106,3 +106,36 @@ void Controlador::existe_hostal(string nombre){
         throw invalid_argument("Hostal ya existente!");
     }
 }
+
+OrderedDictionary* Controlador::obtener_hostales(){
+    //por cada iteracion, paso el obj Hostal a DTHOstal,
+    //lo agrego a la lista y lo devuelvo
+
+    //lista que voy a devolver con los hostales pasados a dt
+    OrderedDictionary* DTHostales = new OrderedDictionary(); 
+
+    //1. ciclar en la lista de hostales
+    for(IIterator* it = hostales -> getIterator(); it -> hasCurrent(); it -> next()){
+        Hostal* hostal = dynamic_cast<Hostal*>(it -> getCurrent());
+        
+        string cadena = hostal -> get_nombre();
+        char parce_char[cadena.length()+1];
+        strcpy(parce_char,cadena.c_str());
+
+        IKey* ik = new String(parce_char);
+
+        //2. convertirlo a dt
+        DTHostal* hostal_singular = new DTHostal(hostal -> get_DT());
+
+        //3. agregarlo a la lista
+        DTHostales -> add(ik, hostal_singular);
+    }
+
+    /*
+    ¿tendria que hacerle el delete a cada hostal_singular?
+    en caso de hacerlo, no pierdo esa informacion de la lista tambien?
+    */
+   
+    //4. devolver la lista
+    return DTHostales;
+}
