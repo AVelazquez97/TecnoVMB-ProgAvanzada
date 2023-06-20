@@ -160,3 +160,20 @@ void alta_usuario(){
 		controlador -> alta_empleado(nuevo_empleado);
 	}
 }
+
+void datos_prueba(){
+	/*empleados*/
+	controlador -> alta_empleado("Emilia","emilia@mail.com","123",Recepcion);
+	controlador -> alta_empleado("Leonardo","leo@mail.com","123",Recepcion);
+	controlador -> alta_empleado("Alina","alina@mail.com","123",Administracion);
+	controlador -> alta_empleado("Barliman","barli@mail.com","123",Recepcion);
+	/*huespedes*/
+	controlador -> alta_huesped("Sofia","sofia@mail.com","123",true);
+	controlador -> alta_huesped("Frodo","frodo@mail.com","123",true);
+	controlador -> alta_huesped("Sam","sam@mail.com","123",false);
+	controlador -> alta_huesped("Merry","merry@mail.com","123",false);
+	controlador -> alta_huesped("Pippin","pippin@mail.com","123",false);
+	controlador -> alta_huesped("Seba","seba@mail.com","123",true);
+
+}
+

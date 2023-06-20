@@ -49,6 +49,28 @@ void Controlador::alta_huesped(DTHuesped nuevo_huesped){
     cout << "Huesped ingresado correctamente!" << endl;
 }
 
+void Controlador::alta_huesped(string nombre, string email, string contrasena, bool es_tecno){
+    char parce_char[email.length()+1];
+    strcpy(parce_char,email.c_str());
+
+    IKey* ik = new String(parce_char);
+    Huesped* huesped = new Huesped(nombre, email, contrasena, es_tecno);
+    this -> huespedes -> add(ik,huesped);
+
+    cout << "Huesped ingresado correctamente!" << endl;
+}
+
+void Controlador::alta_empleado(string nombre, string email, string contrasena, Cargo cargo){
+    char parce_char[email.length()+1];
+    strcpy(parce_char,email.c_str());
+
+    IKey* ik = new String(parce_char);
+    Empleado* empleado = new Empleado(nombre, email, contrasena, cargo);
+    this -> empleados -> add(ik,empleado);
+
+    cout << "Empleado ingresado correctamente!" << endl;
+}
+
 void Controlador::alta_empleado(DTEmpleado nuevo_empleado){
     string email = nuevo_empleado.get_email();
     char parce_char[email.length()+1];

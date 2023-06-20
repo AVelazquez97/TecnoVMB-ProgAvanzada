@@ -64,6 +64,7 @@ int main(int argc, char* argv[]){
                 break;
             }
             case 17: { //Cargar de Datos de Prueba
+                datos_prueba();
                 break;
 			}
             case 18: { // Salir

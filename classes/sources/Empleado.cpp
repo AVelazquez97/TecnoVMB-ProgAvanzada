@@ -12,9 +12,14 @@ Empleado::Empleado(DTEmpleado nuevo_empleado):Usuario(nuevo_empleado.get_nombre(
     this -> puntero_hostal = nullptr;
 }
 
-Empleado::Empleado(string nombre, string email, string contrasena, Cargo cargo, Hostal* puntero_hostal):Usuario(nombre, email, contrasena){
+Empleado::Empleado(string nombre, string email, string contrasena, Cargo cargo):Usuario(nombre, email, contrasena){
     this -> cargo = cargo;
     this -> puntero_hostal = nullptr;
+}
+
+Empleado::Empleado(string nombre, string email, string contrasena, Cargo cargo, Hostal* puntero_hostal):Usuario(nombre, email, contrasena){
+    this -> cargo = cargo;
+    this -> puntero_hostal = puntero_hostal;
 }
 
 Empleado::Empleado(const Empleado& original){

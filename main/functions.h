@@ -4,6 +4,7 @@
 void mostrar_menu_principal();
 int eleccion_menu_principal();
 void alta_usuario();
+void datos_prueba();
 // void modificar_fecha();
  
 #endif // FUNCTIONS_H_
