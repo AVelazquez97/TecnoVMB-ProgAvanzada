@@ -103,7 +103,6 @@ bool Controlador::verificar_email(string entrada){
 
 }
 
-
 void Controlador::existe_hostal(string nombre){
     char parce_char[nombre.length()+1];
     strcpy(parce_char,nombre.c_str());
@@ -157,4 +156,34 @@ OrderedDictionary* Controlador::obtener_hostales(){
    
     //4. devolver la lista
     return DTHostales;
+}
+
+OrderedDictionary* Controlador::obtener_no_empleados_hostal(string nombre_hostal){
+
+    OrderedDictionary* DTEmpleados = new OrderedDictionary(); 
+
+    for(IIterator* it = empleados -> getIterator(); it -> hasCurrent(); it -> next()){
+        Empleado* empleado = dynamic_cast<Empleado*>(it -> getCurrent());
+        
+        /*falta comprobar que los empleados no trabajen en el hostal
+        de nombre hostal*/
+       
+
+        string cadena = empleado -> get_email();
+        char parce_char[cadena.length()+1];
+         cout << "1" << endl;
+        
+        strcpy(parce_char,cadena.c_str());
+        cout << "2" << endl;
+        IKey* ik = new String(parce_char);
+        cout << "3" << endl;
+        //2. convertirlo a dt
+        DTEmpleado* empleado_singular = new DTEmpleado(empleado -> get_DT()); //estamos teniendo un error en esta linea
+        cout << "4" << endl;
+        //3. agregarlo a la lista
+        DTEmpleados -> add(ik, empleado_singular);
+        cout << "5" << endl;
+    }
+
+    return DTEmpleados;
 }

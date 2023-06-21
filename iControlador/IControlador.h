@@ -47,6 +47,7 @@ class IControlador {
         virtual void existe_hostal(string nombre) = 0;
         virtual void no_existe_hostal(string nombre) = 0;
         virtual OrderedDictionary* obtener_hostales() = 0;
+        virtual OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal) = 0;
 };
 
 #endif

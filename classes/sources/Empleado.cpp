@@ -43,7 +43,7 @@ Cargo Empleado::get_cargo(){
 }
 
 DTEmpleado Empleado::get_DT(){
-    return DTEmpleado(this->get_nombre(), this -> get_email(), this -> puntero_hostal->get_nombre(), this -> get_cargo());
+    return DTEmpleado(this->get_nombre(), this -> get_email(),"",this -> puntero_hostal->get_nombre(), this -> get_cargo());
 }
 
 #endif // EMPLEADO_CPP_

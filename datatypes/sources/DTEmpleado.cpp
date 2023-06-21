@@ -13,6 +13,14 @@ DTEmpleado::DTEmpleado(string nombre, string email, string contrasena, Cargo car
     this -> cargo = cargo;
 }
 
+DTEmpleado::DTEmpleado(string nombre, string email, string contrasena, string nombre_hostal, Cargo cargo){
+    this -> nombre = nombre;
+    this -> email = email;
+    this -> contrasena = contrasena;
+    this -> nombre_hostal = nombre_hostal;
+    this -> cargo = cargo;
+}
+
 string DTEmpleado::get_nombre(){
     return this -> nombre;
 }

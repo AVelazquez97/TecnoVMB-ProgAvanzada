@@ -105,6 +105,19 @@ void obtener_hostales(){
     }
 }
 
+void obtener_no_empleados_hostal(string nombre_hostal){
+	OrderedDictionary* DTEmpleados = new OrderedDictionary();
+	DTEmpleados = controlador -> obtener_no_empleados_hostal(nombre_hostal);
+
+	cout << endl << "| Lista de no empleados del hostal: " << nombre_hostal << " |" << endl << endl;
+
+	for(IIterator* it = DTEmpleados -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTEmpleado* empleado = dynamic_cast<DTEmpleado*>(it -> getCurrent());
+        cout << empleado->get_nombre() << "|" <<
+		empleado -> get_email() << "|" << endl;
+    }
+}
+
 void alta_usuario(){
 	bool existe_email = true;
 	bool cancelar = false;
@@ -272,7 +285,24 @@ void alta_habitacion(){
 }
 
 void asignar_empleado_hostal(){
-	return;
+	string nombre_hostal;
+	string limpiar_buffer; 
+	getline(cin,limpiar_buffer);
+	
+	obtener_hostales();
+
+	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	
+	cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
+	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
+	
+	try{
+		controlador -> no_existe_hostal(nombre_hostal);
+		obtener_no_empleados_hostal(nombre_hostal);
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << "ERROR:" << Excepcion.what() << endl;
+	}
 }
 
 void realizar_reserva(){
