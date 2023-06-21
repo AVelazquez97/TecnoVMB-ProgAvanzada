@@ -3,6 +3,7 @@ using namespace std;
 #include <stdio.h>
 #include <cmath>
 #include <cstring>
+#include <limits>
 
 /*datatypes*/
 #include "../datatypes/headers/DTHuesped.h"
@@ -24,27 +25,28 @@ Fabrica fab;
 IControlador* controlador = fab.getInterface();
 
 void mostrar_menu_principal() {
-	cout << "╔════════════════╗\n";
-	cout << "║ Menú principal ║\n";
-	cout << "╚════════════════╝\n";
-	cout << "  1. Alta usuario\n";
-	cout << "  2. Alta hostal\n";
-	cout << "  3. Alta habitacion\n";
-	cout << "  4. Asignar empleado a hostal\n";
-	cout << "  5. Realizar reserva\n";
-	cout << "  6. Consultar top 3 de hostales\n";
-	cout << "  7. Registrar estadia\n";
-	cout << "  8. Finalizar estadia\n";
-	cout << "  9. Calificar estadia\n";
-	cout << "  10. Comentar calificacion\n";
-	cout << "  11. Consulta de usuario\n";
-	cout << "  12. Consulta de hostal\n";
-	cout << "  13. Consulta de reserva\n";
-	cout << "  14. Consulta de estadia\n";
-	cout << "  15. Baja de reserva\n";
-	cout << "  16. Modificar fecha del sistema\n";
-	cout << "  17. Cargar de Datos de Prueba\n";
-	cout << "  18. Salir\n";
+	system("clear");
+	cout << GREEN "╔════════════════╗" << endl;
+	cout << "║ Menú principal ║" << endl;
+	cout << "╚════════════════╝" << endl;
+	cout << "  1. Alta usuario" << endl;
+	cout << "  2. Alta hostal" << endl;
+	cout << "  3. Alta habitacion" << endl;
+	cout << "  4. Asignar empleado a hostal" << endl;
+	cout << "  5. Realizar reserva" << endl;
+	cout << "  6. Consultar top 3 de hostales" << endl;
+	cout << "  7. Registrar estadia" << endl;
+	cout << "  8. Finalizar estadia" << endl;
+	cout << "  9. Calificar estadia" << endl;
+	cout << "  10. Comentar calificacion" << endl;
+	cout << "  11. Consulta de usuario" << endl;
+	cout << "  12. Consulta de hostal" << endl;
+	cout << "  13. Consulta de reserva" << endl;
+	cout << "  14. Consulta de estadia" << endl;
+	cout << "  15. Baja de reserva" << endl;
+	cout << "  16. Modificar fecha del sistema" << endl;
+	cout << "  17. Cargar de Datos de Prueba" << endl;
+	cout << "  18. Salir" NC << endl;
 }
 
 int eleccion_menu_principal() {
@@ -65,17 +67,25 @@ int eleccion_menu_principal() {
 
 	mostrar_menu_principal();
 	do{
-	cout << ("Ingresa una opción(1..18): ");
-	cin >> cadena_agregada;
+		cout << GREEN "Ingresa una opción(1..18): " NC;
+		cin >> cadena_agregada;
 
-	if (stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 18){
-		cout << "La opción que has ingresado no es válida. Inténtalo otra vez.\n";
+		if (stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 18){
+			cout << endl << REDB "La opción que has ingresado no es válida. Inténtalo otra vez." NC << endl << endl;
+		}
 	}
-	}
-
 	while(stoi(cadena_inicio + cadena_agregada) < 1 || stoi(cadena_inicio + cadena_agregada) > 18);
 
+	system("clear");
 	return stoi(cadena_inicio + cadena_agregada);
+}
+
+void press_enter(){
+	cin.clear();
+	//Limpia el buffer. Solo se deja hasta que se termine de implementar todos los casos de uso
+  	cin.ignore(numeric_limits <streamsize>::max(), '\n'); 
+	cout << endl << CYAN "Presiona ENTER para continuar..." NC;
+	getchar();
 }
 
 /*esta funcion va hasta el controlador
@@ -228,7 +238,7 @@ void alta_habitacion(){
 	string limpiar_buffer; 
 	getline(cin,limpiar_buffer);
 
-	obtener_hostales();
+	obtener_hostales(); // Luego hay que eliminar este llamado
 
 	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
 	
@@ -262,51 +272,55 @@ void alta_habitacion(){
 }
 
 void asignar_empleado_hostal(){
-
+	return;
 }
 
 void realizar_reserva(){
-
+	return;
 }
 
 void consultar_top_3(){
-
+	return;
 }
 
 void registrar_estadia(){
-
+	return;
 }
 
 void finalizar_estadia(){
+	return;
+}
 
+void calificar_estadia(){
+	return;
 }
 
 void comentar_calificacion(){
-
+	return;
 }
 
 void consulta_usuario(){
-
+	return;
 }
 
 void consulta_hostal(){
-
+	return;
 }
 
 void consulta_reserva(){
-
+	return;
 }
 
 void consulta_estadia(){
-
+	return;
 }
 
 void baja_reserva(){
-	
+	return;
 }
 
 void modificar_fecha(){
-
+	return;
 }
 
 void datos_prueba(){
@@ -335,5 +349,59 @@ void datos_prueba(){
 	controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
 	controlador -> alta_habitacion(DTHabitacion(1,9,5),"El Pony Pisador");
-	cout << "Datos de prueba cargados correctamente!" << endl;
+
+	/* Asignación de empleados a hostales */
+		// Empleado Hostel  Cargo
+		// E1       HO1 	Recepción
+		// E2       HO2 	Recepción
+		// E3   	HO2 	Administración
+		// E4 		HO3 	Recepción
+
+ 	/* Reservas */
+		// Ref Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
+		// R1  HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
+		// R2  HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
+		// R3  HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
+		// R4  HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
+
+	/* Estadías */
+		// Ref  Reserva  Huesped Check in
+		// ES1	R1	     H1      01/05/22 - 6pm
+		// ES2	R2	     H2      04/01/01 - 9pm
+		// ES3	R2	     H3      04/01/01 - 9pm
+		// ES4	R2	     H4      04/01/01 - 9pm
+		// ES5	R2	     H5      04/01/01 - 9pm
+		// ES6	R4	     H6      07/06/22 - 6pm
+
+	/* Finalización de estadías */
+		// Estadía  Huesped   Check out
+		// ES1 		H1 		  10/05/22 - 9am
+		// ES2 		H2 		  05/01/01 - 2am
+		// ES6 		H6 		  15/06/22 - 10pm
+
+	/* Calificar estadía */
+		/* Ref Estadía Huesped Comentario Calificación Fecha */
+		
+		/* C1  ES1     H1 
+			Un poco caro para lo que ofrecen. 
+			El famoso gimnasio era una caminadora (que hacía tremendo ruido) y 2 pesas, la piscina parecía
+			el lago del Parque Rodó y el desayuno eran 2 tostadas con mermelada. Internet se pasaba cayendo. No vuelvo.
+			3 11/05/22 - 6pm
+		*/
+
+		/* C2 ES2 H2 Se pone peligroso de noche, no recomiendo. Además no hay caja fuerte para guardar anillos.
+			2 05/01/01 - 3am 
+		*/
+		
+	    /* C3 ES6 H6 Había pulgas en la habitación. Que lugar más mamarracho!! 1 15/06/22 - 11pm */
+
+	/* Comentar calificación */
+		// Calificación Empleado Respuesta 						Fecha
+		// C2 			 E4 	  Desapareció y se fue sin pagar.   06/01/01 - 3pm
+
+	cout << GREEN "Datos de prueba cargados correctamente!" NC << endl;
+}
+
+void exit(){
+	cout << endl << endl<< CYAN "Has terminado la ejecución del programa." NC << endl << endl;
 }

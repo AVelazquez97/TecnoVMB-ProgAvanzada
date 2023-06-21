@@ -23,11 +23,11 @@ Empleado::Empleado(string nombre, string email, string contrasena, Cargo cargo, 
 }
 
 Empleado::Empleado(const Empleado& original){
-    nombre = original.nombre;
-    email = original.email;
-    contrasena = original.contrasena;
-    cargo = original.cargo;
-    puntero_hostal = original.puntero_hostal;
+    this -> nombre = original.nombre;
+    this -> email = original.email;
+    this -> contrasena = original.contrasena;
+    this -> cargo = original.cargo;
+    this -> puntero_hostal = original.puntero_hostal;
 }
 
 Empleado::~Empleado(){
