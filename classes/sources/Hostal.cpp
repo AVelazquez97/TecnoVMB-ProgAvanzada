@@ -1,6 +1,7 @@
 #ifndef HOSTAL_CPP_
 #define HOSTAL_CPP_
 #include "../headers/Hostal.h"
+#include "../../classes/headers/Habitacion.h"
 
 Hostal::Hostal(){
 
@@ -58,6 +59,15 @@ string Hostal::get_telefono(){
 
 DTHostal Hostal::get_DT(){
     return DTHostal(this -> get_nombre(),this -> get_direccion(), this -> get_telefono());
+}
+
+void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){
+    Habitacion* nueva_habitacion = new Habitacion(hab,ptr_hostal);
+
+    IKey* ik = new Integer(nueva_habitacion -> get_numero());
+
+    this -> habitaciones -> add(ik,nueva_habitacion);
+
 }
 
 

@@ -1,7 +1,10 @@
 #ifndef HOSTAL_H_
 #define HOSTAL_H_
+//#include "../../classes/headers/Habitacion.h"
 #include "../../datatypes/headers/DTHostal.h"
+#include "../../datatypes/headers/DTHabitacion.h"
 #include "../../ICollection/collections/OrderedDictionary.h"
+#include "../../ICollection/Integer.h"
 #include <iostream>
 using namespace std;
 
@@ -26,6 +29,7 @@ class Hostal: public ICollectible{
         string get_direccion();
         string get_telefono();
         DTHostal get_DT();
+        void alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal);
 };
 
 #endif // HOSTAL_H_

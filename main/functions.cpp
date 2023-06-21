@@ -85,7 +85,7 @@ void obtener_hostales(){
 	OrderedDictionary* DTHostales = new OrderedDictionary();
 	DTHostales = controlador -> obtener_hostales();
 
-	cout << "| Lista de hostales |" << endl;
+	cout << endl << "| Lista de hostales |" << endl << endl;
 
 	for(IIterator* it = DTHostales -> getIterator(); it -> hasCurrent(); it -> next()){
         DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
@@ -148,6 +148,7 @@ void alta_usuario(){
 		/*hacer la llamada al sistema con el DTHuesped*/
 		DTHuesped nuevo_huesped(nombre, email, contrasena, es_tecno);
 		controlador -> alta_huesped(nuevo_huesped);
+		cout << "Huesped ingresado correctamente!" << endl;
 	}else{
 		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
 		cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
@@ -175,6 +176,7 @@ void alta_usuario(){
 		/*hacer la llamada al sistema con el DTEmpleado*/
 		DTEmpleado nuevo_empleado(nombre, email, contrasena, cargo);
 		controlador -> alta_empleado(nuevo_empleado);
+		cout << "Empleado ingresado correctamente!" << endl;
 	}
 }
 
@@ -188,7 +190,7 @@ void alta_hostal(){
 
 	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
 	
-	cout << "Ingrese el nombre: " << endl;
+	cout << "Ingrese el nombre del hostal: " << endl;
 	getline(cin,nombre);
 	if(nombre == "salir"){return;} /* en caso de que desee salir*/
 	
@@ -199,25 +201,64 @@ void alta_hostal(){
 	try{
 		controlador -> existe_hostal(nombre);
 
-		cout << "Ingrese la direccion: " << endl;
+		cout << "Ingrese la direccion del hostal: " << endl;
 		getline(cin,direccion);
 		if(direccion == "salir"){return;} /* en caso de que desee salir*/
 
-		cout << "Ingrese el telefono: " << endl;
+		cout << "Ingrese el telefono del hostal: " << endl;
 		getline(cin,telefono);
 		if(telefono == "salir"){return;} /* en caso de que desee salir*/
 
 		DTHostal nuevo_hostal(nombre,direccion,telefono);
 		controlador -> alta_hostal(nuevo_hostal);
-
+		cout << "Hostal ingresado correctamente!" << endl;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << "ERROR:" << Excepcion.what() << endl;
 	}
-	
 }
 
 void alta_habitacion(){
+	string nombre_hostal;
+	string str_numero_hab;
+	string str_precio_hab;
+	string str_capacidad_hab;
+	int numero_hab;
+	float precio_hab;
+	int capacidad_hab;
+	string limpiar_buffer; 
+	getline(cin,limpiar_buffer);
+
 	obtener_hostales();
+
+	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	
+	cout << "Ingrese el nombre del hostal al que pertenece la habitacion: " << endl;
+	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
+
+	try{
+		controlador -> no_existe_hostal(nombre_hostal);
+
+		cout << "Ingrese el numero de la habitacion: " << endl;
+		getline(cin,str_numero_hab);
+		if(str_numero_hab == "salir"){return;} /* en caso de que desee salir*/
+		numero_hab = stoi(str_numero_hab); /*parceo la entrada de str a int*/
+
+		cout << "Ingrese el precio de la habitacion: " << endl;
+		getline(cin,str_precio_hab);
+		if(str_precio_hab == "salir"){return;} /* en caso de que desee salir*/
+		precio_hab = stof(str_precio_hab); /*parceo la entrada de str a float*/
+
+		cout << "Ingrese la capacidad de la habitacion: " << endl;
+		getline(cin,str_capacidad_hab);
+		if(str_capacidad_hab == "salir"){return;} /* en caso de que desee salir*/
+		capacidad_hab = stoi(str_capacidad_hab); /*parceo la entrada de str a float*/
+
+		controlador -> alta_habitacion(DTHabitacion(numero_hab, precio_hab, capacidad_hab),nombre_hostal);
+		cout << "Habitacion ingresada correctamente" << endl;
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << "ERROR:" << Excepcion.what() << endl;
+	}
 }
 
 void asignar_empleado_hostal(){
@@ -269,12 +310,12 @@ void modificar_fecha(){
 }
 
 void datos_prueba(){
-	/*empleados*/
+	/*Empleados*/
 	controlador -> alta_empleado(DTEmpleado("Emilia","emilia@mail.com","123",Recepcion));
 	controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Recepcion));
 	controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Administracion));
 	controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Recepcion));
-	/*huespedes*/
+	/*Huespedes*/
 	controlador -> alta_huesped(DTHuesped("Sofia","sofia@mail.com","123",true));
 	controlador -> alta_huesped(DTHuesped("Frodo","frodo@mail.com","123",true));
 	controlador -> alta_huesped(DTHuesped("Sam","sam@mail.com","123",false));
@@ -285,7 +326,14 @@ void datos_prueba(){
 	controlador -> alta_hostal(DTHostal("La posada del finger","Av de la playa 123,Maldonado","099111111"));
 	controlador -> alta_hostal(DTHostal("Mochileros","Rambla Costanera 333,Rocha","42579512"));
 	controlador -> alta_hostal(DTHostal("El Pony Pisador","Bree (preguntar por Gandalf)","000"));
-	controlador -> alta_hostal(DTHostal("Altos del FIng","Av del Toro 1424","099892992"));
+	controlador -> alta_hostal(DTHostal("Altos del Fing","Av del Toro 1424","099892992"));
 	controlador -> alta_hostal(DTHostal("Caverna Lujosa","Amaya 2515","233233235"));
+	/*Habitaciones*/
+	controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
+	controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
+	controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger");
+	controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
+	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
+	controlador -> alta_habitacion(DTHabitacion(1,9,5),"El Pony Pisador");
+	cout << "Datos de prueba cargados correctamente!" << endl;
 }
-

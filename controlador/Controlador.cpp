@@ -45,8 +45,6 @@ void Controlador::alta_huesped(DTHuesped nuevo_huesped){
     IKey* ik = new String(parce_char);
     Huesped* huesped = new Huesped(nuevo_huesped);
     this -> huespedes -> add(ik,huesped);
-
-    cout << "Huesped ingresado correctamente!" << endl;
 }
 
 void Controlador::alta_empleado(DTEmpleado nuevo_empleado){
@@ -57,8 +55,6 @@ void Controlador::alta_empleado(DTEmpleado nuevo_empleado){
     IKey* ik = new String(parce_char);
     Empleado* empleado = new Empleado(nuevo_empleado);
     this -> empleados -> add(ik,empleado);
-
-    cout << "Empleado ingresado correctamente!" << endl;
 }
 
 void Controlador::alta_hostal(DTHostal nuevo_hostal){
@@ -69,9 +65,20 @@ void Controlador::alta_hostal(DTHostal nuevo_hostal){
     IKey* ik = new String(parce_char);
     Hostal* hostal = new Hostal(nuevo_hostal);
     this -> hostales -> add(ik,hostal);
-
-    cout << "Hostal ingresado correctamente!" << endl;
 }
+
+void Controlador::alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal){
+    char parce_char[nombre_hostal.length()+1];
+    strcpy(parce_char,nombre_hostal.c_str());
+
+    IKey* ik = new String(parce_char);
+
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik));
+
+    ptr_hostal -> alta_habitacion(nueva_habitacion,ptr_hostal);
+}
+
+/* auxiliares*/
 
 bool Controlador::verificar_email(string entrada){
 
@@ -96,6 +103,7 @@ bool Controlador::verificar_email(string entrada){
 
 }
 
+
 void Controlador::existe_hostal(string nombre){
     char parce_char[nombre.length()+1];
     strcpy(parce_char,nombre.c_str());
@@ -107,8 +115,19 @@ void Controlador::existe_hostal(string nombre){
     }
 }
 
+void Controlador::no_existe_hostal(string nombre){
+    char parce_char[nombre.length()+1];
+    strcpy(parce_char,nombre.c_str());
+
+    IKey* ik = new String(parce_char);
+    
+    if(!(this -> hostales -> member(ik))){
+        throw invalid_argument("Hostal no existente!");
+    }
+}
+
 OrderedDictionary* Controlador::obtener_hostales(){
-    //por cada iteracion, paso el obj Hostal a DTHOstal,
+    //por cada iteracion, paso el obj Hostal a DTHostal,
     //lo agrego a la lista y lo devuelvo
 
     //lista que voy a devolver con los hostales pasados a dt

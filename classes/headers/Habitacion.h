@@ -2,6 +2,7 @@
 #define HABITACION_H_
 #include "../../ICollection/interfaces/ICollectible.h"
 #include "../../datatypes/headers/DTHabitacion.h"
+#include "../../ICollection/interfaces/IDictionary.h"
 #include "Hostal.h"
 
 class Habitacion: public ICollectible {

@@ -66,7 +66,7 @@ Hostal* Habitacion::get_puntero_hostal(){
 }
 
 DTHabitacion Habitacion::get_DT(){
-    return DTHabitacion(this->get_numero(),this -> get_precio(),this -> get_capacidad(), this -> get_puntero_hostal());
+    //return DTHabitacion(this->get_numero(),this -> get_precio(),this -> get_capacidad(), this -> get_puntero_hostal());
 }
 
 #endif // HABITACION_CPP_

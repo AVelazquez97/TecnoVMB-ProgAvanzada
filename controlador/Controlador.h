@@ -5,7 +5,7 @@
 
 // Acá se deben importar las clases del DCD
 #include "../classes/headers/Empleado.h"
-#include "../classes/headers/Habitacion.h"
+//#include "../classes/headers/Habitacion.h"
 #include "../classes/headers/Hostal.h"
 #include "../classes/headers/Huesped.h"
 #include "../classes/headers/Usuario.h"
@@ -45,10 +45,12 @@ class Controlador: public IControlador{
         void alta_huesped(DTHuesped nuevo_huesped);
         void alta_empleado(DTEmpleado nuevo_empleado);
         void alta_hostal(DTHostal nuevo_hostal);
+        void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal);
 
         /*funciones auxiliares*/
         bool verificar_email(string entrada);
         void existe_hostal(string nombre);
+        void no_existe_hostal(string nombre);
         OrderedDictionary* obtener_hostales();
 };
     

@@ -1,7 +1,7 @@
 #ifndef DTHABITACION_CPP_
 #define DTHABITACION_CPP_
 #include "../headers/DTHabitacion.h"
-#include "../../classes/headers/Hostal.h"
+//#include "../../classes/headers/Hostal.h"
 #include <iostream>
 using namespace std;
 
@@ -9,11 +9,11 @@ DTHabitacion::DTHabitacion(){
 
 }
 
-DTHabitacion::DTHabitacion(int numero, float precio, int capacidad,Hostal* puntero_hostal){
+DTHabitacion::DTHabitacion(int numero, float precio, int capacidad){
     this -> numero = numero;
     this -> precio = precio;
     this -> capacidad = capacidad;
-    this -> nombre_hostal = puntero_hostal -> get_nombre();
+    //this -> nombre_hostal = puntero_hostal -> get_nombre();
 }
 
 int DTHabitacion::get_numero(){
