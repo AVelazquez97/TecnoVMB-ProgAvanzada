@@ -8,6 +8,7 @@ using namespace std;
 /*datatypes*/
 #include "../datatypes/headers/DTHuesped.h"
 #include "../datatypes/headers/DTEmpleado.h"
+#include "../enums/EnumCargo.h"
 
 #include "functions.h"
 
@@ -81,9 +82,6 @@ int eleccion_menu_principal() {
 }
 
 void press_enter(){
-	cin.clear();
-	//Limpia el buffer. Solo se deja hasta que se termine de implementar todos los casos de uso
-  	cin.ignore(numeric_limits <streamsize>::max(), '\n'); 
 	cout << endl << CYAN "Presiona ENTER para continuar..." NC;
 	getchar();
 }
@@ -99,9 +97,9 @@ void obtener_hostales(){
 
 	for(IIterator* it = DTHostales -> getIterator(); it -> hasCurrent(); it -> next()){
         DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
-        cout << hostal->get_nombre() << "|" <<
-		hostal -> get_direccion() << "|" <<
-		hostal -> get_telefono() << "|" << endl;
+        cout << "| " << hostal->get_nombre() << " | " <<
+		hostal -> get_direccion() << " | " <<
+		hostal -> get_telefono() << " |" << endl << endl;
     }
 }
 
@@ -113,8 +111,8 @@ void obtener_no_empleados_hostal(string nombre_hostal){
 
 	for(IIterator* it = DTEmpleados -> getIterator(); it -> hasCurrent(); it -> next()){
         DTEmpleado* empleado = dynamic_cast<DTEmpleado*>(it -> getCurrent());
-        cout << empleado->get_nombre() << "|" <<
-		empleado -> get_email() << "|" << endl;
+        cout << "| " << empleado->get_nombre() << "|" <<
+		empleado -> get_email() << "|" << endl << endl;
     }
 }
 
@@ -144,7 +142,10 @@ void alta_usuario(){
 		cout << "Ingrese el email: " << endl;
 		getline(cin,email);
 		if(email == "salir"){return;} /* en caso de que desee salir*/
-		existe_email = controlador -> verificar_email(email); //! manejar una excepcion aca
+		existe_email = controlador -> verificar_email(email);
+		if(existe_email){
+			cout << endl << REDB "Ya existe un usuario registrado con ese email. Intenta de nuevo... " NC << endl;
+		}
 	}
 
 	cout << "Ingrese la contraseña: " << endl;
@@ -236,7 +237,7 @@ void alta_hostal(){
 		controlador -> alta_hostal(nuevo_hostal);
 		cout << "Hostal ingresado correctamente!" << endl;
 	}catch(invalid_argument const& Excepcion){
-		cout << endl << "ERROR:" << Excepcion.what() << endl;
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
 }
 
@@ -280,7 +281,7 @@ void alta_habitacion(){
 		controlador -> alta_habitacion(DTHabitacion(numero_hab, precio_hab, capacidad_hab),nombre_hostal);
 		cout << "Habitacion ingresada correctamente" << endl;
 	}catch(invalid_argument const& Excepcion){
-		cout << endl << "ERROR:" << Excepcion.what() << endl;
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
 }
 
@@ -336,7 +337,7 @@ void asignar_empleado_hostal(){
 		
 		controlador -> Asignar_empleado_hostal(nombre_hostal,email_empleado,cargo);
 	}catch(invalid_argument const& Excepcion){
-		cout << endl << "ERROR:" << Excepcion.what() << endl;
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
 }
 
@@ -351,76 +352,75 @@ void realizar_reserva(){
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
-	cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
+	cout << "Ingrese el nombre del hostal al que deseas realizar la reserva: " << endl;
 	getline(cin,nombre_hostal);
 
-	return;
 }
 
 void consultar_top_3(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void registrar_estadia(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void finalizar_estadia(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void calificar_estadia(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void comentar_calificacion(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void consulta_usuario(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void consulta_hostal(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void consulta_reserva(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void consulta_estadia(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void baja_reserva(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void modificar_fecha(){
-	return;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void datos_prueba(){
 	/*Empleados*/
-	controlador -> alta_empleado(DTEmpleado("Emilia","emilia@mail.com","123",Recepcion));
-	controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Recepcion));
-	controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Administracion));
-	controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Recepcion));
-	/*Huespedes*/
+	controlador -> alta_empleado(DTEmpleado("Emilia","emilia@mail.com","123",Cargo::Recepcion));
+	controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Cargo::Recepcion));
+	controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Cargo::Administracion));
+	controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Cargo::Recepcion));
+	// /*Huespedes*/
 	controlador -> alta_huesped(DTHuesped("Sofia","sofia@mail.com","123",true));
 	controlador -> alta_huesped(DTHuesped("Frodo","frodo@mail.com","123",true));
 	controlador -> alta_huesped(DTHuesped("Sam","sam@mail.com","123",false));
 	controlador -> alta_huesped(DTHuesped("Merry","merry@mail.com","123",false));
 	controlador -> alta_huesped(DTHuesped("Pippin","pippin@mail.com","123",false));
 	controlador -> alta_huesped(DTHuesped("Seba","seba@mail.com","123",true));
-	/*Hostales*/
+	// /*Hostales*/
 	controlador -> alta_hostal(DTHostal("La posada del finger","Av de la playa 123,Maldonado","099111111"));
 	controlador -> alta_hostal(DTHostal("Mochileros","Rambla Costanera 333,Rocha","42579512"));
 	controlador -> alta_hostal(DTHostal("El Pony Pisador","Bree (preguntar por Gandalf)","000"));
 	controlador -> alta_hostal(DTHostal("Altos del Fing","Av del Toro 1424","099892992"));
 	controlador -> alta_hostal(DTHostal("Caverna Lujosa","Amaya 2515","233233235"));
-	/*Habitaciones*/
+	// /*Habitaciones*/
 	controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger");
@@ -478,6 +478,7 @@ void datos_prueba(){
 		// C2 			 E4 	  Desapareció y se fue sin pagar.   06/01/01 - 3pm
 
 	cout << GREEN "Datos de prueba cargados correctamente!" NC << endl;
+	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void exit(){
