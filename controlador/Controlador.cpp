@@ -159,31 +159,46 @@ OrderedDictionary* Controlador::obtener_hostales(){
 }
 
 OrderedDictionary* Controlador::obtener_no_empleados_hostal(string nombre_hostal){
-
     OrderedDictionary* DTEmpleados = new OrderedDictionary(); 
+    /*estaria bueno que el parce este y el find del hostal fuera una funcion auxiliar
+     por que lo vamos a usar todo el tiempo*/
+    char parce_char[nombre_hostal.length()+1];
+    strcpy(parce_char,nombre_hostal.c_str());
+
+    IKey* ik = new String(parce_char);
+
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik));
 
     for(IIterator* it = empleados -> getIterator(); it -> hasCurrent(); it -> next()){
         Empleado* empleado = dynamic_cast<Empleado*>(it -> getCurrent());
-        
+        string email = empleado -> get_email();
         /*falta comprobar que los empleados no trabajen en el hostal
         de nombre hostal*/
-       
-
-        string cadena = empleado -> get_email();
-        char parce_char[cadena.length()+1];
-         cout << "1" << endl;
-        
-        strcpy(parce_char,cadena.c_str());
-        cout << "2" << endl;
+    if(!ptr_hostal -> no_es(email)){
+        char parce_char[email.length()+1];
+        strcpy(parce_char,email.c_str());
         IKey* ik = new String(parce_char);
-        cout << "3" << endl;
         //2. convertirlo a dt
-        DTEmpleado* empleado_singular = new DTEmpleado(empleado -> get_DT()); //estamos teniendo un error en esta linea
-        cout << "4" << endl;
+        DTEmpleado* empleado_singular = new DTEmpleado(empleado ->get_nombre(),empleado -> get_email(),empleado -> get_contrasena()," *sin asignar* ",empleado ->get_cargo()); //estamos teniendo un error en esta linea
         //3. agregarlo a la lista
         DTEmpleados -> add(ik, empleado_singular);
-        cout << "5" << endl;
+    }else{}  
     }
-
     return DTEmpleados;
+}
+void Controlador::Asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo){
+    //1.me traigo el hostal
+    char parce_char_hostal[nombre_hostal.length()+1];
+    strcpy(parce_char_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_char_hostal);
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+    //2.me traigo el empleado
+    char parce_char_empleado[email_empleado.length()+1];
+    strcpy(parce_char_empleado,email_empleado.c_str());
+    IKey* ik_empleado = new String(parce_char_empleado);
+    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_empleado));
+    //3.le digo al empleado que se asigne el hostal y el cargo que le paso
+    ptr_empleado-> asignar_cargo(cargo,ptr_hostal);
+    //4.y le paso el empleado al hostal para que lo agrege a su lista de empleados
+    ptr_hostal -> asignar_empleado(ptr_empleado);
 }

@@ -41,6 +41,7 @@ class IControlador {
         virtual void alta_empleado(DTEmpleado nuevo_empleado) = 0;
         virtual void alta_hostal(DTHostal nuevo_hostal) = 0;
         virtual void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_habitacion) = 0;
+        virtual void Asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo) = 0;
     
         /*funciones auxiliares*/
         virtual bool verificar_email(string entrada) = 0;

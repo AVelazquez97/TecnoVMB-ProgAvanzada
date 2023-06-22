@@ -21,18 +21,22 @@ void Usuario::set_email(string email){
 }
 
 void Usuario::set_contrasena(string contrasena){
+
     this -> contrasena = contrasena;
 }
 
 string Usuario::get_email(){
+    
     return this -> email;
 }
 
 string Usuario::get_nombre(){
+    
     return this -> nombre;
 }
 
 string Usuario::get_contrasena(){
+    
     return this -> contrasena;
 }
 

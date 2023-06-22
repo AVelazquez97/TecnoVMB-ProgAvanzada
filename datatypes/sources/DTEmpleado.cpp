@@ -7,6 +7,7 @@ DTEmpleado::DTEmpleado(){
 }
 
 DTEmpleado::DTEmpleado(string nombre, string email, string contrasena, Cargo cargo){
+     cout << "ACAC" << endl;
     this -> nombre = nombre;
     this -> email = email;
     this -> contrasena = contrasena;

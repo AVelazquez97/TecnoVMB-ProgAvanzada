@@ -1,8 +1,14 @@
 #ifndef HOSTAL_CPP_
 #define HOSTAL_CPP_
 #include "../headers/Hostal.h"
+//#include "../headers/Empleado.h"
 #include "../../classes/headers/Habitacion.h"
-
+#include <iostream>
+#include <stdlib.h>
+#include "../../ICollection/String.h"
+#include "string.h" 
+#include "../headers/Empleado.h" 
+using namespace std;
 Hostal::Hostal(){
 
 }
@@ -69,6 +75,21 @@ void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){
     this -> habitaciones -> add(ik,nueva_habitacion);
 
 }
+ bool Hostal::no_es(string email){
+    char parce_char[email.length()+1];
+    strcpy(parce_char,email.c_str());
 
+    IKey* ik = new String(parce_char);
+    return this -> empleados -> member(ik);
+ }
+void Hostal::asignar_empleado(Empleado* puntero_empleado){
+    
+    string email = puntero_empleado -> get_email();
+    char parce_email[email.length()+1];
+    strcpy(parce_email,email.c_str());
+
+    IKey* ik = new String(parce_email);
+    this -> empleados -> add(ik,puntero_empleado);
+}
 
 #endif // HOSTAL_CPP_

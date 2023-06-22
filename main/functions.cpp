@@ -134,7 +134,7 @@ void alta_usuario(){
 	string limpiar_buffer; 
 	getline(cin,limpiar_buffer);
 
-	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
 	cout << "Ingrese el nombre: " << endl;
 	getline(cin,nombre);
@@ -211,7 +211,7 @@ void alta_hostal(){
 	string limpiar_buffer; 
 	getline(cin,limpiar_buffer);
 
-	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
 	cout << "Ingrese el nombre del hostal: " << endl;
 	getline(cin,nombre);
@@ -253,7 +253,7 @@ void alta_habitacion(){
 
 	obtener_hostales(); // Luego hay que eliminar este llamado
 
-	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
 	cout << "Ingrese el nombre del hostal al que pertenece la habitacion: " << endl;
 	getline(cin,nombre_hostal);
@@ -286,12 +286,15 @@ void alta_habitacion(){
 
 void asignar_empleado_hostal(){
 	string nombre_hostal;
-	string limpiar_buffer; 
+	string email_empleado;
+	Cargo cargo;
+	string limpiar_buffer;
+	string entrada;
 	getline(cin,limpiar_buffer);
 	
 	obtener_hostales();
 
-	cout << "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." << endl;
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
 	cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
 	getline(cin,nombre_hostal);
@@ -300,12 +303,57 @@ void asignar_empleado_hostal(){
 	try{
 		controlador -> no_existe_hostal(nombre_hostal);
 		obtener_no_empleados_hostal(nombre_hostal);
+
+		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+		cout << "Ingrese el email del empleado al que le sera asignado el hostal: "  << endl;
+		getline(cin,email_empleado);
+		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+		cout << "Ingrese el cargo que se le asignara al empleado: "  << endl;
+		
+		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
+			cout << RED "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " NC<< endl;
+			getline(cin,entrada);
+			if(entrada == "salir"){return;} /* en caso de que desee salir*/
+		}
+		switch(stoi(entrada)){
+			case 0:{
+				cargo = Cargo::Administracion;
+				break;
+			}
+			case 1:{
+				cargo = Cargo::Limpieza;
+				break;
+			}
+			case 2:{
+				cargo = Cargo::Recepcion;
+				break;
+			}
+			case 3:{
+				cargo = Cargo::Infraestructura;
+				break;
+			}
+		}
+		
+		controlador -> Asignar_empleado_hostal(nombre_hostal,email_empleado,cargo);
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << "ERROR:" << Excepcion.what() << endl;
 	}
 }
 
 void realizar_reserva(){
+	string nombre_hostal;
+	string email_huesped;
+	string limpiar_buffer;
+	int numero_habitacion;
+	getline(cin,limpiar_buffer);
+	
+	obtener_hostales();
+
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
+	getline(cin,nombre_hostal);
+
 	return;
 }
 
