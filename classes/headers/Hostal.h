@@ -17,6 +17,7 @@ class Hostal: public ICollectible{
         IDictionary* habitaciones;/*aca va a ir la lista de habitaciones que pertenecen al hostal*/
         IDictionary* reviews; /*lista de reviews en ese hostal*/
         IDictionary* empleados; /*lista de empleados en ese hostal*/
+        float promedio;
     public:
         Hostal();
         Hostal(DTHostal nuevo_hostal);
@@ -29,6 +30,7 @@ class Hostal: public ICollectible{
         string get_nombre();
         string get_direccion();
         string get_telefono();
+        float get_promedio();
         DTHostal get_DT();
         bool no_es(string email);
         void alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal);

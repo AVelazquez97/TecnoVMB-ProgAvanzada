@@ -9,12 +9,15 @@ class DTHostal: public ICollectible{
         string nombre;
         string direccion;
         string telefono;
+        float promedio;
     public:
         DTHostal();
         DTHostal(string nombre, string direccion, string telefono);
+        DTHostal(string nombre, string direccion, string telefono, float promedio);
         string get_nombre();
         string get_direccion();
         string get_telefono();
+        float get_promedio();
 };
 
 #endif // DTHOSTAL_H_

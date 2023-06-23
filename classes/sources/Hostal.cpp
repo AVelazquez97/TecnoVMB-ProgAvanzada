@@ -20,6 +20,7 @@ Hostal::Hostal(DTHostal nuevo_hostal){
     this -> habitaciones = new OrderedDictionary();
     this -> reviews = new OrderedDictionary();
     this -> empleados = new OrderedDictionary();
+    this -> promedio = 0;
 }
 
 Hostal::Hostal(string nombre, string direccion, string telefono){
@@ -27,6 +28,9 @@ Hostal::Hostal(string nombre, string direccion, string telefono){
     this -> direccion = direccion;
     this -> telefono = telefono;
     this -> habitaciones = new OrderedDictionary();
+    this -> reviews = new OrderedDictionary();
+    this -> empleados = new OrderedDictionary();
+    this -> promedio = 0;
 }
 
 Hostal::Hostal(const Hostal& original){
@@ -63,8 +67,12 @@ string Hostal::get_telefono(){
     return this -> telefono;
 }
 
+float Hostal::get_promedio(){
+    return this -> promedio;
+}
+
 DTHostal Hostal::get_DT(){
-    return DTHostal(this -> get_nombre(),this -> get_direccion(), this -> get_telefono());
+    return DTHostal(this -> get_nombre(),this -> get_direccion(), this -> get_telefono(), this -> get_promedio());
 }
 
 void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){

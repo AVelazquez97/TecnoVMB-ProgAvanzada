@@ -48,7 +48,7 @@ class Controlador: public IControlador{
         void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal);
         void realizar_reserva_individual(string nom_hostal,int Nhabitacion,string email);
         void realizar_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]);
-        void Asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo);
+        void asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo);
 
         /*funciones auxiliares*/
         bool verificar_email(string entrada);

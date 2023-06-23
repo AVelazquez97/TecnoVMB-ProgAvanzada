@@ -172,8 +172,7 @@ OrderedDictionary* Controlador::obtener_no_empleados_hostal(string nombre_hostal
     for(IIterator* it = empleados -> getIterator(); it -> hasCurrent(); it -> next()){
         Empleado* empleado = dynamic_cast<Empleado*>(it -> getCurrent());
         string email = empleado -> get_email();
-        /*falta comprobar que los empleados no trabajen en el hostal
-        de nombre hostal*/
+        
         if(!ptr_hostal -> no_es(email)){
             char parce_char[email.length()+1];
             strcpy(parce_char,email.c_str());
@@ -195,7 +194,7 @@ OrderedDictionary* Controlador::obtener_no_empleados_hostal(string nombre_hostal
     return DTEmpleados;
 }
 
-void Controlador::Asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo){
+void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo){
     //1.me traigo el hostal
     char parce_char_hostal[nombre_hostal.length()+1];
     strcpy(parce_char_hostal,nombre_hostal.c_str());

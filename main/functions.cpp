@@ -93,13 +93,28 @@ void obtener_hostales(){
 	OrderedDictionary* DTHostales = new OrderedDictionary();
 	DTHostales = controlador -> obtener_hostales();
 
-	cout << endl << "| Lista de hostales |" << endl << endl;
+	cout << endl << GREEN << "| Lista de hostales |" << NC << endl << endl;
 
 	for(IIterator* it = DTHostales -> getIterator(); it -> hasCurrent(); it -> next()){
         DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
-        cout << "| " << hostal->get_nombre() << " | " <<
-		hostal -> get_direccion() << " | " <<
-		hostal -> get_telefono() << " |" << endl << endl;
+        cout << "| Nombre: " << hostal->get_nombre() << " |" << endl <<
+		"| Direccion: " << hostal -> get_direccion() << " |" << endl <<
+		"| Telefono: " << hostal -> get_telefono() << " |" << endl << endl;
+    }
+}
+
+void obtener_hostales_con_promedio(){
+	OrderedDictionary* DTHostales = new OrderedDictionary();
+	DTHostales = controlador -> obtener_hostales();
+
+	cout << endl << GREEN << "| Lista de hostales |" << NC << endl << endl;
+
+	for(IIterator* it = DTHostales -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
+        cout << "| Nombre: " << hostal->get_nombre() << " |" << endl <<
+		"| Direccion: " << hostal -> get_direccion() << " |" << endl <<
+		"| Telefono: " << hostal -> get_telefono() << " |" << endl <<
+		"| Promedio: " << hostal -> get_promedio() << " |" << endl << endl;
     }
 }
 
@@ -335,7 +350,7 @@ void asignar_empleado_hostal(){
 			}
 		}
 		
-		controlador -> Asignar_empleado_hostal(nombre_hostal,email_empleado,cargo);
+		controlador -> asignar_empleado_hostal(nombre_hostal,email_empleado,cargo);
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -348,7 +363,7 @@ void realizar_reserva(){
 	int numero_habitacion;
 	getline(cin,limpiar_buffer);
 	
-	obtener_hostales();
+	obtener_hostales_con_promedio();
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -407,20 +422,20 @@ void datos_prueba(){
 	controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Cargo::Recepcion));
 	controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Cargo::Administracion));
 	controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Cargo::Recepcion));
-	// /*Huespedes*/
+	/*Huespedes*/
 	controlador -> alta_huesped(DTHuesped("Sofia","sofia@mail.com","123",true));
 	controlador -> alta_huesped(DTHuesped("Frodo","frodo@mail.com","123",true));
 	controlador -> alta_huesped(DTHuesped("Sam","sam@mail.com","123",false));
 	controlador -> alta_huesped(DTHuesped("Merry","merry@mail.com","123",false));
 	controlador -> alta_huesped(DTHuesped("Pippin","pippin@mail.com","123",false));
 	controlador -> alta_huesped(DTHuesped("Seba","seba@mail.com","123",true));
-	// /*Hostales*/
+	/*Hostales*/
 	controlador -> alta_hostal(DTHostal("La posada del finger","Av de la playa 123,Maldonado","099111111"));
 	controlador -> alta_hostal(DTHostal("Mochileros","Rambla Costanera 333,Rocha","42579512"));
 	controlador -> alta_hostal(DTHostal("El Pony Pisador","Bree (preguntar por Gandalf)","000"));
 	controlador -> alta_hostal(DTHostal("Altos del Fing","Av del Toro 1424","099892992"));
 	controlador -> alta_hostal(DTHostal("Caverna Lujosa","Amaya 2515","233233235"));
-	// /*Habitaciones*/
+	/*Habitaciones*/
 	controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger");
@@ -428,12 +443,12 @@ void datos_prueba(){
 	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
 	controlador -> alta_habitacion(DTHabitacion(1,9,5),"El Pony Pisador");
 
-	/* Asignación de empleados a hostales */
-		// Empleado Hostel  Cargo
-		// E1       HO1 	Recepción
-		// E2       HO2 	Recepción
-		// E3   	HO2 	Administración
-		// E4 		HO3 	Recepción
+	/*Asignación de empleados a hostales*/
+	controlador -> asignar_empleado_hostal("La posada del finger","emilia@mail.com",Recepcion);
+	controlador -> asignar_empleado_hostal("Mochileros","leo@mail.com",Recepcion);
+	controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
+	controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
+	
 
  	/* Reservas */
 		// Ref Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
