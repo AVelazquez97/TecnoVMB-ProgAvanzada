@@ -130,6 +130,12 @@ void obtener_no_empleados_hostal(string nombre_hostal){
 		empleado -> get_email() << "|" << endl << endl;
     }
 }
+/* la idea es implementar una funcion en controlador que liste
+las habitaciones de un hostal que estan disponibles dentro de
+un rango de fecha*/
+void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout){
+
+}
 
 void alta_usuario(){
 	bool existe_email = true;
@@ -359,16 +365,34 @@ void asignar_empleado_hostal(){
 void realizar_reserva(){
 	string nombre_hostal;
 	string email_huesped;
-	string limpiar_buffer;
+	string str_checkin;
+	string str_checkout;
+	string str_tipo;
+	bool tipo;
 	int numero_habitacion;
+	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
+	
 	
 	obtener_hostales_con_promedio();
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
-	cout << "Ingrese el nombre del hostal al que deseas realizar la reserva: " << endl;
+	cout << "Ingrese el nombre del hostal en el cual desea realizar la reserva: " << endl;
 	getline(cin,nombre_hostal);
+
+	cout << "Ingrese la fecha de checkin: " << endl;
+	getline(cin,str_checkin);
+
+	cout << "Ingrese la fecha del checkout: " << endl;
+	getline(cin,str_checkout);
+
+	cout << "Ingrese el tipo de reserva 0 = Individual 1 = Grupal: " << endl;
+	getline(cin,str_tipo);
+	if(str_tipo == "0"){tipo = false;}
+	else if(str_tipo == "1"){tipo = true;}
+
+	obtener_habitaciones_entre(nombre_hostal,str_checkin,str_checkout);
 
 }
 
