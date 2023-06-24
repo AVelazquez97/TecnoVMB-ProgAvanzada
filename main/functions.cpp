@@ -1,9 +1,9 @@
-using namespace std;
 #include <iostream>
 #include <stdio.h>
 #include <cmath>
 #include <cstring>
 #include <limits>
+using namespace std;
 
 /*datatypes*/
 #include "../datatypes/headers/DTHuesped.h"
@@ -84,6 +84,29 @@ int eleccion_menu_principal() {
 void press_enter(){
 	cout << endl << CYAN "Presiona ENTER para continuar..." NC;
 	getchar();
+}
+
+Cargo switch_cargo(string entrada){
+	Cargo cargo;
+	switch(stoi(entrada)){
+			case 0:{
+				cargo = Cargo::Administracion;
+				break;
+			}
+			case 1:{
+				cargo = Cargo::Limpieza;
+				break;
+			}
+			case 2:{
+				cargo = Cargo::Recepcion;
+				break;
+			}
+			case 3:{
+				cargo = Cargo::Infraestructura;
+				break;
+			}
+		}
+	return cargo;
 }
 
 /*esta funcion va hasta el controlador
@@ -200,24 +223,7 @@ void alta_usuario(){
 		getline(cin,entrada);
 		if(entrada == "salir"){return;} /* en caso de que desee salir*/
 		}
-			switch(stoi(entrada)){
-				case 0:{
-					cargo = Cargo::Administracion;
-					break;
-				}
-				case 1:{
-					cargo = Cargo::Limpieza;
-					break;
-				}
-				case 2:{
-					cargo = Cargo::Recepcion;
-					break;
-				}
-				case 3:{
-					cargo = Cargo::Infraestructura;
-					break;
-				}
-			}
+		cargo = switch_cargo(entrada);
 		/*hacer la llamada al sistema con el DTEmpleado*/
 		DTEmpleado nuevo_empleado(nombre, email, contrasena, cargo);
 		controlador -> alta_empleado(nuevo_empleado);
@@ -337,24 +343,7 @@ void asignar_empleado_hostal(){
 			getline(cin,entrada);
 			if(entrada == "salir"){return;} /* en caso de que desee salir*/
 		}
-		switch(stoi(entrada)){
-			case 0:{
-				cargo = Cargo::Administracion;
-				break;
-			}
-			case 1:{
-				cargo = Cargo::Limpieza;
-				break;
-			}
-			case 2:{
-				cargo = Cargo::Recepcion;
-				break;
-			}
-			case 3:{
-				cargo = Cargo::Infraestructura;
-				break;
-			}
-		}
+		cargo = switch_cargo(entrada);
 		
 		controlador -> asignar_empleado_hostal(nombre_hostal,email_empleado,cargo);
 	}catch(invalid_argument const& Excepcion){
