@@ -212,3 +212,80 @@ void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empl
     //4.y le paso el empleado al hostal para que lo agrege a su lista de empleados
     ptr_hostal -> asignar_empleado(ptr_empleado);
 }
+
+OrderedDictionary* Controlador::obtener_usuarios(){
+    OrderedDictionary* nombre_usuarios = new OrderedDictionary();
+
+    for(IIterator* it = huespedes -> getIterator(); it -> hasCurrent(); it -> next()){
+        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
+        
+      
+        string cadena = huesped -> get_email();
+        char parce_char[cadena.length()+1];
+        strcpy(parce_char,cadena.c_str());
+
+        IKey* ik = new String(parce_char);
+        String* huesped_nombre = new String(parce_char);
+
+        nombre_usuarios -> add(ik, huesped_nombre);
+        //delete huesped_nombre;
+    }
+
+    for(IIterator* it = empleados -> getIterator(); it -> hasCurrent(); it -> next()){
+        Empleado* empleado = dynamic_cast<Empleado*>(it -> getCurrent());
+        
+      
+        string cadena = empleado -> get_email();
+        char parce_char[cadena.length()+1];
+        strcpy(parce_char,cadena.c_str());
+
+        IKey* ik = new String(parce_char);
+        String* empleado_nombre = new String(parce_char);
+
+        nombre_usuarios -> add(ik, empleado_nombre);
+        //delete huesped_nombre;
+    }
+
+    return nombre_usuarios;
+}
+
+ int Controlador::verificar_email_y_tipo(string email){
+
+    char parce_char[email.length()+1];
+    strcpy(parce_char,email.c_str());
+
+    IKey* ik = new String(parce_char);
+    
+    if(this -> huespedes -> member(ik)){
+        return 0;
+    }else if(this -> empleados -> member(ik)){
+        return 1;
+    }else{
+        cout << email << "|";
+        return -1;
+    }
+ }
+
+DTHuesped Controlador::obtener_huesped_completo(string email){
+    char parce_char_email[email.length()+1];
+    strcpy(parce_char_email,email.c_str());
+
+    IKey* ik_huesped = new String(parce_char_email);
+
+    Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_huesped));
+ 
+    DTHuesped huesped_completo(huesped -> get_DT());
+    return huesped_completo;
+}
+
+DTEmpleado Controlador::obtener_empleado_completo(string email){
+    char parce_char_email[email.length()+1];
+    strcpy(parce_char_email,email.c_str());
+
+    IKey* ik_empleado = new String(parce_char_email);
+
+    Empleado* empleado = dynamic_cast<Empleado*>(empleados -> find(ik_empleado));
+ 
+    DTEmpleado empleado_completo(empleado -> get_DT());
+    return empleado_completo;
+}
