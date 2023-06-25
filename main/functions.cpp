@@ -469,7 +469,7 @@ void realizar_reserva(){
 		
 		if(str_tipo == "0"){
 			tipo = false;
-
+			/* en obtener_habitaciones se tiene que implementar el filtro de habitaciones segun fecha */
 			OrderedDictionary* habitaciones = controlador -> obtener_habitaciones(nombre_hostal, str_tipo, &checkin, &checkout);
 			cout << endl << GREEN << "Mostrando informacion sobre las habitaciones individuales del hostal: " << nombre_hostal << NC << endl;
 			
@@ -487,7 +487,6 @@ void realizar_reserva(){
 			}
 			numero_habitacion = stoi(str_numero_habitacion);
 
-			//listar los huespedes
 			do{
 				obtener_huespedes();
 				cout << "Ingrese huesped que realiza la reserva:" << endl;

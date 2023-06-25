@@ -335,7 +335,13 @@ void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string e
 }
 
 OrderedDictionary* Controlador::obtener_habitaciones(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
+    /* falta filtrar por fecha y por tipo a la hora de añadir las habitaciones a la lista
     
+    *para comparar fechas:
+    *cout << checkin->tm_year; accede al año de la fecha
+    *cout << checkin->tm_mon; accede al mes de la fecha (puede que este del 0 al 11)
+    *cout << checkin->tm_mday; accede al dia de la fecha
+    */
     OrderedDictionary* lista = new OrderedDictionary();
 
     char parce_nombre_hostal[nombre_hostal.length()+1];
