@@ -23,12 +23,11 @@ class Controlador: public IControlador{
 	private:
         Controlador();
         static Controlador* instance;
-        time_t fecha_sistema = time(NULL);
+        chrono::system_clock::time_point fecha_sistema;
 
         //Acá pueden ir pseudoatributos a utilizar
 
         //También colecciones. Ejemplo:
-
         IDictionary* hostales;
         IDictionary* huespedes;
         IDictionary* empleados;
@@ -38,8 +37,8 @@ class Controlador: public IControlador{
         static Controlador* getInstance(); 
 
         //Modificar fecha del sistema
-        time_t* getFechaSistema();
-        void setFechaSistema(tm*);
+        tm* get_fecha_sistema();
+        void set_fecha_sistema(tm* nueva_fecha);
 
         //Cabeceras de las opers
         void alta_huesped(DTHuesped nuevo_huesped);

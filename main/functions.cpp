@@ -1,22 +1,8 @@
-#include <iostream>
-#include <stdio.h>
-#include <cmath>
-#include <cstring>
-#include <limits>
 using namespace std;
-
-/*datatypes*/
-#include "../datatypes/headers/DTHuesped.h"
-#include "../datatypes/headers/DTEmpleado.h"
-#include "../enums/EnumCargo.h"
-
 #include "functions.h"
 
-#include "../iControlador/IControlador.h"
-#include "../fabrica/Fabrica.h"
-
 /*
-    Tanto si la fabrica se utiliza acá como en el fichero de funciones se debería utilizar de la siguiente manera:
+    La fábrica y el controlador se deberían instanciar de la siguiente manera:
     Fabrica fab;
     IControlador* controlador = fab.getInterface();
     controlador->operacion
@@ -25,6 +11,10 @@ using namespace std;
 Fabrica fab;
 IControlador* controlador = fab.getInterface();
 
+
+/* Funciones auxiliares*/
+
+/// @brief muestra las opciones disponibles del menu principal
 void mostrar_menu_principal() {
 	system("clear");
 	cout << GREEN "╔════════════════╗" << endl;
@@ -50,6 +40,8 @@ void mostrar_menu_principal() {
 	cout << "  18. Salir" NC << endl;
 }
 
+/// @brief permite seleccionar una opción de las presentadas en el menú y controla que no se ingrese una equivocada
+/// @return entero mayor o igual a 1 y menor o igual a 18
 int eleccion_menu_principal() {
 	/* 
 	Para evitar que el menu entre en bucle cuando el usuario ingrese
@@ -67,7 +59,7 @@ int eleccion_menu_principal() {
 	string cadena_agregada = "";
 
 	mostrar_menu_principal();
-	do{
+	do {
 		cout << GREEN "Ingresa una opción(1..18): " NC;
 		cin >> cadena_agregada;
 
@@ -81,38 +73,65 @@ int eleccion_menu_principal() {
 	return stoi(cadena_inicio + cadena_agregada);
 }
 
-void press_enter(){
+/// @brief permite pausar el sistema hasta que se presione enter
+void press_enter() {
 	cout << endl << CYAN "Presiona ENTER para continuar..." NC;
 	getchar();
 }
 
-Cargo switch_cargo(string entrada){
+/// @brief recibe un cargo en string con valor ["0","1","2","3"] y lo castea a int
+/// @return el cargo que coincida con el string recibido 
+Cargo switch_cargo(string str_cargo) {
 	Cargo cargo;
-	switch(stoi(entrada)){
-			case 0:{
-				cargo = Cargo::Administracion;
-				break;
-			}
-			case 1:{
-				cargo = Cargo::Limpieza;
-				break;
-			}
-			case 2:{
-				cargo = Cargo::Recepcion;
-				break;
-			}
-			case 3:{
-				cargo = Cargo::Infraestructura;
-				break;
-			}
+	switch(stoi(str_cargo)){
+		case 0:{
+			cargo = Cargo::Administracion;
+			break;
 		}
+		case 1:{
+			cargo = Cargo::Limpieza;
+			break;
+		}
+		case 2:{
+			cargo = Cargo::Recepcion;
+			break;
+		}
+		case 3:{
+			cargo = Cargo::Infraestructura;
+			break;
+		}
+	}
 	return cargo;
 }
 
-/*esta funcion va hasta el controlador
-trae los DTHostales y los imprime, sirve tenerla como
-funcion ya que se pide en distintas operaciones*/
-void obtener_hostales(){
+/// @brief Imprime una fecha en un formato específico
+void imprimir_fecha(tm* fecha) { 
+    // Imprimir la fecha y hora en un formato legible
+	cout << CYAN "" << put_time(fecha, "%d/%m/%y - %H") << " hs" NC << endl << endl;
+}
+
+/// @brief verifica si la fecha ingresada cumple con el formato establecido
+/// @return true si el formato es correo, de lo contrario false 
+bool verificar_fecha(string fecha_hora_str, tm* nueva_fecha) {
+	/* Se crea un objeto istringstream utilizando la cadena fecha_hora_str para poder extraer los valores
+	 individuales de la fecha y hora. Obviando las barras y guión */
+	istringstream iss(fecha_hora_str);
+
+	/* Se intenta extraer los valores de fecha y hora de iss y almacenarlos en la estructura nueva_fecha, 
+	 utilizando el formato especificado. Si la extracción tiene éxito, los valores se asignan correctamente a 
+	 nueva_fecha. Si falla, se establece el estado de falla en iss.*/
+	iss >> get_time(nueva_fecha, "%d/%m/%y - %H");
+	if (iss.fail()) {
+		cout << endl << REDB "Formato de fecha y hora incorrecto. Por favor, intente nuevamente..." NC << endl;
+		iss.clear();
+		return false;
+	}
+	return true;
+} 
+
+/// @brief va hasta el controlador y trae los DTHostales. Luego los imprime.
+/// Sirve tenerla como auxiliar ya que se pide en distintos casos de uso
+void obtener_hostales() {
 	OrderedDictionary* DTHostales = new OrderedDictionary();
 	DTHostales = controlador -> obtener_hostales();
 
@@ -126,7 +145,8 @@ void obtener_hostales(){
     }
 }
 
-void obtener_hostales_con_promedio(){
+/// @brief lo mismo que obtener_hostales pero adicionalmente muestra el promedio de calificación de cada hostal
+void obtener_hostales_con_promedio() {
 	OrderedDictionary* DTHostales = new OrderedDictionary();
 	DTHostales = controlador -> obtener_hostales();
 
@@ -141,11 +161,12 @@ void obtener_hostales_con_promedio(){
     }
 }
 
-void obtener_no_empleados_hostal(string nombre_hostal){
+/// @brief imprime todos los empleados que no trabajan para un hostal en específico 
+void obtener_no_empleados_hostal(string nombre_hostal) {
 	OrderedDictionary* DTEmpleados = new OrderedDictionary();
 	DTEmpleados = controlador -> obtener_no_empleados_hostal(nombre_hostal);
 
-	cout << endl << "| Lista de no empleados del hostal: " << nombre_hostal << " |" << endl << endl;
+	cout << endl << "| Lista de empleados que no son del hostal: " << nombre_hostal << " |" << endl << endl;
 
 	for(IIterator* it = DTEmpleados -> getIterator(); it -> hasCurrent(); it -> next()){
         DTEmpleado* empleado = dynamic_cast<DTEmpleado*>(it -> getCurrent());
@@ -153,13 +174,16 @@ void obtener_no_empleados_hostal(string nombre_hostal){
 		empleado -> get_email() << "|" << endl << endl;
     }
 }
-/* la idea es implementar una funcion en controlador que liste
-las habitaciones de un hostal que estan disponibles dentro de
-un rango de fecha*/
-void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout){
 
+/// @brief permite listar las habitaciones de un hostal determinado, pero que esten disponibles
+///  en un determinado rango de fechas
+void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout) {
+	/* La idea es implementar una funcion en controlador que liste las habitaciones de un hostal que estan 
+	 disponibles dentro de un rango de fecha*/
 }
+/* Fin funciones auxiliares*/
 
+/* Funciones del menu principal*/
 void alta_usuario(){
 	bool existe_email = true;
 	bool cancelar = false;
@@ -207,11 +231,11 @@ void alta_usuario(){
 			cout << "El Huesped es Tecno?: 0 = No | 1 = Si" << endl;
 			getline(cin,entrada);
 			if(entrada == "salir"){return;} /* en caso de que desee salir*/
-				if(entrada == "0"){
-					es_tecno = false;
-				}else{
-					es_tecno = true;
-				}
+			if(entrada == "0"){
+				es_tecno = false;
+			}else{
+				es_tecno = true;
+			}
 		}
 		/*hacer la llamada al sistema con el DTHuesped*/
 		DTHuesped nuevo_huesped(nombre, email, contrasena, es_tecno);
@@ -219,9 +243,9 @@ void alta_usuario(){
 		cout << "Huesped ingresado correctamente!" << endl;
 	}else{
 		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
-		cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
-		getline(cin,entrada);
-		if(entrada == "salir"){return;} /* en caso de que desee salir*/
+			cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
+			getline(cin,entrada);
+			if(entrada == "salir"){return;} /* en caso de que desee salir*/
 		}
 		cargo = switch_cargo(entrada);
 		/*hacer la llamada al sistema con el DTEmpleado*/
@@ -425,8 +449,28 @@ void baja_reserva(){
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
-void modificar_fecha(){
-	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+void modificar_fecha() {
+	string fecha_hora_str;
+	/* Se crea una estructura tm y se inicializan todos sus miembros a cero. */
+	tm nueva_fecha = {};
+	bool fecha_valida = false;
+	string limpiar_buffer; 
+	getline(cin,limpiar_buffer);
+
+	cout << "Fecha actual del sistema: ";
+	imprimir_fecha(controlador->get_fecha_sistema());
+    
+	while(!fecha_valida) {
+		cout << "Ingrese la fecha y hora con el siguiente formato de ejemplo " << RED "'12/12/24 - 18'" NC ": ";
+		/* Se ingresa una nueva fecha por teclado */
+		getline(cin, fecha_hora_str); 
+
+		fecha_valida = verificar_fecha(fecha_hora_str, &nueva_fecha);	
+	}
+    controlador->set_fecha_sistema(&nueva_fecha);
+
+	cout << endl << "Nueva fecha del sistema: ";
+	imprimir_fecha(controlador->get_fecha_sistema());
 }
 
 void datos_prueba(){
@@ -512,3 +556,4 @@ void datos_prueba(){
 void exit(){
 	cout << endl << endl<< CYAN "Has terminado la ejecución del programa." NC << endl << endl;
 }
+/*Fin funciones del menu principal*/

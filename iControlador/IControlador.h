@@ -1,7 +1,9 @@
 #ifndef ICONTROLADOR_H
 #define ICONTROLADOR_H
-#include <ctime>
+
 #include <iostream>
+// #include <ctime>
+#include <chrono>
 
 // Se deben importar todos los datatypes a utilizar en las definiciones de las operaciones
 #include "../datatypes/headers/DTHabitacion.h"
@@ -23,20 +25,14 @@ class IControlador {
     public:
         virtual ~IControlador();
 
-		// En esta sección se definen todas las operaciones que están definidas en el controlador. 
-		// Deben ser virtuales e igualadas a 0
-
-        // Usuarios
+		/* En esta sección se definen todas las operaciones que están definidas en el controlador. 
+		 * Estas deben ser virtuales e igualadas a 0
+        */
         
-        // Hostales
-        
-        // Reservas
-        
-        // Estadías
-
         //Cambiar fecha del sistema
-        virtual void setFechaSistema(tm*) = 0;
-        virtual time_t* getFechaSistema() = 0; 
+        virtual tm* get_fecha_sistema() = 0; 
+        virtual void set_fecha_sistema(tm* nueva_fecha) = 0;
+
         virtual void alta_huesped(DTHuesped nuevo_huesped) = 0;
         virtual void alta_empleado(DTEmpleado nuevo_empleado) = 0;
         virtual void alta_hostal(DTHostal nuevo_hostal) = 0;

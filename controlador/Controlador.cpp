@@ -14,7 +14,7 @@ Controlador::Controlador() {
     this -> hostales = new OrderedDictionary();
     this -> huespedes = new OrderedDictionary();
     this -> empleados = new OrderedDictionary();
-    this -> fecha_sistema = time(0); //!inicializar la fecha del sistema
+    this->fecha_sistema = chrono::system_clock::now(); //Se setea la fecha actual del sistema 
 }
 
 /// @brief implementación del singleton.
@@ -27,14 +27,17 @@ Controlador *Controlador::getInstance() {
     return instance;
 }
 
-//para imprimir la fecha del sistema hay que pasarla a string
-time_t *Controlador::getFechaSistema() {
-    return &this->fecha_sistema;
+tm* Controlador::get_fecha_sistema() {
+    // Se convierte la fecha a un formato de tiempo local
+    time_t fecha_time = chrono::system_clock::to_time_t(this->fecha_sistema);
+    tm* fecha_tm = localtime(&fecha_time);
+    return fecha_tm;
 }
 
-void Controlador::setFechaSistema(tm* fecha) {
-    this->fecha_sistema = time(NULL);
-    this->fecha_sistema = mktime(fecha);
+void Controlador::set_fecha_sistema(tm* nueva_fecha) {
+    tm fecha_tm = *nueva_fecha;
+    time_t time = mktime(&fecha_tm);
+    this->fecha_sistema = chrono::system_clock::from_time_t(time);
 }
 
 void Controlador::alta_huesped(DTHuesped nuevo_huesped){
