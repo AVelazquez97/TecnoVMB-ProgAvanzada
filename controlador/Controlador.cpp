@@ -1,13 +1,10 @@
 #include "Controlador.h"
-#include "../ICollection/String.h"
-#include <iostream>
-#include <stdlib.h>
 using namespace std;
-
 
 Controlador *Controlador::instance = nullptr;
 
 Controlador::~Controlador() {
+
 }
 
 Controlador::Controlador() {
@@ -27,6 +24,7 @@ Controlador *Controlador::getInstance() {
     return instance;
 }
 
+/* Fecha del sistema*/
 tm* Controlador::get_fecha_sistema() {
     // Se convierte la fecha a un formato de tiempo local
     time_t fecha_time = chrono::system_clock::to_time_t(this->fecha_sistema);
@@ -39,7 +37,9 @@ void Controlador::set_fecha_sistema(tm* nueva_fecha) {
     time_t time = mktime(&fecha_tm);
     this->fecha_sistema = chrono::system_clock::from_time_t(time);
 }
+/* Fin fecha del sistema*/
 
+/* Métodos de los casos de uso*/
 void Controlador::alta_huesped(DTHuesped nuevo_huesped){
     string email = nuevo_huesped.get_email();
     char parce_char[email.length()+1];
@@ -81,7 +81,27 @@ void Controlador::alta_habitacion(DTHabitacion nueva_habitacion, string nombre_h
     ptr_hostal -> alta_habitacion(nueva_habitacion,ptr_hostal);
 }
 
-/* auxiliares*/
+void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo){
+    //1.me traigo el hostal
+    char parce_char_hostal[nombre_hostal.length()+1];
+    strcpy(parce_char_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_char_hostal);
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    //2.me traigo el empleado
+    char parce_char_empleado[email_empleado.length()+1];
+    strcpy(parce_char_empleado,email_empleado.c_str());
+    IKey* ik_empleado = new String(parce_char_empleado);
+    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_empleado));
+    
+    //3.le digo al empleado que se asigne el hostal y el cargo que le paso
+    ptr_empleado-> asignar_cargo(cargo,ptr_hostal);
+    //4.y le paso el empleado al hostal para que lo agrege a su lista de empleados
+    ptr_hostal -> asignar_empleado(ptr_empleado);
+}
+/* Fin métodos de los casos de uso*/
+
+/* Métodos auxiliares*/
 
 bool Controlador::verificar_email(string entrada){
 
@@ -197,25 +217,6 @@ OrderedDictionary* Controlador::obtener_no_empleados_hostal(string nombre_hostal
     return DTEmpleados;
 }
 
-void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo){
-    //1.me traigo el hostal
-    char parce_char_hostal[nombre_hostal.length()+1];
-    strcpy(parce_char_hostal,nombre_hostal.c_str());
-    IKey* ik_hostal = new String(parce_char_hostal);
-    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
-
-    //2.me traigo el empleado
-    char parce_char_empleado[email_empleado.length()+1];
-    strcpy(parce_char_empleado,email_empleado.c_str());
-    IKey* ik_empleado = new String(parce_char_empleado);
-    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_empleado));
-    
-    //3.le digo al empleado que se asigne el hostal y el cargo que le paso
-    ptr_empleado-> asignar_cargo(cargo,ptr_hostal);
-    //4.y le paso el empleado al hostal para que lo agrege a su lista de empleados
-    ptr_hostal -> asignar_empleado(ptr_empleado);
-}
-
 OrderedDictionary* Controlador::obtener_usuarios(){
     OrderedDictionary* nombre_usuarios = new OrderedDictionary();
 
@@ -252,7 +253,7 @@ OrderedDictionary* Controlador::obtener_usuarios(){
     return nombre_usuarios;
 }
 
- int Controlador::verificar_email_y_tipo(string email){
+int Controlador::verificar_email_y_tipo(string email){
 
     char parce_char[email.length()+1];
     strcpy(parce_char,email.c_str());
@@ -292,3 +293,12 @@ DTEmpleado Controlador::obtener_empleado_completo(string email){
     DTEmpleado empleado_completo(empleado -> get_DT());
     return empleado_completo;
 }
+
+void Controlador::alta_reserva_individual(string nom_hostal,int Nhabitacion,string email){
+
+}
+
+void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]){
+
+}
+/* Fin métodos auxiliares*/

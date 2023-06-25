@@ -1,6 +1,9 @@
 #ifndef CONTROLADOR_H
 #define CONTROLADOR_H
 
+#include <iostream>
+#include <string.h>
+
 #include "../iControlador/IControlador.h"
 
 // Acá se deben importar las clases del DCD
@@ -17,17 +20,16 @@
 #include "../datatypes/headers/DTHuesped.h"
 #include "../datatypes/headers/DTEmpleado.h"
 
-#include <string.h>
 
-class Controlador: public IControlador{
+/// @brief el controlador realiza todas las operaciones del sistema.
+/// Como utiliza el patrón singleton, se define el constructor como privado y se puede instanciar una única vez
+class Controlador: public IControlador {
 	private:
         Controlador();
         static Controlador* instance;
         chrono::system_clock::time_point fecha_sistema;
 
-        //Acá pueden ir pseudoatributos a utilizar
-
-        //También colecciones. Ejemplo:
+        //Acá pueden ir pseudoatributos a utilizar. También colecciones. Ejemplo:
         IDictionary* hostales;
         IDictionary* huespedes;
         IDictionary* empleados;
@@ -36,20 +38,20 @@ class Controlador: public IControlador{
         ~Controlador();
         static Controlador* getInstance(); 
 
-        //Modificar fecha del sistema
+        /* Fecha del sistema*/
         tm* get_fecha_sistema();
         void set_fecha_sistema(tm* nueva_fecha);
+		/* Fin fecha del sistema*/
 
-        //Cabeceras de las opers
+        /* Operaciones de los casos de uso*/
         void alta_huesped(DTHuesped nuevo_huesped);
         void alta_empleado(DTEmpleado nuevo_empleado);
         void alta_hostal(DTHostal nuevo_hostal);
         void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal);
-        void realizar_reserva_individual(string nom_hostal,int Nhabitacion,string email);
-        void realizar_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]);
         void asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo);
+		/* Fin operaciones de los casos de uso*/
 
-        /*funciones auxiliares*/
+        /* Operaciones auxiliares*/
         bool verificar_email(string entrada);
         void existe_hostal(string nombre);
         void no_existe_hostal(string nombre);
@@ -59,6 +61,9 @@ class Controlador: public IControlador{
         int verificar_email_y_tipo(string email);
         DTHuesped obtener_huesped_completo(string email);
         DTEmpleado obtener_empleado_completo(string email);
+		void alta_reserva_individual(string nom_hostal,int Nhabitacion,string email);
+        void alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]);
+        /* Fin operaciones auxiliares*/
 };
     
 #endif

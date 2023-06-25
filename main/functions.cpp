@@ -182,7 +182,8 @@ void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string s
 	 disponibles dentro de un rango de fecha*/
 }
 
-void obtener_usuarios(){
+/// @brief permita listar todos los usuarios registrados del sistema
+void obtener_usuarios() {
 	OrderedDictionary* emails = controlador -> obtener_usuarios();
 	
 	cout << endl << GREEN << "| Lista de usuarios registrados en el sistema: " << NC << endl << endl;
@@ -193,7 +194,8 @@ void obtener_usuarios(){
     }	
 }
 
-void obtener_huesped_completo(string email){
+/// @brief permite listar la información detallada de un huesped determinado 
+void obtener_huesped_completo(string email) {
 	DTHuesped huesped_completo = controlador -> obtener_huesped_completo(email);
 	cout << endl << GREEN << "Mostrando informacion sobre el huesped con el email: " << email << NC << endl <<
 	"| Nombre: " << huesped_completo.get_nombre() << " |" << endl <<
@@ -201,14 +203,16 @@ void obtener_huesped_completo(string email){
 	"| ¿Es tecno?(0 = no | 1 = si):" << huesped_completo.get_es_tecno() << " |" << endl;
 }
 
-void obtener_empleado_completo(string email){
+/// @brief permite listar la información detallada de un empleado determinado
+void obtener_empleado_completo(string email) {
 	DTEmpleado empleado_completo = controlador -> obtener_empleado_completo(email);
 
 	cout << endl << GREEN << "Mostrando informacion sobre el empleado con el email: " << email << NC << endl <<
 	"| Nombre: " << empleado_completo.get_nombre() << " |" << endl <<
 	"| Email: " << empleado_completo.get_email() << " |" << endl <<
 	"| Trabaja para el hostal de nombre: " << empleado_completo.get_nombre_hostal() << " |" << endl <<
-	"| Cargo (0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura): " << empleado_completo.get_cargo() << endl;
+	"| Cargo (0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura): " 
+	<< empleado_completo.get_cargo() << endl;
 }
 /* Fin funciones auxiliares*/
 

@@ -36,7 +36,9 @@ void obtener_hostales();
 void obtener_hostales_con_promedio();
 void obtener_no_empleados_hostal(string nombre_hostal);
 void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout);
-
+void obtener_usuarios();
+void obtener_huesped_completo(string email);
+void obtener_empleado_completo(string email);
 /* Fin funciones auxiliares*/
 
 /*Funciones del menu principal*/
