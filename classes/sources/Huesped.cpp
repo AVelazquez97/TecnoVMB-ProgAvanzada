@@ -15,11 +15,11 @@ Huesped::Huesped(DTHuesped nuevo_huesped):Usuario(nuevo_huesped.get_nombre(), nu
 }
 
 bool Huesped::get_es_tecno(){
-
+    return this -> es_tecno;
 }
 
 DTHuesped Huesped::get_DT(){
-
+    return DTHuesped(this -> get_nombre(), this -> get_email(), this -> get_contrasena(), this -> get_es_tecno());
 }
 
 

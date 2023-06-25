@@ -166,7 +166,7 @@ void obtener_no_empleados_hostal(string nombre_hostal) {
 	OrderedDictionary* DTEmpleados = new OrderedDictionary();
 	DTEmpleados = controlador -> obtener_no_empleados_hostal(nombre_hostal);
 
-	cout << endl << "| Lista de empleados que no son del hostal: " << nombre_hostal << " |" << endl << endl;
+	cout << endl << GREEN "| Lista de empleados que no son del hostal: " << nombre_hostal << " |" NC << endl << endl;
 
 	for(IIterator* it = DTEmpleados -> getIterator(); it -> hasCurrent(); it -> next()){
         DTEmpleado* empleado = dynamic_cast<DTEmpleado*>(it -> getCurrent());
@@ -180,6 +180,35 @@ void obtener_no_empleados_hostal(string nombre_hostal) {
 void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout) {
 	/* La idea es implementar una funcion en controlador que liste las habitaciones de un hostal que estan 
 	 disponibles dentro de un rango de fecha*/
+}
+
+void obtener_usuarios(){
+	OrderedDictionary* emails = controlador -> obtener_usuarios();
+	
+	cout << endl << GREEN << "| Lista de usuarios registrados en el sistema: " << NC << endl << endl;
+	
+	for(IIterator* it = emails -> getIterator(); it -> hasCurrent(); it -> next()){
+        String* email_usuario = dynamic_cast<String*>(it -> getCurrent());
+        cout << "| " << email_usuario->getValue() << " |" << endl;
+    }	
+}
+
+void obtener_huesped_completo(string email){
+	DTHuesped huesped_completo = controlador -> obtener_huesped_completo(email);
+	cout << endl << GREEN << "Mostrando informacion sobre el huesped con el email: " << email << NC << endl <<
+	"| Nombre: " << huesped_completo.get_nombre() << " |" << endl <<
+	"| Email: " << huesped_completo.get_email() << " |" << endl <<
+	"| ¿Es tecno?(0 = no | 1 = si):" << huesped_completo.get_es_tecno() << " |" << endl;
+}
+
+void obtener_empleado_completo(string email){
+	DTEmpleado empleado_completo = controlador -> obtener_empleado_completo(email);
+
+	cout << endl << GREEN << "Mostrando informacion sobre el empleado con el email: " << email << NC << endl <<
+	"| Nombre: " << empleado_completo.get_nombre() << " |" << endl <<
+	"| Email: " << empleado_completo.get_email() << " |" << endl <<
+	"| Trabaja para el hostal de nombre: " << empleado_completo.get_nombre_hostal() << " |" << endl <<
+	"| Cargo (0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura): " << empleado_completo.get_cargo() << endl;
 }
 /* Fin funciones auxiliares*/
 
@@ -430,7 +459,27 @@ void comentar_calificacion(){
 }
 
 void consulta_usuario(){
-	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+	string email;
+	int existe_email = -2;
+	string limpiar_buffer;
+	getline(cin,limpiar_buffer);
+
+	obtener_usuarios();
+
+	while(existe_email != -1 && existe_email != 0 && existe_email != 1 ){
+		cout << "Ingrese el email: " << endl;
+		getline(cin,email);
+		if(email == "salir"){return;} /* en caso de que desee salir*/
+		existe_email = controlador -> verificar_email_y_tipo(email);
+
+		if(existe_email == 0){
+			obtener_huesped_completo(email);
+		}else if(existe_email == 1){
+			obtener_empleado_completo(email);
+		}else if(existe_email == -1){
+			cout << endl << REDB "Email erroneo. Intenta de nuevo... " NC << endl;
+		}
+	}
 }
 
 void consulta_hostal(){

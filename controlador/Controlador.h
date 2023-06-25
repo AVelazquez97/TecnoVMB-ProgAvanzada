@@ -55,6 +55,10 @@ class Controlador: public IControlador{
         void no_existe_hostal(string nombre);
         OrderedDictionary* obtener_hostales();
         OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal);
+        OrderedDictionary* obtener_usuarios();
+        int verificar_email_y_tipo(string email);
+        DTHuesped obtener_huesped_completo(string email);
+        DTEmpleado obtener_empleado_completo(string email);
 };
     
 #endif
