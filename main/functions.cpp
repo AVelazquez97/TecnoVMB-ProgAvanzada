@@ -336,7 +336,7 @@ void alta_habitacion(){
 	string limpiar_buffer; 
 	getline(cin,limpiar_buffer);
 
-	obtener_hostales(); // Luego hay que eliminar este llamado
+	obtener_hostales();
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -415,10 +415,12 @@ void realizar_reserva(){
 	string str_checkout;
 	tm checkin = {};
 	tm checkout = {};
-	string str_tipo;
+	string str_tipo = "";
 	bool tipo;
 	int numero_habitacion;
 	string limpiar_buffer;
+	bool fecha_valida_checkin = false;
+	bool fecha_valida_checkout = false;
 	getline(cin,limpiar_buffer);
 	
 	
@@ -428,28 +430,41 @@ void realizar_reserva(){
 	
 	cout << "Ingrese el nombre del hostal en el cual desea realizar la reserva: " << endl;
 	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
 
-	cout << "Ingrese la fecha de checkin: " << endl;
-	getline(cin,str_checkin);
+	try{
+		controlador -> no_existe_hostal(nombre_hostal);
+		
+		while(!fecha_valida_checkin) {
+			cout << "Ingrese la fecha y hora del checkin con el siguiente formato de ejemplo " << RED "'12/12/24 - 18'" NC ": ";
+			getline(cin,str_checkin);
 
-	cout << "Ingrese la fecha del checkout: " << endl;
-	getline(cin,str_checkout);
+			fecha_valida_checkin = verificar_fecha(str_checkin, &checkin);
+		}
 
-	cout << "Ingrese el tipo de reserva 0 = Individual 1 = Grupal: " << endl;
-	getline(cin,str_tipo);
+		while(!fecha_valida_checkout){
+			cout << "Ingrese la fecha y hora del checkout con el siguiente formato de ejemplo " << RED "'12/12/24 - 18'" NC ": ";
+			getline(cin,str_checkout);
 
-	verificar_fecha(str_checkin, &checkin);
-	verificar_fecha(str_checkout, &checkout);
-	
-	if(str_tipo == "0"){
-		tipo = false;
-		controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
-	}else if(str_tipo == "1"){
-		tipo = true;
+			fecha_valida_checkout = verificar_fecha(str_checkout, &checkout);
+		}
+
+		while(str_tipo != "0" && str_tipo != "1"){
+			cout << "Ingrese el tipo de reserva 0 = Individual 1 = Grupal: " << endl;
+			getline(cin,str_tipo);
+		}
+		
+		if(str_tipo == "0"){
+			tipo = false;
+			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
+		}else if(str_tipo == "1"){
+			tipo = true;
+			//llamar a reserva grupal
+		}
+		
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
-
-	//obtener_habitaciones_entre(nombre_hostal,str_checkin,str_checkout);
-
 }
 
 void consultar_top_3(){
