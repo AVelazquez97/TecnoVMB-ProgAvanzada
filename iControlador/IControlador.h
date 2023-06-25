@@ -36,6 +36,8 @@ class IControlador {
         virtual void alta_hostal(DTHostal nuevo_hostal) = 0;
         virtual void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_habitacion) = 0;
         virtual void asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo) = 0;
+        virtual void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout) = 0;
+        virtual void alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]) = 0;
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -48,8 +50,6 @@ class IControlador {
         virtual int verificar_email_y_tipo(string email) = 0;
         virtual DTEmpleado obtener_empleado_completo(string email) = 0;
         virtual DTHuesped obtener_huesped_completo(string email) = 0;
-        virtual void alta_reserva_individual(string nom_hostal,int Nhabitacion,string email) = 0;
-        virtual void alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]) = 0;
         /* Fin operaciones auxiliares*/
 };
 

@@ -413,6 +413,8 @@ void realizar_reserva(){
 	string email_huesped;
 	string str_checkin;
 	string str_checkout;
+	tm checkin = {};
+	tm checkout = {};
 	string str_tipo;
 	bool tipo;
 	int numero_habitacion;
@@ -435,10 +437,18 @@ void realizar_reserva(){
 
 	cout << "Ingrese el tipo de reserva 0 = Individual 1 = Grupal: " << endl;
 	getline(cin,str_tipo);
-	if(str_tipo == "0"){tipo = false;}
-	else if(str_tipo == "1"){tipo = true;}
 
-	obtener_habitaciones_entre(nombre_hostal,str_checkin,str_checkout);
+	verificar_fecha(str_checkin, &checkin);
+	verificar_fecha(str_checkout, &checkout);
+	
+	if(str_tipo == "0"){
+		tipo = false;
+		controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
+	}else if(str_tipo == "1"){
+		tipo = true;
+	}
+
+	//obtener_habitaciones_entre(nombre_hostal,str_checkin,str_checkout);
 
 }
 

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <iomanip> //lo importo solo para testear imprimir la hora desde el controlador.cpp
 
 #include "../iControlador/IControlador.h"
 
@@ -12,6 +13,7 @@
 #include "../classes/headers/Hostal.h"
 #include "../classes/headers/Huesped.h"
 #include "../classes/headers/Usuario.h"
+#include "../classes/headers/Reserva.h"
 #include "../ICollection/collections/OrderedDictionary.h"
 #include "../ICollection/String.h"
 
@@ -49,6 +51,8 @@ class Controlador: public IControlador {
         void alta_hostal(DTHostal nuevo_hostal);
         void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal);
         void asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo);
+        void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout);
+        void alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]);
 		/* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -61,8 +65,6 @@ class Controlador: public IControlador {
         int verificar_email_y_tipo(string email);
         DTHuesped obtener_huesped_completo(string email);
         DTEmpleado obtener_empleado_completo(string email);
-		void alta_reserva_individual(string nom_hostal,int Nhabitacion,string email);
-        void alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]);
         /* Fin operaciones auxiliares*/
 };
     

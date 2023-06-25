@@ -9,6 +9,7 @@
 #include <iostream>
 using namespace std;
 class Empleado;
+
 class Hostal: public ICollectible{
     private:
         string nombre;

@@ -1,6 +1,7 @@
 program: main.o functions.o fabrica.o controlador.o icontrolador.o collections.o interfaces.o string.o integer.o objetos.o datatypes.o
 	g++ -o programa *.o
 	make clean
+	clear
 
 main.o: main/main.cpp
 	g++ -c main/main.cpp

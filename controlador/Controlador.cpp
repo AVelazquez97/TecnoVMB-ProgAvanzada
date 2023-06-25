@@ -294,8 +294,21 @@ DTEmpleado Controlador::obtener_empleado_completo(string email){
     return empleado_completo;
 }
 
-void Controlador::alta_reserva_individual(string nom_hostal,int Nhabitacion,string email){
+void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout){
+    
+    /*
+    *Ejemplo de una asignacion de fecha a una nueva reserva mediante los datos
+    *que nos entran como parametro, cuando se hizo esta prueba se manejaba la clase reserva
+    *pero en realidad reserva tiene que ser abstracta y manejar solo reserva individual
+    *o reserva grupal. 
 
+    Reserva* r = new Reserva(1,checkin,checkout,Cerrada);
+    cout << "checkin" << put_time(r -> get_checkin(), "%d/%m/%y - %H") << " hs" << endl <<
+    "checkout" << put_time(r -> get_checkout(), "%d/%m/%y - %H") << " hs" << endl;
+    getchar();
+    
+    */
+   
 }
 
 void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]){
