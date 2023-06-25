@@ -66,7 +66,15 @@ Hostal* Habitacion::get_puntero_hostal(){
 }
 
 DTHabitacion Habitacion::get_DT(){
-    //return DTHabitacion(this->get_numero(),this -> get_precio(),this -> get_capacidad(), this -> get_puntero_hostal());
+    return DTHabitacion(this -> get_numero(),this -> get_precio(),this -> get_capacidad());
+}
+
+void Habitacion::crear_reserva(Huesped* huesped, tm* checkin, tm* checkout){
+    
+    ReservaIndividual* ri = new ReservaIndividual(checkin,checkout,Abierta,this,huesped); //cambiar el codigo
+    IKey* ik_ri = new Integer(ri -> get_codigo());
+    this -> reservas -> add(ik_ri,ri);
+
 }
 
 #endif // HABITACION_CPP_

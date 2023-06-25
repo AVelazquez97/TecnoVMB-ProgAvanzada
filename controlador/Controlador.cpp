@@ -1,4 +1,5 @@
 #include "Controlador.h"
+#include "../classes/headers/Habitacion.h"
 using namespace std;
 
 Controlador *Controlador::instance = nullptr;
@@ -308,10 +309,69 @@ void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habit
     getchar();
     
     */
+
+    /*encuentro el hostal*/
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(this -> hostales -> find(ik_hostal));
+
+    /*encuentro el huesped*/
+    char parce_email_huesped[email_huesped.length()+1];
+    strcpy(parce_email_huesped,email_huesped.c_str());
+
+    IKey* ik_huesped = new String(parce_email_huesped);
+
+    Huesped* huesped = dynamic_cast<Huesped*>(this -> huespedes -> find(ik_huesped));
+
+    hostal -> agregar_reserva(numero_Habitacion, huesped, checkin, checkout);
    
 }
 
 void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]){
 
+}
+
+OrderedDictionary* Controlador::obtener_habitaciones(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
+    
+    OrderedDictionary* lista = new OrderedDictionary();
+
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(this -> hostales -> find(ik_hostal));
+
+    for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
+        Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
+        IKey* ik_habitacion = new Integer(habitacion -> get_numero());
+
+        DTHabitacion* dt_habitacion = new DTHabitacion(habitacion -> get_DT());
+        lista -> add(ik_habitacion, dt_habitacion);
+    }
+
+    return lista;
+}
+
+OrderedDictionary* Controlador::obtener_huespedes(){
+    OrderedDictionary* email_huespedes= new OrderedDictionary();
+
+    for(IIterator* it = huespedes -> getIterator(); it -> hasCurrent(); it -> next()){
+        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
+        
+      
+        string cadena = huesped -> get_email();
+        char parce_char[cadena.length()+1];
+        strcpy(parce_char,cadena.c_str());
+
+        IKey* ik = new String(parce_char);
+        String* huesped_nombre = new String(parce_char);
+
+        email_huespedes -> add(ik, huesped_nombre);
+    }
+    return email_huespedes;
 }
 /* Fin métodos auxiliares*/

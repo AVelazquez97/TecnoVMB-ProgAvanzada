@@ -4,6 +4,7 @@
 #include "../../datatypes/headers/DTHabitacion.h"
 #include "../../ICollection/interfaces/IDictionary.h"
 #include "Hostal.h"
+#include "../../classes/headers/ReservaIndividual.h"
 
 class Habitacion: public ICollectible {
     private:
@@ -28,6 +29,7 @@ class Habitacion: public ICollectible {
         int get_capacidad();
         Hostal* get_puntero_hostal();
         DTHabitacion get_DT();
+        void crear_reserva(Huesped* huesped, tm* checkin, tm* checkout);
 };
 
 #endif // HABITACION_H_

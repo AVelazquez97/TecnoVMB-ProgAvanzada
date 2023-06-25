@@ -9,6 +9,7 @@
 #include <iostream>
 using namespace std;
 class Empleado;
+class Huesped;
 
 class Hostal: public ICollectible{
     private:
@@ -36,6 +37,8 @@ class Hostal: public ICollectible{
         bool no_es(string email);
         void alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal);
         void asignar_empleado(Empleado* puntero_empleado);
+        void agregar_reserva(int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout);
+        OrderedDictionary* get_habitaciones();
 };
 
 #endif // HOSTAL_H_

@@ -50,6 +50,8 @@ class IControlador {
         virtual int verificar_email_y_tipo(string email) = 0;
         virtual DTEmpleado obtener_empleado_completo(string email) = 0;
         virtual DTHuesped obtener_huesped_completo(string email) = 0;
+        virtual OrderedDictionary* obtener_habitaciones(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout) = 0;
+        virtual OrderedDictionary* obtener_huespedes() = 0;
         /* Fin operaciones auxiliares*/
 };
 

@@ -83,6 +83,7 @@ void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){
     this -> habitaciones -> add(ik,nueva_habitacion);
 
 }
+
  bool Hostal::no_es(string email){
     char parce_char[email.length()+1];
     strcpy(parce_char,email.c_str());
@@ -90,6 +91,7 @@ void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){
     IKey* ik = new String(parce_char);
     return this -> empleados -> member(ik);
  }
+
 void Hostal::asignar_empleado(Empleado* puntero_empleado){
     
     string email = puntero_empleado -> get_email();
@@ -100,4 +102,14 @@ void Hostal::asignar_empleado(Empleado* puntero_empleado){
     this -> empleados -> add(ik,puntero_empleado);
 }
 
+void Hostal::agregar_reserva(int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout){
+    
+    IKey* ik_habitacion = new Integer(numero_habitacion);
+    Habitacion* habitacion = dynamic_cast<Habitacion*>( this -> habitaciones -> find(ik_habitacion));
+    habitacion -> crear_reserva(huesped, checkin, checkout);
+}
+
+OrderedDictionary* Hostal::get_habitaciones(){
+    return dynamic_cast<OrderedDictionary*>(habitaciones);
+}
 #endif // HOSTAL_CPP_

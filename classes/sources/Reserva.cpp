@@ -6,9 +6,10 @@ Reserva::Reserva(){
 
 }
 
-Reserva::Reserva(int codigo, tm *checkin, tm *checkout, Estado estado_reserva){
-    this -> codigo = codigo;
+Reserva::Reserva(tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion){
+    this -> codigo += 1 ;
     this -> estado_reserva = estado_reserva;
+    this -> ptr_habitacion = ptr_habitacion;
 
     tm checkin_tm = *checkin;
     time_t checkin_time = mktime(&checkin_tm);

@@ -1,10 +1,11 @@
 #ifndef DTHABITACION_H_
 #define DTHABITACION_H_
 //#include "../../classes/headers/Hostal.h"
+#include "../../ICollection/interfaces/ICollectible.h"
 #include <iostream>
 using namespace std;
 
-class DTHabitacion{
+class DTHabitacion: public ICollectible{
     private:
         int numero;
         float precio;
