@@ -104,6 +104,14 @@ void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empl
 
 /* Métodos auxiliares*/
 
+void Controlador::set_contador(int numero){
+    contador_reserva = numero;
+}
+
+int Controlador::get_contador(){
+    return contador_reserva;
+}
+
 bool Controlador::verificar_email(string entrada){
 
     /*
@@ -411,13 +419,4 @@ OrderedDictionary* Controlador::obtener_huespedes(){
     }
     return email_huespedes;
 }
-
-void Controlador::set_contador(int numero){
-    contador_reserva = numero;
-}
-int Controlador::get_contador(){
-    return contador_reserva;
-}
-
-
 /* Fin métodos auxiliares*/

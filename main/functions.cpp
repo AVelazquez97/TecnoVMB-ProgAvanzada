@@ -1,5 +1,5 @@
-using namespace std;
 #include "functions.h"
+using namespace std;
 
 /*
     La fábrica y el controlador se deberían instanciar de la siguiente manera:
@@ -114,7 +114,8 @@ void imprimir_fecha(tm* fecha) {
 	cout << CYAN "" << put_time(fecha, "%d/%m/%y - %H") << " hs" NC << endl << endl;
 }
 
-/// @brief verifica si la fecha ingresada cumple con el formato establecido
+/// @brief verifica si la fecha ingresada cumple con el formato establecido.
+/// Si lo cumple, se modifica la estructura que recibe por parámetro 
 /// @return true si el formato es correo, de lo contrario false 
 bool verificar_fecha(string fecha_hora_str, tm* nueva_fecha) {
 	/* Se crea un objeto istringstream utilizando la cadena fecha_hora_str para poder extraer los valores
@@ -484,10 +485,10 @@ void realizar_reserva(){
     		}
 
 			while(!habitacion_valida){
-			cout << "Ingrese el numero de la habitacion deseada" << endl;
-			getline(cin,str_numero_habitacion);
-			IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
-			habitacion_valida = habitaciones -> member(ik_habitacion);
+				cout << "Ingrese el numero de la habitacion deseada" << endl;
+				getline(cin,str_numero_habitacion);
+				IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
+				habitacion_valida = habitaciones -> member(ik_habitacion);
 			}
 			numero_habitacion = stoi(str_numero_habitacion);
 
@@ -584,7 +585,8 @@ void modificar_fecha() {
 
 	cout << "Fecha actual del sistema: ";
 	imprimir_fecha(controlador->get_fecha_sistema());
-    
+	tm *primera_fecha = controlador->get_fecha_sistema(); // borrar línea luego
+
 	while(!fecha_valida) {
 		cout << "Ingrese la fecha y hora con el siguiente formato de ejemplo " << RED "'12/12/24 - 18'" NC ": ";
 		/* Se ingresa una nueva fecha por teclado */
@@ -625,21 +627,55 @@ void datos_prueba(){
 	controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
 	controlador -> alta_habitacion(DTHabitacion(1,9,5),"El Pony Pisador");
-
 	/*Asignación de empleados a hostales*/
 	controlador -> asignar_empleado_hostal("La posada del finger","emilia@mail.com",Recepcion);
 	controlador -> asignar_empleado_hostal("Mochileros","leo@mail.com",Recepcion);
 	controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
 	controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
+ 	
+	/* Reservas */
+	/* ======================================================================================================= */
+	// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
+	// HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
+	tm checkin_1 = {};
+	istringstream iss("01/05/22 - 14");
+	iss >> get_time(&checkin_1, "%d/%m/%y - %H");
 	
-
- 	/* Reservas */
-		// Ref Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
-		// R1  HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
-		// R2  HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
-		// R3  HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
-		// R4  HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
-
+	tm checkout_1 = {};
+	istringstream iss_0("10/05/22 - 10");
+	iss_0 >> get_time(&checkout_1, "%d/%m/%y - %H");
+	controlador -> alta_reserva_individual("La posada del finger",1,"sofia@mail.com",&checkin_1,&checkout_1);
+	/* ======================================================================================================= */
+	// HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
+	// string emails[] = {"frodo@mail.com","sam@mail.com","merry@mail.com","pippin@mail.com"};
+	// tm checkin_2 = {};
+	// istringstream iss("04/01/01 - 20");
+	// iss >> get_time(&checkin_2, "%d/%m/%y - %H");
+	
+	// tm checkout_2 = {};
+	// istringstream iss("05/01/01 - 02");
+	// iss >> get_time(&checkout_2, "%d/%m/%y - %H");
+	// controlador -> alta_reserva_grupal("El Pony Pisador",6,emails,&checkin_2,&checkout_2);
+	/* ======================================================================================================= */
+	// HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
+	tm checkin_3 = {};
+	istringstream iss_1("07/06/22 - 14");
+	iss_1 >> get_time(&checkin_3, "%d/%m/%y - %H");
+	tm checkout_3 = {};
+	istringstream iss_2("30/06/22 - 11");
+	iss_2 >> get_time(&checkout_3, "%d/%m/%y - %H");
+	controlador -> alta_reserva_individual("La posada del finger",3,"sofia@mail.com",&checkin_3,&checkout_3);
+	/* ======================================================================================================= */
+	// HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
+	tm checkin_4 = {};
+	istringstream iss_3("10/06/22 - 14");
+	iss_3 >> get_time(&checkin_4, "%d/%m/%y - %H");
+	tm checkout_4 = {};
+	istringstream iss_4("30/06/22 - 11");
+	iss_4 >> get_time(&checkout_4, "%d/%m/%y - %H");
+	controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
+	/* ======================================================================================================= */
+	
 	/* Estadías */
 		// Ref  Reserva  Huesped Check in
 		// ES1	R1	     H1      01/05/22 - 6pm

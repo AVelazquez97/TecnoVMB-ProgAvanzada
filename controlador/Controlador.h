@@ -30,14 +30,13 @@ class Controlador: public IControlador {
         Controlador();
         static Controlador* instance;
         chrono::system_clock::time_point fecha_sistema;
+        int contador_reserva;
 
         //Acá pueden ir pseudoatributos a utilizar. También colecciones. Ejemplo:
         IDictionary* hostales;
         IDictionary* huespedes;
         IDictionary* empleados;
 
-        int contador_reserva;
-        
 	public:
         ~Controlador();
         static Controlador* getInstance(); 
