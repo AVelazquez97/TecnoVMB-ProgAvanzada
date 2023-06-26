@@ -41,10 +41,18 @@ tm* Reserva::get_checkin(){
     return checkin_tm;
 }
 
+chrono::system_clock::time_point Reserva::get_checkin_chrono(){
+    return this -> checkin;
+}
+
 tm* Reserva::get_checkout(){
     time_t checkout = chrono::system_clock::to_time_t(this->checkout);
     tm* checkout_tm = localtime(&checkout);
     return checkout_tm;
+}
+
+chrono::system_clock::time_point Reserva::get_checkout_chrono(){
+    return this -> checkout;
 }
 
 Estado Reserva::get_estado(){

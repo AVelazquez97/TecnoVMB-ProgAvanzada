@@ -48,6 +48,7 @@ class Controlador: public IControlador {
         tm* get_fecha_sistema();
         void set_fecha_sistema(tm* nueva_fecha);
         ComparacionFecha compararFechas(tm* fechaNueva);
+        bool comparar_fechas_reserva(Reserva* r, tm* fecha_deseada_checkin, tm* fecha_deseada_checkout);
 		/* Fin fecha del sistema*/
 
         /* Operaciones de los casos de uso*/
