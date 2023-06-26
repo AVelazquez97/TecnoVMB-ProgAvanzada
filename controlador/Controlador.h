@@ -47,6 +47,7 @@ class Controlador: public IControlador {
         /* Fecha del sistema*/
         tm* get_fecha_sistema();
         void set_fecha_sistema(tm* nueva_fecha);
+        ComparacionFecha compararFechas(tm* fechaNueva);
 		/* Fin fecha del sistema*/
 
         /* Operaciones de los casos de uso*/
@@ -69,7 +70,7 @@ class Controlador: public IControlador {
         int verificar_email_y_tipo(string email);
         DTHuesped obtener_huesped_completo(string email);
         DTEmpleado obtener_empleado_completo(string email);
-        OrderedDictionary* obtener_habitaciones(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout);
+        OrderedDictionary* obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout);
         OrderedDictionary* obtener_huespedes();
         /* Fin operaciones auxiliares*/
 };

@@ -38,6 +38,21 @@ void Controlador::set_fecha_sistema(tm* nueva_fecha) {
     time_t time = mktime(&fecha_tm);
     this->fecha_sistema = chrono::system_clock::from_time_t(time);
 }
+
+ComparacionFecha Controlador::compararFechas(tm* nueva_fecha){
+    auto fecha_existente = chrono::system_clock::to_time_t(this->fecha_sistema);
+    auto fecha_nueva_TP = chrono::system_clock::from_time_t(mktime(nueva_fecha));
+
+    if (chrono::operator<(fecha_nueva_TP, chrono::system_clock::from_time_t(fecha_existente))) {
+        return ComparacionFecha::Menor;
+    } else if (chrono::operator>(fecha_nueva_TP, chrono::system_clock::from_time_t(fecha_existente))) {
+        return ComparacionFecha::Mayor;
+    } else {
+        return ComparacionFecha::Igual;
+    }
+}
+
+
 /* Fin fecha del sistema*/
 
 /* Métodos de los casos de uso*/
@@ -221,7 +236,7 @@ OrderedDictionary* Controlador::obtener_no_empleados_hostal(string nombre_hostal
             
             //3. agregarlo a la lista
             DTEmpleados -> add(ik, empleado_singular);
-        }else{}  
+        } 
     }
     return DTEmpleados;
 }
@@ -342,63 +357,59 @@ void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string e
 
 }
 
-OrderedDictionary* Controlador::obtener_habitaciones(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
-    /* falta filtrar por fecha y por tipo a la hora de añadir las habitaciones a la lista
-    
-    *para comparar fechas:
-    *cout << checkin->tm_year; accede al año de la fecha
-    *cout << checkin->tm_mon; accede al mes de la fecha (puede que este del 0 al 11)
-    *cout << checkin->tm_mday; accede al dia de la fecha
-    */
-    OrderedDictionary* lista = new OrderedDictionary();
+OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
+    OrderedDictionary* lista_hab_disponibles = new OrderedDictionary();
     bool disponible = false;
+    
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
     IKey* ik_hostal = new String(parce_nombre_hostal);
     Hostal* hostal = dynamic_cast<Hostal*>(this -> hostales -> find(ik_hostal));
 
+    /* Se recorren todas las habitaciones que tiene el hostal */
     for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
-        bool disponible = false;
         Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
         IKey* ik_habitacion = new Integer(habitacion -> get_numero());
         
-        if(habitacion -> get_reservas() -> isEmpty()){
-            //cout<<"5"<<"||"<<habitacion -> get_numero()<<endl;
+        /* Si la habitación no tiene reservas == disponible */
+        if((habitacion -> get_reservas() -> isEmpty())) { 
+            cout << "NO HAY RESERVARS PARA ESTA HABITACIÓN. POR ENDE, ESTÁ DISPONIBLE" << endl;
             disponible = true;
-         }else{
-            for(IIterator* it = habitacion -> get_reservas() -> getIterator(); it -> hasCurrent(); it -> next()){
-            Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
-            //cout <<endl <<"CODIGO: "<< reserva ->get_codigo()<< "|| ESTADO: " << reserva -> get_estado()<<"|| CHECK IN:"<<reserva -> get_checkin()->tm_mday<<"|||"<< checkin ->tm_mday<<endl;
-            if(reserva -> get_checkin() < checkin){
-                //cout<<"1"<<endl;
-                if(reserva ->get_checkout() > checkout){
-                    //cout<<"2"<<endl;
-                    disponible = true;
-                }
-            }else if(reserva -> get_checkin() > checkout){
-                //cout<<"3"<<endl;
-                if((reserva ->get_checkout() < checkin)){
-                    //cout<<"4"<<endl;
-                    disponible = true;
-                }
-            }
-             }  
-        //quedaria despues filtar por el tipo y el estado.
-        //y el alta reserva grupal.       
-           /* if(((reserva -> get_checkin() < checkin) && (reserva ->get_checkout() < checkin)) || 
-            ((reserva -> get_checkin() > checkout) && (reserva ->get_checkout() > checkout)) ){
-                disponible = false;
-            }*/
         }
-      
+
+        /* Si la habitación tiene reservas, se debe recorrerlas para ver cual no se solapa con el rango de fechas
+         recibido por parámtro*/ 
+        if(!(habitacion -> get_reservas() -> isEmpty())){ 
+            for(IIterator* it = habitacion -> get_reservas() -> getIterator(); it -> hasCurrent(); it -> next()){
+                Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
+                /* falta filtrar por fecha y por tipo a la hora de añadir las habitaciones a la lista_hab_disponibles
+                 * para comparar fechas:
+                 * cout << checkin->tm_year; accede al año de la fecha
+                 * cout << checkin->tm_mon; accede al mes de la fecha (puede que este del 0 al 11)
+                 * cout << checkin->tm_mday; accede al dia de la fecha
+                */
+
+                if(checkin < reserva -> get_checkin()){
+                    if(reserva ->get_checkout() > checkout){
+                        disponible = true;
+                    }
+                }else if(reserva -> get_checkin() > checkout){
+                    if((reserva ->get_checkout() < checkin)){
+                        disponible = true;
+                    }
+                }
+            }  
+        //quedaria despues filtar por el tipo y el estado.      
+        }
+
         if(disponible == true){
             DTHabitacion* dt_habitacion = new DTHabitacion(habitacion -> get_DT());
-            lista -> add(ik_habitacion, dt_habitacion);
+            lista_hab_disponibles -> add(ik_habitacion, dt_habitacion);
         }
-        
+        disponible = false;
     }
     
-    return lista;
+    return lista_hab_disponibles;
 }
 
 OrderedDictionary* Controlador::obtener_huespedes(){

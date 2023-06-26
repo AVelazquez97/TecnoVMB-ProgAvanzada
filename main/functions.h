@@ -17,10 +17,12 @@
 #define CYAN "\e[0;36m"
 #define REDB "\e[41m"
 
-/*datatypes*/
+/* Datatypes */
 #include "../datatypes/headers/DTHuesped.h"
 #include "../datatypes/headers/DTEmpleado.h"
+/* Enums */
 #include "../enums/EnumCargo.h"
+#include "../enums/EnumComparacionFecha.h"
 
 #include "../iControlador/IControlador.h"
 #include "../fabrica/Fabrica.h"

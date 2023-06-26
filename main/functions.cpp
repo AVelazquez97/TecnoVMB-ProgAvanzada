@@ -472,10 +472,10 @@ void realizar_reserva(){
 			getline(cin,str_tipo);
 		}
 		
-		if(str_tipo == "0"){
+		if(str_tipo == "0"){ //Reserva Individual
 			tipo = false;
 			/* en obtener_habitaciones se tiene que implementar el filtro de habitaciones segun fecha */
-			OrderedDictionary* habitaciones = controlador -> obtener_habitaciones(nombre_hostal, str_tipo, &checkin, &checkout);
+			OrderedDictionary* habitaciones = controlador -> obtener_habitaciones_individuales(nombre_hostal, str_tipo, &checkin, &checkout);
 			cout << endl << GREEN << "Mostrando informacion sobre las habitaciones individuales del hostal: " << nombre_hostal << NC << endl;
 			
 			for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
@@ -500,7 +500,7 @@ void realizar_reserva(){
 
 			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
 			controlador -> set_contador((controlador -> get_contador()) + 1);
-		}else if(str_tipo == "1"){//LA GRUPAL VA ACA
+		}else if(str_tipo == "1"){ //Reserva Grupal
 			tipo = true;
 
 			//abro un for que vaya hasta la capacidad de la habitacion
@@ -585,7 +585,6 @@ void modificar_fecha() {
 
 	cout << "Fecha actual del sistema: ";
 	imprimir_fecha(controlador->get_fecha_sistema());
-	tm *primera_fecha = controlador->get_fecha_sistema(); // borrar línea luego
 
 	while(!fecha_valida) {
 		cout << "Ingrese la fecha y hora con el siguiente formato de ejemplo " << RED "'12/12/24 - 18'" NC ": ";
@@ -594,7 +593,20 @@ void modificar_fecha() {
 
 		fecha_valida = verificar_fecha(fecha_hora_str, &nueva_fecha);	
 	}
-    controlador->set_fecha_sistema(&nueva_fecha);
+	/*========== borrar luego, es solo para probar la comparación de fechas ==========*/
+	switch (controlador->compararFechas(&nueva_fecha)) {
+		case ComparacionFecha::Menor: // 0
+			cout << "La fecha nueva es menor que la fecha existente." << endl;
+			break;
+		case ComparacionFecha::Igual: // 1
+			cout << "La fecha nueva es igual a la fecha existente." << endl;
+			break;
+		case ComparacionFecha::Mayor: // 2
+			cout << "La fecha nueva es mayor que la fecha existente." << endl;
+			break;
+	}
+    /*========== borrar luego, es solo para probar la comparación de fechas ==========*/
+	controlador->set_fecha_sistema(&nueva_fecha);
 
 	cout << endl << "Nueva fecha del sistema: ";
 	imprimir_fecha(controlador->get_fecha_sistema());

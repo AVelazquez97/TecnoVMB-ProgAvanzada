@@ -14,6 +14,7 @@
 #include "../enums/EnumCargo.h"
 #include "../enums/EnumEstado.h"
 #include "../enums/EnumTipo.h"
+#include "../enums/EnumComparacionFecha.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ class IControlador {
         /* Fecha del sistema*/
         virtual tm* get_fecha_sistema() = 0; 
         virtual void set_fecha_sistema(tm* nueva_fecha) = 0;
+        virtual ComparacionFecha compararFechas(tm* fechaNueva) = 0;
         /* Fin fecha del sistema*/
 
         virtual void set_contador(int numero) = 0;
@@ -53,7 +55,7 @@ class IControlador {
         virtual int verificar_email_y_tipo(string email) = 0;
         virtual DTEmpleado obtener_empleado_completo(string email) = 0;
         virtual DTHuesped obtener_huesped_completo(string email) = 0;
-        virtual OrderedDictionary* obtener_habitaciones(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout) = 0;
+        virtual OrderedDictionary* obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout) = 0;
         virtual OrderedDictionary* obtener_huespedes() = 0;
         /* Fin operaciones auxiliares*/
 };
