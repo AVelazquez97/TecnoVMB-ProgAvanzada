@@ -10,14 +10,14 @@ class Hostal;
 
 class Reserva: public ICollectible{
     private:
-        int codigo = 1;
+        int codigo;
         chrono::system_clock::time_point checkin;
         chrono::system_clock::time_point checkout;
         Habitacion* ptr_habitacion;
         Estado estado_reserva;
     public:
         Reserva();
-        Reserva(tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion);
+        Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion);
         void set_checkin(tm* checkin);
         void set_checkout(tm* checkout);
         int get_codigo();
@@ -25,6 +25,5 @@ class Reserva: public ICollectible{
         tm* get_checkout();
         Estado get_estado();
 };
-
 
 #endif // RESERVA_H_

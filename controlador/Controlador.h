@@ -36,9 +36,14 @@ class Controlador: public IControlador {
         IDictionary* huespedes;
         IDictionary* empleados;
 
+        int contador_reserva;
+        
 	public:
         ~Controlador();
         static Controlador* getInstance(); 
+
+        void set_contador(int numero);
+        int get_contador();
 
         /* Fecha del sistema*/
         tm* get_fecha_sistema();

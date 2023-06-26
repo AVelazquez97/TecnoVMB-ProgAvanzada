@@ -9,7 +9,7 @@ class ReservaIndividual: public Reserva{
         float costo;
     public:
         ReservaIndividual();
-        ReservaIndividual(tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion, Huesped* ptr_huesped);
+        ReservaIndividual(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion, Huesped* ptr_huesped);
 };
 
 #endif // RESERVAINDIVIDUAL_H_

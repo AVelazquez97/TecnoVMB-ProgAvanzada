@@ -6,7 +6,7 @@ ReservaIndividual::ReservaIndividual(){
 
 }
 
-ReservaIndividual::ReservaIndividual(tm* checkin, tm* checkout, Estado estado_reserva, Habitacion* ptr_habitacion, Huesped* ptr_huesped):Reserva(checkin, checkout, estado_reserva, ptr_habitacion){
+ReservaIndividual::ReservaIndividual(int codigo,tm* checkin, tm* checkout, Estado estado_reserva, Habitacion* ptr_habitacion, Huesped* ptr_huesped):Reserva(codigo,checkin, checkout, estado_reserva, ptr_habitacion){
     this -> ptr_huesped = ptr_huesped;
 }
 

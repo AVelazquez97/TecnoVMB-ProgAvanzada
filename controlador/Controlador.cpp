@@ -326,8 +326,8 @@ void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habit
 
     Huesped* huesped = dynamic_cast<Huesped*>(this -> huespedes -> find(ik_huesped));
 
-    hostal -> agregar_reserva(numero_Habitacion, huesped, checkin, checkout);
-   
+    hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout);
+    
 }
 
 void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]){
@@ -343,22 +343,53 @@ OrderedDictionary* Controlador::obtener_habitaciones(string nombre_hostal, strin
     *cout << checkin->tm_mday; accede al dia de la fecha
     */
     OrderedDictionary* lista = new OrderedDictionary();
-
+    bool disponible = false;
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
-
     IKey* ik_hostal = new String(parce_nombre_hostal);
-
     Hostal* hostal = dynamic_cast<Hostal*>(this -> hostales -> find(ik_hostal));
 
     for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
+        bool disponible = false;
         Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
         IKey* ik_habitacion = new Integer(habitacion -> get_numero());
-
-        DTHabitacion* dt_habitacion = new DTHabitacion(habitacion -> get_DT());
-        lista -> add(ik_habitacion, dt_habitacion);
+        
+        if(habitacion -> get_reservas() -> isEmpty()){
+            //cout<<"5"<<"||"<<habitacion -> get_numero()<<endl;
+            disponible = true;
+         }else{
+            for(IIterator* it = habitacion -> get_reservas() -> getIterator(); it -> hasCurrent(); it -> next()){
+            Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
+            //cout <<endl <<"CODIGO: "<< reserva ->get_codigo()<< "|| ESTADO: " << reserva -> get_estado()<<"|| CHECK IN:"<<reserva -> get_checkin()->tm_mday<<"|||"<< checkin ->tm_mday<<endl;
+            if(reserva -> get_checkin() < checkin){
+                //cout<<"1"<<endl;
+                if(reserva ->get_checkout() > checkout){
+                    //cout<<"2"<<endl;
+                    disponible = true;
+                }
+            }else if(reserva -> get_checkin() > checkout){
+                //cout<<"3"<<endl;
+                if((reserva ->get_checkout() < checkin)){
+                    //cout<<"4"<<endl;
+                    disponible = true;
+                }
+            }
+             }  
+        //quedaria despues filtar por el tipo y el estado.
+        //y el alta reserva grupal.       
+           /* if(((reserva -> get_checkin() < checkin) && (reserva ->get_checkout() < checkin)) || 
+            ((reserva -> get_checkin() > checkout) && (reserva ->get_checkout() > checkout)) ){
+                disponible = false;
+            }*/
+        }
+      
+        if(disponible == true){
+            DTHabitacion* dt_habitacion = new DTHabitacion(habitacion -> get_DT());
+            lista -> add(ik_habitacion, dt_habitacion);
+        }
+        
     }
-
+    
     return lista;
 }
 
@@ -380,4 +411,13 @@ OrderedDictionary* Controlador::obtener_huespedes(){
     }
     return email_huespedes;
 }
+
+void Controlador::set_contador(int numero){
+    contador_reserva = numero;
+}
+int Controlador::get_contador(){
+    return contador_reserva;
+}
+
+
 /* Fin métodos auxiliares*/

@@ -30,6 +30,9 @@ class IControlador {
         virtual void set_fecha_sistema(tm* nueva_fecha) = 0;
         /* Fin fecha del sistema*/
 
+        virtual void set_contador(int numero) = 0;
+        virtual int get_contador() = 0;
+
         /* Operaciones de los casos de uso*/
         virtual void alta_huesped(DTHuesped nuevo_huesped) = 0;
         virtual void alta_empleado(DTEmpleado nuevo_empleado) = 0;

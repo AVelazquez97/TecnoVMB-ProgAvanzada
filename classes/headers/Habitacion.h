@@ -29,7 +29,8 @@ class Habitacion: public ICollectible {
         int get_capacidad();
         Hostal* get_puntero_hostal();
         DTHabitacion get_DT();
-        void crear_reserva(Huesped* huesped, tm* checkin, tm* checkout);
+        OrderedDictionary* get_reservas();
+        void crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout);
 };
 
 #endif // HABITACION_H_

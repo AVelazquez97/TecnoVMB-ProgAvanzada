@@ -12,7 +12,6 @@ Habitacion::Habitacion(DTHabitacion nueva_habitacion, Hostal* puntero_hostal){
     this -> estadias = new OrderedDictionary();
     this -> reservas = new OrderedDictionary();
 }
-
 Habitacion::Habitacion(int numero, float precio, int capacidad, Hostal* puntero_hostal){
     this -> numero = numero;
     this -> precio = precio;
@@ -64,14 +63,16 @@ int Habitacion::get_capacidad(){
 Hostal* Habitacion::get_puntero_hostal(){
     return this -> puntero_hostal;
 }
-
+OrderedDictionary* Habitacion::get_reservas(){
+    return dynamic_cast<OrderedDictionary*>(reservas);
+}
 DTHabitacion Habitacion::get_DT(){
     return DTHabitacion(this -> get_numero(),this -> get_precio(),this -> get_capacidad());
 }
 
-void Habitacion::crear_reserva(Huesped* huesped, tm* checkin, tm* checkout){
+void Habitacion::crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout){
     
-    ReservaIndividual* ri = new ReservaIndividual(checkin,checkout,Abierta,this,huesped); //cambiar el codigo
+    ReservaIndividual* ri = new ReservaIndividual(codigo,checkin,checkout,Abierta,this,huesped); //cambiar el codigo
     IKey* ik_ri = new Integer(ri -> get_codigo());
     this -> reservas -> add(ik_ri,ri);
 

@@ -26,6 +26,7 @@
 #include "../fabrica/Fabrica.h"
 
 /* Funciones auxiliares*/
+void innit_contador();
 void mostrar_menu_principal();
 int eleccion_menu_principal();
 void press_enter();

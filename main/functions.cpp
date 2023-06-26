@@ -14,6 +14,10 @@ IControlador* controlador = fab.getInterface();
 
 /* Funciones auxiliares*/
 
+void innit_contador(){
+	controlador -> set_contador(0);
+}
+
 /// @brief muestra las opciones disponibles del menu principal
 void mostrar_menu_principal() {
 	system("clear");
@@ -494,7 +498,8 @@ void realizar_reserva(){
 			}while(!controlador -> verificar_email(email_huesped));
 
 			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
-		}else if(str_tipo == "1"){
+			controlador -> set_contador((controlador -> get_contador()) + 1);
+		}else if(str_tipo == "1"){//LA GRUPAL VA ACA
 			tipo = true;
 
 			//abro un for que vaya hasta la capacidad de la habitacion

@@ -102,11 +102,11 @@ void Hostal::asignar_empleado(Empleado* puntero_empleado){
     this -> empleados -> add(ik,puntero_empleado);
 }
 
-void Hostal::agregar_reserva(int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout){
+void Hostal::agregar_reserva(int codigo,int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout){
     
     IKey* ik_habitacion = new Integer(numero_habitacion);
     Habitacion* habitacion = dynamic_cast<Habitacion*>( this -> habitaciones -> find(ik_habitacion));
-    habitacion -> crear_reserva(huesped, checkin, checkout);
+    habitacion -> crear_reserva(codigo,huesped, checkin, checkout);
 }
 
 OrderedDictionary* Hostal::get_habitaciones(){

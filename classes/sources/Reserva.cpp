@@ -2,12 +2,11 @@
 #define RESERVA_CPP_
 #include "../headers/Reserva.h"
 
-Reserva::Reserva(){
+Reserva::Reserva(){}
 
-}
 
-Reserva::Reserva(tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion){
-    this -> codigo += 1 ;
+Reserva::Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion){
+    this -> codigo = codigo;
     this -> estado_reserva = estado_reserva;
     this -> ptr_habitacion = ptr_habitacion;
 
