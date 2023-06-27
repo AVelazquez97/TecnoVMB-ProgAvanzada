@@ -78,4 +78,12 @@ void Habitacion::crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* che
 
 }
 
+void Habitacion::crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout){
+    
+    ReservaGrupal* rg = new ReservaGrupal(codigo,checkin,checkout,Abierta,this,huespedes_encontrados); //cambiar el codigo
+    IKey* ik_rg = new Integer(rg -> get_codigo());
+    this -> reservas -> add(ik_rg,rg);
+
+}
+
 #endif // HABITACION_CPP_

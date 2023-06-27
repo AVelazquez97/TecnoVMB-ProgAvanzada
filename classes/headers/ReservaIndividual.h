@@ -1,7 +1,8 @@
 #ifndef RESERVAINDIVIDUAL_H_
 #define RESERVAINDIVIDUAL_H_
 #include "Reserva.h"
-class Huesped;
+#include "../../classes/headers/Huesped.h"
+
 
 class ReservaIndividual: public Reserva{    
     private:

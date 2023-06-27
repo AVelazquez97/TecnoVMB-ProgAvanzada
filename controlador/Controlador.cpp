@@ -344,20 +344,6 @@ DTEmpleado Controlador::obtener_empleado_completo(string email){
 }
 
 void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout){
-    
-    /*
-    *Ejemplo de una asignacion de fecha a una nueva reserva mediante los datos
-    *que nos entran como parametro, cuando se hizo esta prueba se manejaba la clase reserva
-    *pero en realidad reserva tiene que ser abstracta y manejar solo reserva individual
-    *o reserva grupal. 
-
-    Reserva* r = new Reserva(1,checkin,checkout,Cerrada);
-    cout << "checkin" << put_time(r -> get_checkin(), "%d/%m/%y - %H") << " hs" << endl <<
-    "checkout" << put_time(r -> get_checkout(), "%d/%m/%y - %H") << " hs" << endl;
-    getchar();
-    
-    */
-
     /*encuentro el hostal*/
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
@@ -374,12 +360,34 @@ void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habit
 
     Huesped* huesped = dynamic_cast<Huesped*>(this -> huespedes -> find(ik_huesped));
 
-    hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout);
+   hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout);
     
 }
 
-void Controlador::alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]){
+void Controlador::alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout){
+    /*encuentro el hostal*/
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
 
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(this -> hostales -> find(ik_hostal));
+
+    OrderedDictionary* huespedes_encontrados = new OrderedDictionary();
+
+    /*por cada string contenida en mi lista de huespedes_seleccionados*/
+    for(IIterator* it = lista_huespedes_seleccionados -> getIterator(); it -> hasCurrent(); it -> next()){
+        /*casteo el ICollectible a string*/
+        String* email_huesped = dynamic_cast<String*>(it -> getCurrent());
+        /*con esa string hago una ik*/
+        IKey* ik_email_huesped = new String(email_huesped -> getValue());
+        /*con esa ik encuentro al huesped*/
+        Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email_huesped));
+        /*guardo al huesped encontrado*/
+        huespedes_encontrados -> add(ik_email_huesped,huesped);
+    }
+
+    hostal -> agregar_reserva(contador_reserva,numero_habitacion, huespedes_encontrados, checkin, checkout);
 }
 
 OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
@@ -443,6 +451,53 @@ OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_
     return lista_hab_disponibles;
 }
 
+OrderedDictionary* Controlador::obtener_habitaciones_grupales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
+    OrderedDictionary* lista_hab_disponibles = new OrderedDictionary();
+    bool disponible = false;
+    
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+    Hostal* hostal = dynamic_cast<Hostal*>(this -> hostales -> find(ik_hostal));
+
+    /* Se recorren todas las habitaciones que tiene el hostal */
+    for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
+        int flag_disponible = 0;
+
+        Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
+        IKey* ik_habitacion = new Integer(habitacion -> get_numero());
+
+        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() < 1) { 
+            disponible = true;
+        }else if(habitacion -> get_capacidad() <= 1){
+            disponible = false;
+            flag_disponible += 1;
+        }
+
+        if(!(habitacion -> get_reservas() -> isEmpty())){
+            for(IIterator* it = habitacion -> get_reservas() -> getIterator(); it -> hasCurrent(); it -> next()){
+                Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
+                
+                if(reserva -> get_estado() == Cerrada || habitacion -> get_capacidad() <= 1){
+                    disponible = false;
+                    flag_disponible += 1;
+                }
+                if(!comparar_fechas_reserva(reserva, checkin, checkout)){ //el motivo de este if se explica en la definicion de 'flag_disponible'
+                    flag_disponible += 1;
+                }
+            }     
+        }
+        //se agrega a la lista solo cuando la habitacion no tenia reservas o NINGUNA de sus reservas se solapa con las fechas deseadas
+        if(disponible == true || flag_disponible == 0){ 
+            DTHabitacion* dt_habitacion = new DTHabitacion(habitacion -> get_DT());
+            lista_hab_disponibles -> add(ik_habitacion, dt_habitacion);
+        }
+        disponible = false; //lo setea para el siguiente bucle del for
+    }
+    
+    return lista_hab_disponibles;
+}
+
 OrderedDictionary* Controlador::obtener_huespedes(){
     OrderedDictionary* email_huespedes= new OrderedDictionary();
 
@@ -460,5 +515,22 @@ OrderedDictionary* Controlador::obtener_huespedes(){
         email_huespedes -> add(ik, huesped_nombre);
     }
     return email_huespedes;
+}
+
+/// @brief devuelve la capacidad de una habitacion valida dentro de un hostal
+/// @param numero_habitacion el numero de la habitacion del que nos interesa saber la capacidad
+/// @param nombre_hostal  el nombre del hostal donde se encuentra la habitacion
+/// @return la capacidad de la habitacion
+int Controlador::obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal){
+
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    IKey* ik_habitacion = new Integer(numero_habitacion);
+    Habitacion* habitacion = dynamic_cast<Habitacion*>(hostal -> get_habitaciones() -> find(ik_habitacion));
+    return habitacion -> get_capacidad();
 }
 /* Fin métodos auxiliares*/

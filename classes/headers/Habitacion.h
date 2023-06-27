@@ -5,6 +5,7 @@
 #include "../../ICollection/interfaces/IDictionary.h"
 #include "Hostal.h"
 #include "../../classes/headers/ReservaIndividual.h"
+#include "../../classes/headers/ReservaGrupal.h"
 
 class Habitacion: public ICollectible {
     private:
@@ -31,6 +32,7 @@ class Habitacion: public ICollectible {
         DTHabitacion get_DT();
         OrderedDictionary* get_reservas();
         void crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout);
+        void crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout);
 };
 
 #endif // HABITACION_H_

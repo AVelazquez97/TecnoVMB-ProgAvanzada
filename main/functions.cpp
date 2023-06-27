@@ -472,44 +472,90 @@ void realizar_reserva(){
 			getline(cin,str_tipo);
 		}
 		
-		if(str_tipo == "0"){ //Reserva Individual
-			tipo = false;
-			/* en obtener_habitaciones se tiene que implementar el filtro de habitaciones segun fecha */
-			OrderedDictionary* habitaciones = controlador -> obtener_habitaciones_individuales(nombre_hostal, str_tipo, &checkin, &checkout);
-			cout << endl << GREEN << "Mostrando informacion sobre las habitaciones individuales del hostal: " << nombre_hostal << NC << endl;
-			
-			for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
-				DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
-				cout << "| Habitacion nro. " << habitacion -> get_numero() << " |" << endl 
-				<< "| Precio: " << habitacion -> get_precio() << " |" << endl << endl;
-    		}
+			if(str_tipo == "0"){ //Reserva Individual
+				tipo = false;
+				/* en obtener_habitaciones se tiene que implementar el filtro de habitaciones segun fecha */
+				OrderedDictionary* habitaciones = controlador -> obtener_habitaciones_individuales(nombre_hostal, str_tipo, &checkin, &checkout);
+				cout << endl << GREEN << "Mostrando informacion sobre las habitaciones individuales del hostal: " << nombre_hostal << NC << endl;
+				
+				for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
+					DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
+					cout << "| Habitacion nro. " << habitacion -> get_numero() << " |" << endl 
+					<< "| Precio: " << habitacion -> get_precio() << " |" << endl << endl;
+				}
 
-			while(!habitacion_valida){
-				cout << "Ingrese el numero de la habitacion deseada" << endl;
-				getline(cin,str_numero_habitacion);
-				IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
-				habitacion_valida = habitaciones -> member(ik_habitacion);
-			}
-			numero_habitacion = stoi(str_numero_habitacion);
+				while(!habitacion_valida){
+					cout << "Ingrese el numero de la habitacion deseada" << endl;
+					getline(cin,str_numero_habitacion);
+					IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
+					habitacion_valida = habitaciones -> member(ik_habitacion);
+				}
+				numero_habitacion = stoi(str_numero_habitacion);
 
-			do{
-				obtener_huespedes();
-				cout << "Ingrese huesped que realiza la reserva:" << endl;
-				getline(cin,email_huesped);
-			}while(!controlador -> verificar_email(email_huesped));
+				do{
+					obtener_huespedes();
+					cout << "Ingrese huesped que realiza la reserva:" << endl;
+					getline(cin,email_huesped);
+				}while(!controlador -> verificar_email(email_huesped));
 
-			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
-			controlador -> set_contador((controlador -> get_contador()) + 1);
-		}else if(str_tipo == "1"){ //Reserva Grupal
-			tipo = true;
+				controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
+				controlador -> set_contador((controlador -> get_contador()) + 1);
+			}else if(str_tipo == "1"){ //Reserva Grupal
+				tipo = true;
 
-			//abro un for que vaya hasta la capacidad de la habitacion
-				//mostrar los huespedes
-				//y adentro del for voy recibiendo emails de huespedes
-				//hasta que el usuario quiera continuar y salgo con un break
-			//llamar a reserva grupal
-		}
-		
+				OrderedDictionary* habitaciones = controlador -> obtener_habitaciones_grupales(nombre_hostal, str_tipo, &checkin, &checkout);
+				cout << endl << GREEN << "Mostrando informacion sobre las habitaciones grupales del hostal: " << nombre_hostal << NC << endl;
+				
+				for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
+					DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
+					cout << "| Habitacion nro. " << habitacion -> get_numero() << " |" << endl 
+					<< "| Precio: " << habitacion -> get_precio() << " |" << endl
+					<< "| Capacidad: " << habitacion -> get_capacidad() << " |" << endl << endl;
+				}
+
+				while(!habitacion_valida){
+					cout << "Ingrese el numero de la habitacion deseada" << endl;
+					getline(cin,str_numero_habitacion);
+					IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
+					habitacion_valida = habitaciones -> member(ik_habitacion);
+				}
+				numero_habitacion = stoi(str_numero_habitacion);
+				/*lista con los emails de los huespedes seleccionados para la reserva*/
+				OrderedDictionary* lista_huespedes_seleccionados = new OrderedDictionary();
+				bool seguir_ingresando = true;
+					for (int i = 0; i < controlador -> obtener_capacidad_habitacion(numero_habitacion, nombre_hostal); i++){
+							do{
+							obtener_huespedes();
+							cout << "Ingrese un huesped o ingrese 'parar' para dejar de ingresar huespedes:" << endl;
+							getline(cin,email_huesped);
+								//si quiere dejar de ingresar huespedes pero no tiene ninguno registrado
+								if(email_huesped == "parar" && lista_huespedes_seleccionados -> getSize() < 1){
+									cout << RED << "Debe ingresar al menos un huesped, intente denuevo." << NC << endl;
+									seguir_ingresando = true;
+									press_enter();
+								//si quiere dejar de ingresar huespedes y tiene al menos uno registrado
+								}else if(email_huesped == "parar" && lista_huespedes_seleccionados -> getSize() >= 1){
+									seguir_ingresando = false;
+									i = controlador -> obtener_capacidad_habitacion(numero_habitacion, nombre_hostal); //me aseguro que el for pare
+								}
+							}while(!controlador -> verificar_email(email_huesped) && seguir_ingresando);
+						/*en caso de que haya salido del while y no haya sido porque puso parar*/
+						if(email_huesped != "parar"){
+							cout << endl << CYAN << "Huesped con el mail: "<< email_huesped << " ingresado a la reserva correctamente" << NC << endl;
+							
+							char parce_email_huesped[email_huesped.length()+1];
+							strcpy(parce_email_huesped,email_huesped.c_str());
+
+							IKey* ik_huesped = new String(parce_email_huesped); //creo la IK
+
+							String* email_huesped = new String(parce_email_huesped); //creo un icollectible con el email_huesped
+
+							lista_huespedes_seleccionados -> add(ik_huesped,email_huesped);	
+						}
+					}
+					controlador -> alta_reserva_grupal(nombre_hostal, numero_habitacion, lista_huespedes_seleccionados, &checkin, &checkout);
+					controlador -> set_contador((controlador -> get_contador()) + 1);
+			}	
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -686,7 +732,7 @@ void datos_prueba(){
 	istringstream iss_4("30/06/22 - 11");
 	iss_4 >> get_time(&checkout_4, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
-	/* ======================================================================================================= */
+	// /* ======================================================================================================= */
 	
 	/* Estadías */
 		// Ref  Reserva  Huesped Check in

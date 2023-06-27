@@ -15,6 +15,8 @@ ReservaIndividual::ReservaIndividual(
     Huesped* ptr_huesped
 ):Reserva(codigo,checkin, checkout, estado_reserva, ptr_habitacion){
     this -> ptr_huesped = ptr_huesped;
+    /*le asigno al huesped responsable esta nueva reserva creada*/
+    ptr_huesped -> asignar_reserva(this);
 }
 
 #endif // RESERVAINDIVIDUAL_CPP_

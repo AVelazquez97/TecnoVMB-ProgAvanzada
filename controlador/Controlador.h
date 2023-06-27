@@ -58,7 +58,7 @@ class Controlador: public IControlador {
         void alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal);
         void asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo);
         void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout);
-        void alta_reserva_grupal(string nom_hostal,int Nhabitacion,string emails[]);
+        void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout);
 		/* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -72,7 +72,9 @@ class Controlador: public IControlador {
         DTHuesped obtener_huesped_completo(string email);
         DTEmpleado obtener_empleado_completo(string email);
         OrderedDictionary* obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout);
+        OrderedDictionary* obtener_habitaciones_grupales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout);
         OrderedDictionary* obtener_huespedes();
+        int obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal);
         /* Fin operaciones auxiliares*/
 };
     
