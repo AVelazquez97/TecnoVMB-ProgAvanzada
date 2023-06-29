@@ -19,4 +19,5 @@ ReservaIndividual::ReservaIndividual(
     ptr_huesped -> asignar_reserva(this);
 }
 
+
 #endif // RESERVAINDIVIDUAL_CPP_

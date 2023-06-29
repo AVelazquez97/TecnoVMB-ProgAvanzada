@@ -1,7 +1,7 @@
 #ifndef RESERVA_CPP_
 #define RESERVA_CPP_
 #include "../headers/Reserva.h"
-
+#include "../headers/Habitacion.h"
 Reserva::Reserva(){}
 
 
@@ -34,7 +34,9 @@ void Reserva::set_checkout(tm* checkout){
 int Reserva::get_codigo(){
     return this -> codigo;
 }
-
+Habitacion* Reserva::get_puntero_habitacion(){
+    return ptr_habitacion;
+}
 tm* Reserva::get_checkin(){
     time_t checkin = chrono::system_clock::to_time_t(this->checkin);
     tm* checkin_tm = localtime(&checkin);
@@ -44,7 +46,9 @@ tm* Reserva::get_checkin(){
 chrono::system_clock::time_point Reserva::get_checkin_chrono(){
     return this -> checkin;
 }
-
+DTReserva Reserva::getDT(){
+    return DTReserva(this -> get_codigo(), this -> get_checkin(),this -> get_checkout(), this -> get_estado());
+}
 tm* Reserva::get_checkout(){
     time_t checkout = chrono::system_clock::to_time_t(this->checkout);
     tm* checkout_tm = localtime(&checkout);
@@ -58,5 +62,7 @@ chrono::system_clock::time_point Reserva::get_checkout_chrono(){
 Estado Reserva::get_estado(){
     return this -> estado_reserva;
 }
-
+bool Reserva::pertenece_a_hostal(string nombre_hostal){
+    return ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
+}
 #endif // RESERVA_CPP_

@@ -20,7 +20,13 @@ Habitacion::Habitacion(int numero, float precio, int capacidad, Hostal* puntero_
     this -> estadias = new OrderedDictionary();
     this -> reservas = new OrderedDictionary();
 }
-
+bool Habitacion::pertenece_a_hostal(string nombre_hostal){
+    if(puntero_hostal -> get_nombre() == nombre_hostal){
+        return true;
+    }else{
+        return false;
+    }
+}
 Habitacion::Habitacion(const Habitacion& original){
     numero = original.numero;
     precio = original.precio;

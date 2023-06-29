@@ -20,6 +20,7 @@
 /* Datatypes */
 #include "../datatypes/headers/DTHuesped.h"
 #include "../datatypes/headers/DTEmpleado.h"
+#include "../datatypes/headers/DTReserva.h"
 /* Enums */
 #include "../enums/EnumCargo.h"
 #include "../enums/EnumComparacionFecha.h"

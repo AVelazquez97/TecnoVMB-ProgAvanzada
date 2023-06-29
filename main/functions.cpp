@@ -149,7 +149,21 @@ void obtener_hostales() {
 		"| Telefono: " << hostal -> get_telefono() << " |" << endl << endl;
     }
 }
+void obtener_reserva_usuario(string nombre_hostal, string email) {
+	OrderedDictionary* DTReservas = new OrderedDictionary();
+	cout<<"1";
+	DTReservas = controlador -> obtener_reserva_usuario(nombre_hostal,email);
+	cout<<"2";
+	cout << endl << GREEN << "| Lista de reservas no canceladas |" << NC << endl << endl;
 
+	for(IIterator* it = DTReservas -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTReserva* reserva = dynamic_cast<DTReserva*>(it -> getCurrent());
+        cout << "| Codigo: " << reserva->get_codigo() << " |" << endl <<
+		"| Chekin: " << reserva -> get_checkin() ->tm_mday <<"-"<<reserva -> get_checkin() ->tm_mon + 1<<"-"<< reserva -> get_checkin() ->tm_year   << " |" << endl <<
+		"| Checkout: " << reserva -> get_checkout() ->tm_mday <<"-"<<reserva -> get_checkout() ->tm_mon + 1<<"-"<< reserva -> get_checkout() ->tm_year   <<
+		 " |" << endl<< "| Estado: " << reserva -> get_estado()<<"|"<<endl << endl;
+    }
+}
 /// @brief lo mismo que obtener_hostales pero adicionalmente muestra el promedio de calificación de cada hostal
 void obtener_hostales_con_promedio() {
 	OrderedDictionary* DTHostales = new OrderedDictionary();
@@ -566,6 +580,22 @@ void consultar_top_3(){
 }
 
 void registrar_estadia(){
+	string limpiar_buffer;
+	getline(cin,limpiar_buffer);
+	obtener_hostales();
+	string email_huesped;
+	string nombre_hostal;
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	cout << "Ingrese el nombre del hostal al que pertenece la habitacion: " << endl;
+	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	cout << "Ingrese el email del huesped que hizo la reserva para registrar la estadia: " << endl;
+	getline(cin,email_huesped);
+	if(email_huesped == "salir"){return;} /* en caso de que desee salir*/
+	obtener_reserva_usuario(nombre_hostal,email_huesped);
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 

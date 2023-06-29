@@ -533,4 +533,36 @@ int Controlador::obtener_capacidad_habitacion(int numero_habitacion, string nomb
     Habitacion* habitacion = dynamic_cast<Habitacion*>(hostal -> get_habitaciones() -> find(ik_habitacion));
     return habitacion -> get_capacidad();
 }
+
+
+OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,string email){
+    OrderedDictionary* DTreservas_usuario = new OrderedDictionary();
+
+    char parce_nombre_email[email.length()+1];
+    strcpy(parce_nombre_email,email.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    for(IIterator* it = huesped -> get_reservas_individuales()->getIterator(); it -> hasCurrent(); it -> next()){
+        ReservaIndividual* reserva_individual = dynamic_cast<ReservaIndividual*>(it -> getCurrent());
+
+        if(reserva_individual -> pertenece_a_hostal(nombre_hostal) && reserva_individual->get_estado() == 0){
+            IKey* ik_reserva_individual = new Integer(reserva_individual -> get_codigo());
+            DTReserva* reserva = new DTReserva(reserva_individual ->get_codigo(),reserva_individual ->get_checkin(),reserva_individual ->get_checkout(),reserva_individual ->get_estado());
+            DTreservas_usuario -> add(ik_reserva_individual,reserva);
+        }
+    }
+    for(IIterator* it = huesped -> get_reservas_grupales()->getIterator(); it -> hasCurrent(); it -> next()){
+        ReservaGrupal* reserva_grupal = dynamic_cast< ReservaGrupal*>(it -> getCurrent());
+
+        if(reserva_grupal -> pertenece_a_hostal(nombre_hostal) && reserva_grupal->get_estado() == 0){
+            IKey* ik_reserva_grupal = new Integer(reserva_grupal -> get_codigo());
+            DTReserva* reserva = new DTReserva(reserva_grupal ->get_codigo(),reserva_grupal ->get_checkin(),reserva_grupal ->get_checkout(),reserva_grupal ->get_estado());
+            DTreservas_usuario -> add(ik_reserva_grupal,reserva);
+        }
+    }
+    return DTreservas_usuario;
+    //FALTA CHECKEAR ESTO CUANDO SE PUEDA CANCElAR UNA RESERVA
+}
 /* Fin métodos auxiliares*/
+//

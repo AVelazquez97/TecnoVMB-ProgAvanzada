@@ -1,6 +1,7 @@
 #ifndef RESERVA_H_
 #define RESERVA_H_
 #include "../../ICollection/interfaces/ICollectible.h"
+#include "../../datatypes/headers/DTReserva.h"
 #include "../../enums/EnumEstado.h"
 #include <chrono>
 #include <iostream>
@@ -22,6 +23,9 @@ class Reserva: public ICollectible{
         void set_checkout(tm* checkout);
         int get_codigo();
         tm* get_checkin();
+        DTReserva getDT();
+        bool pertenece_a_hostal(string nombre_hostal);
+        Habitacion* get_puntero_habitacion();
         /*devuelve el atributo checkin en otro tipo de dato, como no podia 
         tener el mismo nombre de 'get_checkin' se le agrega chrono ya que el tipo
         de dato que devuelve le pertenece a esa libreria*/

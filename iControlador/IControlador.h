@@ -59,6 +59,7 @@ class IControlador {
         virtual OrderedDictionary* obtener_habitaciones_grupales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout) = 0;
         virtual OrderedDictionary* obtener_huespedes() = 0;
         virtual int obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal) = 0;
+        virtual OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email) = 0;
         /* Fin operaciones auxiliares*/
 };
 
