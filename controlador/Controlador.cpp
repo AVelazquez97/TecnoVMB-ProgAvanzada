@@ -534,6 +534,70 @@ int Controlador::obtener_capacidad_habitacion(int numero_habitacion, string nomb
     return habitacion -> get_capacidad();
 }
 
+/*esta es una primera aproximacion donde se va a devolver el top 3 de hostales basados en un promedio
+cargado a mano y no calculado por las habitaciones como deberia ser en la implementacion final*/
+OrderedDictionary* Controlador::obtener_top_3_hostales(){
+    /*lista donde se van a guardar los dts de todos los hostales
+    que tenga en mi controlador*/
+    OrderedDictionary* lista_dt_hostales = new OrderedDictionary();
+    DTHostal* top1 = new DTHostal();
+    DTHostal* top2 = new DTHostal();
+    DTHostal* top3 = new DTHostal();
+    OrderedDictionary* lista_top_3 = new OrderedDictionary();
+
+    /*paso todos los objetos a dts*/
+    for(IIterator* it = hostales -> getIterator(); it -> hasCurrent(); it -> next()){
+        Hostal* hostal = dynamic_cast<Hostal*>(it -> getCurrent());
+
+        char parce_char[hostal -> get_nombre().length()+1];
+        strcpy(parce_char,hostal -> get_nombre().c_str());
+
+        IKey* ik_hostal = new String(parce_char);
+        
+        DTHostal* dt_hostal = new DTHostal(hostal -> get_DT());
+        lista_dt_hostales -> add(ik_hostal, dt_hostal);
+    }
+    
+    /*por cada ciclo recorre mi 'lista_dt_hostales' y encuentra el valor 'maximo',
+    este proceso se repite 3 veces por lo que en el primer ciclo va a encontrar el valor maximo
+    y una vez terminada la iteracion entre los distintos hostales (el segundo for) va a guardarlo
+    en mi lista_top_3 y luego lo saca de mi lista de hostales ya que dicho hostal no lo quiero
+    seguir teniendo en cuenta para hacer el top
+    
+    los Ordered Dictionary se ordenan descendientemente de forma automatica, y dado que la ik con
+    la que guardo cada valor es el i del for, este tiene que ir de mayor a menor para que 
+    cuando iteremos se muestren en un orden con sentido. En cuanto a los valores arbitrarios de 3 y 1
+    es para intentar representar que estamos manejando puestos pero en verdad podrian haber sido cualquier
+    valor.
+
+    ik con i = 3 es el primer puesto
+    ik con i = 2 es el segundo puesto
+    ik con i = 1 es el tercer puesto*/
+    for(int i = 3; i >= 1; i--){
+        DTHostal* maximo = new DTHostal();
+        
+        for(IIterator* it = lista_dt_hostales -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTHostal* dt_hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
+        float promedio_hostal_actual = dt_hostal -> get_promedio();
+            if(promedio_hostal_actual >= maximo -> get_promedio()){
+                maximo = dt_hostal;
+            }
+        }
+        IKey* ik_puesto = new Integer(i);
+        
+        lista_top_3 -> add(ik_puesto,maximo);
+
+        char char_ik_maximo[maximo -> get_nombre().length()+1];
+        strcpy(char_ik_maximo,maximo -> get_nombre().c_str());
+
+        IKey* ik_maximo = new String(char_ik_maximo);
+        /*saco este hostal para no tenerlo en cuenta en mi siguiente busqueda*/
+        lista_dt_hostales -> remove(ik_maximo);
+    } 
+
+    return lista_top_3;
+}
+
 
 OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,string email){
     OrderedDictionary* DTreservas_usuario = new OrderedDictionary();

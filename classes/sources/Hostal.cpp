@@ -20,7 +20,7 @@ Hostal::Hostal(DTHostal nuevo_hostal){
     this -> habitaciones = new OrderedDictionary();
     this -> reviews = new OrderedDictionary();
     this -> empleados = new OrderedDictionary();
-    this -> promedio = 0;
+    this -> promedio = nuevo_hostal.get_promedio();
 }
 
 Hostal::Hostal(string nombre, string direccion, string telefono){

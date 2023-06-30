@@ -4,7 +4,7 @@
 #include <iostream>
 
 DTHostal::DTHostal(){
-
+    this -> promedio = 0;
 }
 
 DTHostal::DTHostal(string nombre, string direccion, string telefono){

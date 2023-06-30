@@ -43,6 +43,7 @@ class IControlador {
         virtual void asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo) = 0;
         virtual void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout) = 0;
         virtual void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout) = 0;
+        virtual OrderedDictionary* obtener_top_3_hostales() = 0;
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/

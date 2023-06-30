@@ -576,6 +576,17 @@ void realizar_reserva(){
 }
 
 void consultar_top_3(){
+	OrderedDictionary* lista_top_3 = controlador -> obtener_top_3_hostales();
+	cout << GREEN << "Mostrando el top 3 de hostales" << NC << endl << endl; 
+    int puesto = 1;
+    for(IIterator* it = lista_top_3 -> getIterator(); it -> hasCurrent(); it -> next()){
+        
+        DTHostal* dt_hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
+        cout << GREEN << "|posicion: " << puesto << " |" << NC << endl <<
+		"|nombre: " << dt_hostal -> get_nombre() << " |" << endl <<
+		"|promedio: " << dt_hostal -> get_promedio() << " |" << endl << endl;
+        puesto += 1;
+    }
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
@@ -710,7 +721,6 @@ void datos_prueba(){
 	/*Habitaciones*/
 	controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
-	controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger"); // hay que borrarlo despues XD
 	controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger"); 
 	controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
@@ -720,7 +730,13 @@ void datos_prueba(){
 	controlador -> asignar_empleado_hostal("Mochileros","leo@mail.com",Recepcion);
 	controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
 	controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
- 	
+ 	/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
+	controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger"); // hay que borrarlo despues XD
+	controlador -> alta_hostal(DTHostal("prueba2","Rambla Costanera 333,Rocha","42579512",1.2));
+	controlador -> alta_hostal(DTHostal("prueba1","Av de la playa 123,Maldonado","099111111",0.3));
+	controlador -> alta_hostal(DTHostal("prueba3","Bree (preguntar por Gandalf)","000",4.5));
+	
+
 	/* Reservas */
 	/* ======================================================================================================= */
 	// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
