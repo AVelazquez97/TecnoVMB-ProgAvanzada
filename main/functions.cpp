@@ -693,19 +693,6 @@ void modificar_fecha() {
 
 		fecha_valida = verificar_fecha(fecha_hora_str, &nueva_fecha);	
 	}
-	/*========== borrar luego, es solo para probar la comparación de fechas ==========*/
-	// switch (controlador->compararFechas(&nueva_fecha)) {
-	// 	case ComparacionFecha::Menor: // 0
-	// 		cout << "La fecha nueva es menor que la fecha existente." << endl;
-	// 		break;
-	// 	case ComparacionFecha::Igual: // 1
-	// 		cout << "La fecha nueva es igual a la fecha existente." << endl;
-	// 		break;
-	// 	case ComparacionFecha::Mayor: // 2
-	// 		cout << "La fecha nueva es mayor que la fecha existente." << endl;
-	// 		break;
-	// }
-    /*========== borrar luego, es solo para probar la comparación de fechas ==========*/
 	controlador->set_fecha_sistema(&nueva_fecha);
 
 	cout << endl << "Nueva fecha del sistema: ";
