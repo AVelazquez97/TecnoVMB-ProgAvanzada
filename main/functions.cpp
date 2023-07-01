@@ -160,7 +160,7 @@ void obtener_reserva_usuario(string nombre_hostal, string email) {
 	for(IIterator* it = DTReservas -> getIterator(); it -> hasCurrent(); it -> next()){
 		
         DTReserva* reserva = dynamic_cast<DTReserva*>(it -> getCurrent());
-		auto checkout = chrono::system_clock::to_time_t(reserva -> get_checkout_chrono());
+		auto checkout = chrono::system_clock::to_time_t(reserva -> get_checkout_chrono()); // Esto que función cumple?
 		auto checkin = chrono::system_clock::to_time_t(reserva -> get_checkin_chrono());
         cout << "| Codigo: " << reserva->get_codigo() << " |" << endl <<
 		"| Chekin: " << reserva -> get_checkin() ->tm_mday << " |" << endl <<
@@ -731,7 +731,6 @@ void datos_prueba(){
 	/*Habitaciones*/
 	controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
-	controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger"); // hay que borrarlo despues XD
 	controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger"); 
 	controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
@@ -742,6 +741,12 @@ void datos_prueba(){
 	controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
 	controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
  	
+	/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
+	controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger"); // hay que borrarlo despues XD
+	controlador -> alta_hostal(DTHostal("prueba2","Rambla Costanera 333,Rocha","42579512",1.2));
+	controlador -> alta_hostal(DTHostal("prueba1","Av de la playa 123,Maldonado","099111111",0.3));
+	controlador -> alta_hostal(DTHostal("prueba3","Bree (preguntar por Gandalf)","000",4.5));
+
 	/* Reservas */
 	/* ======================================================================================================= */
 	// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
