@@ -76,17 +76,17 @@ DTHabitacion Habitacion::get_DT(){
     return DTHabitacion(this -> get_numero(),this -> get_precio(),this -> get_capacidad());
 }
 
-void Habitacion::crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout){
+void Habitacion::crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout, bool tipo){
     
-    ReservaIndividual* ri = new ReservaIndividual(codigo,checkin,checkout,Abierta,this,huesped); //cambiar el codigo
+    ReservaIndividual* ri = new ReservaIndividual(codigo,checkin,checkout,Abierta,this,huesped,tipo); //cambiar el codigo
     IKey* ik_ri = new Integer(ri -> get_codigo());
     this -> reservas -> add(ik_ri,ri);
 
 }
 
-void Habitacion::crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout){
+void Habitacion::crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout, bool tipo){
     
-    ReservaGrupal* rg = new ReservaGrupal(codigo,checkin,checkout,Abierta,this,huespedes_encontrados); //cambiar el codigo
+    ReservaGrupal* rg = new ReservaGrupal(codigo,checkin,checkout,Abierta,this,huespedes_encontrados,tipo); //cambiar el codigo
     IKey* ik_rg = new Integer(rg -> get_codigo());
     this -> reservas -> add(ik_rg,rg);
 

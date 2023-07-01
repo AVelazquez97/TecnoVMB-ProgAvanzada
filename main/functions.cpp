@@ -115,6 +115,11 @@ void imprimir_fecha(tm* fecha) {
 	cout << CYAN "" << put_time(fecha, "%d/%m/%y - %H") << " hs" NC << endl << endl;
 }
 
+void imprimir_fecha_sin_salto(tm* fecha) { 
+    // Imprimir la fecha y hora en un formato legible
+	cout << CYAN "" << put_time(fecha, "%d/%m/%y - %H") << " hs" NC;
+}
+
 /// @brief verifica si la fecha ingresada cumple con el formato establecido.
 /// Si lo cumple, se modifica la estructura que recibe por parámetro 
 /// @return true si el formato es correo, de lo contrario false 
@@ -163,8 +168,8 @@ void obtener_reserva_usuario(string nombre_hostal, string email) {
 		auto checkout = chrono::system_clock::to_time_t(reserva -> get_checkout_chrono()); // Esto que función cumple?
 		auto checkin = chrono::system_clock::to_time_t(reserva -> get_checkin_chrono());
         cout << "| Codigo: " << reserva->get_codigo() << " |" << endl <<
-		"| Chekin: " << reserva -> get_checkin() ->tm_mday << " |" << endl <<
-		"| Checkout: " <<  reserva -> get_checkout() ->tm_mday  <<
+		"| Chekin: " << reserva -> get_checkin() << " |" << endl <<
+		"| Checkout: " <<  reserva -> get_checkout() <<
 		 " |" << endl<< "| Estado: " << reserva -> get_estado()<<"|"<<endl << endl;
     }
 }
@@ -702,7 +707,45 @@ void consulta_hostal(){
 }
 
 void consulta_reserva(){
-	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+	string nombre_hostal = "";
+
+	string limpiar_buffer;
+	getline(cin,limpiar_buffer);
+
+	obtener_hostales_con_promedio();
+
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	cout << "Ingrese el nombre del hostal en el cual desea consultar la reserva: " << endl;
+	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
+
+	try{
+		controlador -> no_existe_hostal(nombre_hostal);
+
+		cout << GREEN << "Mostrando las reservas del hostal: " << nombre_hostal << NC << endl;
+
+		OrderedDictionary* reservas_hostal = controlador -> obtener_reservas_hostal(nombre_hostal);
+		for(IIterator* it = reservas_hostal -> getIterator(); it -> hasCurrent(); it -> next()){
+        	DTReserva_completo* reserva = dynamic_cast<DTReserva_completo*>(it -> getCurrent());
+		 	cout << "|Codigo: " << CYAN << reserva -> get_codigo() << NC << " |" << endl <<
+			"|Numero habitacion: " << CYAN << reserva -> get_numero_habitacion() << NC << " |" << endl;
+			cout << "|Huesped(es): |" << endl;
+
+			for(IIterator* it_huespedes = reserva -> get_huespedes() -> getIterator(); it_huespedes -> hasCurrent(); it_huespedes -> next()){
+				String* nombre_usuario = dynamic_cast<String*>(it_huespedes -> getCurrent());
+        		cout << "->" << CYAN << nombre_usuario->getValue() << NC << endl;
+			}
+
+			cout << "|Checkin: ";
+			imprimir_fecha_sin_salto(reserva -> get_checkin());
+			cout << " |" << endl << "|Checkout: ";
+			imprimir_fecha_sin_salto(reserva -> get_checkout());
+			cout << " |" << endl << endl << endl;
+        }
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
+	}
 }
 
 void consulta_estadia(){

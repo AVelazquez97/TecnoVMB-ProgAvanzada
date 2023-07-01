@@ -31,8 +31,8 @@ class Habitacion: public ICollectible {
         Hostal* get_puntero_hostal();
         DTHabitacion get_DT();
         OrderedDictionary* get_reservas();
-        void crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout);
-        void crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout);
+        void crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout, bool tipo);
+        void crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout, bool tipo);
         bool  pertenece_a_hostal(string nombre_hostal);
 };
 

@@ -10,6 +10,8 @@ class ReservaGrupal: public Reserva{
     public:
         ReservaGrupal();
         ReservaGrupal(int codigo, tm* checkin,tm* checkout,Estado estado,Habitacion* ptr_habitacion,OrderedDictionary* huespedes_encontrados);
+        ReservaGrupal(int codigo, tm* checkin,tm* checkout,Estado estado,Habitacion* ptr_habitacion,OrderedDictionary* huespedes_encontrados, bool tipo);
+        OrderedDictionary* get_huespedes();
 };
 
 #endif // RESERVAGRUPAL_H_

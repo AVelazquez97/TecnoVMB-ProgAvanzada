@@ -18,13 +18,17 @@ class Reserva: public ICollectible{
         Habitacion* ptr_habitacion;
         Estado estado_reserva;
         IDictionary* estadias;
+        //indica si es 0 = individual | 1 = grupal
+        bool tipo;
     public:
         Reserva();
         Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion);
+        Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion, bool tipo);
         void set_checkin(tm* checkin);
         void set_checkout(tm* checkout);
         int get_codigo();
         tm* get_checkin();
+        bool get_tipo();
         DTReserva getDT();
         bool pertenece_a_hostal(string nombre_hostal);
         Habitacion* get_puntero_habitacion();
