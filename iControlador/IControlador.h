@@ -32,8 +32,11 @@ class IControlador {
         virtual ComparacionFecha compararFechas(tm* fechaNueva) = 0;
         /* Fin fecha del sistema*/
 
+        /* Contadores */
         virtual void set_contador(int numero) = 0;
         virtual int get_contador() = 0;
+        virtual void set_contador_estadia(int numero) = 0;
+        virtual int get_contador_estadia() = 0;
 
         /* Operaciones de los casos de uso*/
         virtual void alta_huesped(DTHuesped nuevo_huesped) = 0;
@@ -62,8 +65,7 @@ class IControlador {
         virtual OrderedDictionary* obtener_huespedes() = 0;
         virtual int obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal) = 0;
         virtual OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email) = 0;
-        virtual void set_contador_estadia(int numero) = 0;
-        virtual int get_contador_estadia() = 0;
+
         /* Fin operaciones auxiliares*/
 };
 

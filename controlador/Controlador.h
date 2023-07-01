@@ -40,14 +40,7 @@ class Controlador: public IControlador {
 
 	public:
         ~Controlador();
-        static Controlador* getInstance(); 
-
-        void set_contador(int numero);
-        int get_contador();
-
-        void set_contador_estadia(int numero);
-        int get_contador_estadia();
-        
+        static Controlador* getInstance();        
 
         /* Fecha del sistema*/
         tm* get_fecha_sistema();
@@ -55,6 +48,13 @@ class Controlador: public IControlador {
         ComparacionFecha compararFechas(tm* fechaNueva);
         bool comparar_fechas_reserva(Reserva* r, tm* fecha_deseada_checkin, tm* fecha_deseada_checkout);
 		/* Fin fecha del sistema*/
+
+        /* Contadores */
+        void set_contador(int numero);
+        int get_contador();
+
+        void set_contador_estadia(int numero);
+        int get_contador_estadia();
 
         /* Operaciones de los casos de uso*/
         void alta_huesped(DTHuesped nuevo_huesped);

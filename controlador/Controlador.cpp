@@ -77,8 +77,24 @@ bool Controlador::comparar_fechas_reserva(Reserva* r, tm* fecha_deseada_checkin,
     }
 }
 
-
 /* Fin fecha del sistema*/
+
+/* Contadores */
+void Controlador::set_contador(int numero){
+    contador_reserva = numero;
+}
+
+int Controlador::get_contador(){
+    return contador_reserva;
+}
+
+void Controlador::set_contador_estadia(int numero){
+    contador_estadia = numero;
+}
+
+int Controlador::get_contador_estadia(){
+    return contador_estadia;
+}
 
 /* Métodos de los casos de uso*/
 void Controlador::alta_huesped(DTHuesped nuevo_huesped){
@@ -143,22 +159,6 @@ void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empl
 /* Fin métodos de los casos de uso*/
 
 /* Métodos auxiliares*/
-
-void Controlador::set_contador(int numero){
-    contador_reserva = numero;
-}
-
-int Controlador::get_contador(){
-    return contador_reserva;
-}
-
-void Controlador::set_contador_estadia(int numero){
-    contador_estadia = numero;
-}
-
-int Controlador::get_contador_estadia(){
-    return contador_estadia;
-}
 
 bool Controlador::verificar_email(string entrada){
 
