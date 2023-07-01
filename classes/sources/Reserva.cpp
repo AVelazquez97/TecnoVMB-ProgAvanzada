@@ -27,6 +27,23 @@ Reserva::Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Ha
     this -> estadias = new OrderedDictionary();
 }
 
+Reserva::Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion, bool tipo){
+    this -> codigo = codigo;
+    this -> estado_reserva = estado_reserva;
+    this -> ptr_habitacion = ptr_habitacion;
+    this -> tipo = tipo;
+
+    tm checkin_tm = *checkin;
+    time_t checkin_time = mktime(&checkin_tm);
+    this -> checkin = chrono::system_clock::from_time_t(checkin_time);
+
+    tm checkout_tm = *checkout;
+    time_t checkout_time = mktime(&checkout_tm);
+    this -> checkout = chrono::system_clock::from_time_t(checkout_time);
+
+    this -> estadias = new OrderedDictionary();
+}
+
 void Reserva::set_checkin(tm* checkin){
     tm checkin_tm = *checkin;
     time_t checkin_time = mktime(&checkin_tm);
@@ -49,6 +66,10 @@ tm* Reserva::get_checkin(){
     time_t checkin = chrono::system_clock::to_time_t(this->checkin);
     tm* checkin_tm = localtime(&checkin);
     return checkin_tm;
+}
+
+bool Reserva::get_tipo(){
+    return this -> tipo;
 }
 
 tm* Reserva::get_checkout(){

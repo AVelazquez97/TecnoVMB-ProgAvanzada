@@ -164,6 +164,43 @@ void Controlador::finalizar_estadia(int codigo_estadia,string email_huesped){
     Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
     return ptr_huesped -> existe_estadia_activa(codigo_estadia);
 }
+
+OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
+    OrderedDictionary* dt_reservas_hostal = new OrderedDictionary();
+    
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
+        Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
+            for(IIterator* it_reserva = habitacion -> get_reservas() -> getIterator(); it_reserva -> hasCurrent(); it_reserva -> next()){
+                
+            Reserva* reserva = dynamic_cast<Reserva*>(it_reserva -> getCurrent());
+
+                if(reserva -> get_tipo()){
+                    ReservaGrupal* rg = dynamic_cast<ReservaGrupal*>(it_reserva -> getCurrent());
+                    DTReserva_completo* dt_reserva = new DTReserva_completo(rg);
+                    
+                    IKey* ik_reserva = new Integer(rg -> get_codigo());
+                    
+                    dt_reservas_hostal -> add(ik_reserva,dt_reserva);
+
+                }else{
+                    ReservaIndividual* ri = dynamic_cast<ReservaIndividual*>(it_reserva -> getCurrent());
+                    DTReserva_completo* dt_reserva = new DTReserva_completo(ri);
+                    IKey* ik_reserva = new Integer(ri -> get_codigo());
+                    
+                    dt_reservas_hostal -> add(ik_reserva,dt_reserva);
+
+                }
+            }
+    }
+    return dt_reservas_hostal;
+}
+
 /* Fin métodos de los casos de uso*/
 
 /* Métodos auxiliares*/
@@ -392,7 +429,7 @@ void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habit
 
     Huesped* huesped = dynamic_cast<Huesped*>(this -> huespedes -> find(ik_huesped));
 
-    hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout);
+    hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout, 0);
     this->set_contador((get_contador()) + 1);
 }
 
@@ -419,7 +456,7 @@ void Controlador::alta_reserva_grupal(string nombre_hostal, int numero_habitacio
         huespedes_encontrados -> add(ik_email_huesped,huesped);
     }
 
-    hostal -> agregar_reserva(contador_reserva,numero_habitacion, huespedes_encontrados, checkin, checkout);
+    hostal -> agregar_reserva(contador_reserva,numero_habitacion, huespedes_encontrados, checkin, checkout, 1);
     this->set_contador((get_contador()) + 1);
 }
 

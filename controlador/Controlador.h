@@ -20,6 +20,7 @@
 #include "../datatypes/headers/DTUsuario.h"
 #include "../datatypes/headers/DTHuesped.h"
 #include "../datatypes/headers/DTEmpleado.h"
+#include "../datatypes/headers/DTReserva_completo.h"
 
 
 /// @brief el controlador realiza todas las operaciones del sistema.
@@ -66,6 +67,7 @@ class Controlador: public IControlador {
         OrderedDictionary* obtener_top_3_hostales();
         void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal);
         void finalizar_estadia(int codigo_estadia,string email_huesped);
+        OrderedDictionary* obtener_reservas_hostal(string nombre_hostal);
 		/* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/

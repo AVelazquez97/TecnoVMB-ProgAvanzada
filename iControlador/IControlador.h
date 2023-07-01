@@ -49,6 +49,7 @@ class IControlador {
         virtual OrderedDictionary* obtener_top_3_hostales() = 0;
         virtual void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal) = 0;
         virtual void finalizar_estadia(int codigo_estadia,string email_huesped) = 0;
+        virtual OrderedDictionary* obtener_reservas_hostal(string nombre_hostal) = 0;
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
