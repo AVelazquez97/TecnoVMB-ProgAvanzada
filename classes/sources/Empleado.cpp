@@ -50,8 +50,10 @@ Cargo Empleado::get_cargo(){
 DTEmpleado Empleado::get_DT(){
     return DTEmpleado(this->get_nombre(), this -> get_email(),"",this -> puntero_hostal->get_nombre(), this -> get_cargo());
 }
+
 void Empleado::asignar_cargo(Cargo cargo ,Hostal* puntero_hostal){
     this -> cargo = cargo;
     this -> puntero_hostal = puntero_hostal;
 }
+
 #endif // EMPLEADO_CPP_

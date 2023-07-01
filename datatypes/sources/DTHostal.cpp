@@ -37,4 +37,12 @@ float DTHostal::get_promedio(){
     return this -> promedio;
 }
 
+ostream& operator << (ostream& salida, DTHostal hostal) {
+    salida << "| Nombre: " << hostal.get_nombre() << " |" << endl <<
+		"| Direccion: " << hostal.get_direccion() << " |" << endl <<
+		"| Telefono: " << hostal.get_telefono() << " |" << endl <<
+		"| Calificación Promedio: " << hostal.get_promedio() << " |" << endl << endl;
+    return salida;
+} 
+
 #endif // DTHOSTAL_CPP_

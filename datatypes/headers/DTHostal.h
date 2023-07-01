@@ -18,6 +18,7 @@ class DTHostal: public ICollectible{
         string get_direccion();
         string get_telefono();
         float get_promedio();
+        friend ostream& operator << (ostream& salida, DTHostal hostal);
 };
 
 #endif // DTHOSTAL_H_

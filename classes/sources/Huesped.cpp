@@ -31,6 +31,7 @@ OrderedDictionary* Huesped::get_reservas_individuales(){
 OrderedDictionary* Huesped::get_reservas_grupales(){
     return dynamic_cast<OrderedDictionary*>(reservas_grupales);
 }
+
 DTHuesped Huesped::get_DT(){
     return DTHuesped(this -> get_nombre(), this -> get_email(), this -> get_contrasena(), this -> get_es_tecno());
 }

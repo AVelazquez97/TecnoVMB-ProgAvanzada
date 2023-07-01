@@ -26,3 +26,13 @@ string DTHuesped::get_contrasena(){
 bool DTHuesped::get_es_tecno(){
     return this -> es_tecno;
 }
+
+ostream& operator << (ostream& salida, DTHuesped huesped) {
+    string tecnopacker = huesped.get_es_tecno() ? "Sí" : "No";
+
+    salida  << "| Nombre: " << huesped.get_nombre() << " |" << endl <<
+	"| Email: " << huesped.get_email() << " |" << endl <<
+	"| ¿Es tecnopacker?: " << tecnopacker << " |" << endl;
+
+    return salida;
+} 

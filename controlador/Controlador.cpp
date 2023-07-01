@@ -233,7 +233,10 @@ OrderedDictionary* Controlador::obtener_hostales(){
     ¿tendria que hacerle el delete a cada hostal_singular?
     en caso de hacerlo, no pierdo esa informacion de la lista tambien?
     */
-   
+    /* Alexis - En este caso el ttl del objeto hostal singular, es en el scope del for, al salir del bucle se libera. 
+     En cuanto a la lista de hostales, no se debe eliminar nunca ya que es una puntero del controlador y permanece por 
+     toda la ejecución del programa. En todo caso se podría poner en el destructor para que se libere */
+
     //4. devolver la lista
     return DTHostales;
 }

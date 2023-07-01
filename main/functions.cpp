@@ -177,10 +177,7 @@ void obtener_hostales_con_promedio() {
 
 	for(IIterator* it = DTHostales -> getIterator(); it -> hasCurrent(); it -> next()){
         DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
-        cout << "| Nombre: " << hostal->get_nombre() << " |" << endl <<
-		"| Direccion: " << hostal -> get_direccion() << " |" << endl <<
-		"| Telefono: " << hostal -> get_telefono() << " |" << endl <<
-		"| Promedio: " << hostal -> get_promedio() << " |" << endl << endl;
+		cout << *hostal;
     }
 }
 
@@ -231,22 +228,15 @@ void obtener_huespedes(){
 /// @brief permite listar la información detallada de un huesped determinado 
 void obtener_huesped_completo(string email) {
 	DTHuesped huesped_completo = controlador -> obtener_huesped_completo(email);
-	cout << endl << GREEN << "Mostrando informacion sobre el huesped con el email: " << email << NC << endl <<
-	"| Nombre: " << huesped_completo.get_nombre() << " |" << endl <<
-	"| Email: " << huesped_completo.get_email() << " |" << endl <<
-	"| ¿Es tecno?(0 = no | 1 = si):" << huesped_completo.get_es_tecno() << " |" << endl;
+	cout << endl << GREEN << "Mostrando informacion sobre el huesped con el email: " << email << NC << endl;
+	cout << huesped_completo;
 }
 
 /// @brief permite listar la información detallada de un empleado determinado
 void obtener_empleado_completo(string email) {
 	DTEmpleado empleado_completo = controlador -> obtener_empleado_completo(email);
-
-	cout << endl << GREEN << "Mostrando informacion sobre el empleado con el email: " << email << NC << endl <<
-	"| Nombre: " << empleado_completo.get_nombre() << " |" << endl <<
-	"| Email: " << empleado_completo.get_email() << " |" << endl <<
-	"| Trabaja para el hostal de nombre: " << empleado_completo.get_nombre_hostal() << " |" << endl <<
-	"| Cargo (0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura): " 
-	<< empleado_completo.get_cargo() << endl;
+	cout << endl << GREEN << "Mostrando informacion sobre el empleado con el email: " << email << NC << endl;
+	cout << empleado_completo;
 }
 /* Fin funciones auxiliares*/
 
@@ -514,6 +504,9 @@ void realizar_reserva(){
 					obtener_huespedes();
 					cout << "Ingrese huesped que realiza la reserva:" << endl;
 					getline(cin,email_huesped);
+					if(!controlador -> verificar_email(email_huesped)){
+						cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
+					}
 				}while(!controlador -> verificar_email(email_huesped));
 
 				controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
@@ -543,9 +536,9 @@ void realizar_reserva(){
 				bool seguir_ingresando = true;
 					for (int i = 0; i < controlador -> obtener_capacidad_habitacion(numero_habitacion, nombre_hostal); i++){
 							do{
-							obtener_huespedes();
-							cout << "Ingrese un huesped o ingrese 'parar' para dejar de ingresar huespedes:" << endl;
-							getline(cin,email_huesped);
+								obtener_huespedes();
+								cout << "Ingrese un huesped o ingrese 'parar' para dejar de ingresar huespedes:" << endl;
+								getline(cin,email_huesped);
 								//si quiere dejar de ingresar huespedes pero no tiene ninguno registrado
 								if(email_huesped == "parar" && lista_huespedes_seleccionados -> getSize() < 1){
 									cout << RED << "Debe ingresar al menos un huesped, intente denuevo." << NC << endl;
@@ -555,6 +548,9 @@ void realizar_reserva(){
 								}else if(email_huesped == "parar" && lista_huespedes_seleccionados -> getSize() >= 1){
 									seguir_ingresando = false;
 									i = controlador -> obtener_capacidad_habitacion(numero_habitacion, nombre_hostal); //me aseguro que el for pare
+								}
+								if(!controlador -> verificar_email(email_huesped)){
+									cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
 								}
 							}while(!controlador -> verificar_email(email_huesped) && seguir_ingresando);
 						/*en caso de que haya salido del while y no haya sido porque puso parar*/
@@ -579,7 +575,17 @@ void realizar_reserva(){
 	}
 }
 
-void consultar_top_3(){
+void consultar_top_3() {
+	OrderedDictionary* lista_top_3 = controlador -> obtener_top_3_hostales();
+	cout << GREEN << "Mostrando el top 3 de hostales" << NC << endl << endl; 
+    int puesto = 1;
+    for(IIterator* it = lista_top_3 -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTHostal* dt_hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
+		cout << GREEN << "|posicion: " << puesto << " |" << NC << endl
+		<< "|nombre: " << dt_hostal->get_nombre() << " |" << endl <<
+		"|promedio: " << dt_hostal->get_promedio() << " |" << endl << endl;
+        puesto += 1;
+    }
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
@@ -601,6 +607,9 @@ void registrar_estadia(){
 		cout << "Ingrese el email del huesped que hizo la reserva para registrar la estadia: " << endl;
 		getline(cin,email_huesped);
 		if(email_huesped == "salir"){return;}
+		if(!controlador -> verificar_email(email_huesped)){
+			cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
+		}
 	}while(!controlador ->verificar_email(email_huesped));
 	
 	if(email_huesped == "salir"){return;} /* en caso de que desee salir*/
@@ -644,7 +653,7 @@ void consulta_usuario(){
 	obtener_usuarios();
 
 	while(existe_email != -1 && existe_email != 0 && existe_email != 1 ){
-		cout << "Ingrese el email: " << endl;
+		cout << endl << "Ingresa el email del usuario que deseas consultar: " ;
 		getline(cin,email);
 		if(email == "salir"){return;} /* en caso de que desee salir*/
 		existe_email = controlador -> verificar_email_y_tipo(email);
@@ -653,8 +662,8 @@ void consulta_usuario(){
 			obtener_huesped_completo(email);
 		}else if(existe_email == 1){
 			obtener_empleado_completo(email);
-		}else if(existe_email == -1){
-			cout << endl << REDB "Email erroneo. Intenta de nuevo... " NC << endl;
+		}else {
+			cout << endl << REDB "No existe un usuario con ese email. Intenta de nuevo... " NC << endl;
 		}
 	}
 }
@@ -693,19 +702,7 @@ void modificar_fecha() {
 
 		fecha_valida = verificar_fecha(fecha_hora_str, &nueva_fecha);	
 	}
-	/*========== borrar luego, es solo para probar la comparación de fechas ==========*/
-	// switch (controlador->compararFechas(&nueva_fecha)) {
-	// 	case ComparacionFecha::Menor: // 0
-	// 		cout << "La fecha nueva es menor que la fecha existente." << endl;
-	// 		break;
-	// 	case ComparacionFecha::Igual: // 1
-	// 		cout << "La fecha nueva es igual a la fecha existente." << endl;
-	// 		break;
-	// 	case ComparacionFecha::Mayor: // 2
-	// 		cout << "La fecha nueva es mayor que la fecha existente." << endl;
-	// 		break;
-	// }
-    /*========== borrar luego, es solo para probar la comparación de fechas ==========*/
+
 	controlador->set_fecha_sistema(&nueva_fecha);
 
 	cout << endl << "Nueva fecha del sistema: ";
@@ -750,41 +747,42 @@ void datos_prueba(){
 	// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
 	// HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
 	tm checkin_1 = {};
-	istringstream iss("01/05/22 - 14");
-	iss >> get_time(&checkin_1, "%d/%m/%y - %H");
+	istringstream iss_0("01/05/22 - 14");
+	iss_0 >> get_time(&checkin_1, "%d/%m/%y - %H");
 	
 	tm checkout_1 = {};
-	istringstream iss_0("10/05/22 - 10");
-	iss_0 >> get_time(&checkout_1, "%d/%m/%y - %H");
+	istringstream iss_1("10/05/22 - 10");
+	iss_1 >> get_time(&checkout_1, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("La posada del finger",1,"sofia@mail.com",&checkin_1,&checkout_1);
 	/* ======================================================================================================= */
 	// HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
-	// string emails[] = {"frodo@mail.com","sam@mail.com","merry@mail.com","pippin@mail.com"};
+	// OrderedDictionary* emails;
+	//  = {"frodo@mail.com","sam@mail.com","merry@mail.com","pippin@mail.com"};
 	// tm checkin_2 = {};
-	// istringstream iss("04/01/01 - 20");
-	// iss >> get_time(&checkin_2, "%d/%m/%y - %H");
+	// istringstream iss_2("04/01/01 - 20");
+	// iss_2 >> get_time(&checkin_2, "%d/%m/%y - %H");
 	
 	// tm checkout_2 = {};
-	// istringstream iss("05/01/01 - 02");
-	// iss >> get_time(&checkout_2, "%d/%m/%y - %H");
-	// controlador -> alta_reserva_grupal("El Pony Pisador",6,emails,&checkin_2,&checkout_2);
+	// istringstream iss_3("05/01/01 - 02");
+	// iss_3 >> get_time(&checkout_2, "%d/%m/%y - %H");
+	// controlador -> alta_reserva_grupal("El Pony Pisador",1,nullptr,&checkin_2,&checkout_2);
 	/* ======================================================================================================= */
 	// HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
 	tm checkin_3 = {};
-	istringstream iss_1("07/06/22 - 14");
-	iss_1 >> get_time(&checkin_3, "%d/%m/%y - %H");
+	istringstream iss_4("07/06/22 - 14");
+	iss_4 >> get_time(&checkin_3, "%d/%m/%y - %H");
 	tm checkout_3 = {};
-	istringstream iss_2("30/06/22 - 11");
-	iss_2 >> get_time(&checkout_3, "%d/%m/%y - %H");
+	istringstream iss_5("30/06/22 - 11");
+	iss_5 >> get_time(&checkout_3, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("La posada del finger",3,"sofia@mail.com",&checkin_3,&checkout_3);
 	/* ======================================================================================================= */
 	// HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
 	tm checkin_4 = {};
-	istringstream iss_3("10/06/22 - 14");
-	iss_3 >> get_time(&checkin_4, "%d/%m/%y - %H");
+	istringstream iss_6("10/06/22 - 14");
+	iss_6 >> get_time(&checkin_4, "%d/%m/%y - %H");
 	tm checkout_4 = {};
-	istringstream iss_4("30/06/22 - 11");
-	iss_4 >> get_time(&checkout_4, "%d/%m/%y - %H");
+	istringstream iss_7("30/06/22 - 11");
+	iss_7 >> get_time(&checkout_4, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
 	// /* ======================================================================================================= */
 	

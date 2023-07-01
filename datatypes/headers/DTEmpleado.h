@@ -23,6 +23,7 @@ class DTEmpleado: public ICollectible{
         string get_contrasena();
         string get_nombre_hostal();
         Cargo get_cargo();
+        friend ostream& operator << (ostream& salida, DTEmpleado empleado);
 };
 
 #endif // DTEMPLEADO_H_

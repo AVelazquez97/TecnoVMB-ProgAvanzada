@@ -41,5 +41,35 @@ Cargo DTEmpleado::get_cargo(){
     return this -> cargo;
 }
 
+ostream& operator << (ostream& salida, DTEmpleado empleado) {
+    string cargo;
+
+    switch(empleado.get_cargo()){
+		case 0:{
+			cargo = "Administracion";
+			break;
+		}
+		case 1:{
+			cargo = "Limpieza";
+			break;
+		}
+		case 2:{
+			cargo = "Recepcion";
+			break;
+		}
+		case 3:{
+			cargo = "Infraestructura";
+			break;
+		}
+	}
+
+    salida << "| Nombre: " << empleado.get_nombre() << " |" << endl <<
+	"| Email: " << empleado.get_email() << " |" << endl <<
+	"| Trabaja para el hostal de nombre: " << empleado.get_nombre_hostal() << " |" << endl <<
+	"| Cargo: " 
+	<< cargo << endl;
+
+    return salida;
+} 
 
 #endif // DTEMPLEADO_CPP_

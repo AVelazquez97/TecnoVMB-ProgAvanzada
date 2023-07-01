@@ -16,6 +16,7 @@ class DTHuesped{
         string get_email();
         string get_contrasena();
         bool get_es_tecno();
+        friend ostream& operator << (ostream& salida, DTHuesped huesped);
 };
 
 
