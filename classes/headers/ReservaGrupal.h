@@ -4,8 +4,6 @@
 #include "../../ICollection/collections/OrderedDictionary.h"
 #include "../../ICollection/String.h"
 #include "Reserva.h"
-class Huesped;
-
 class ReservaGrupal: public Reserva{
     private:
         IDictionary* huespedes;

@@ -1,6 +1,7 @@
 #ifndef RESERVAGRUPAL_CPP_
 #define RESERVAGRUPAL_CPP_
 #include "../headers/ReservaGrupal.h"
+#include "../headers/Habitacion.h"
 #include "../headers/Huesped.h"
 #include "string.h"
 

@@ -31,6 +31,7 @@ class Controlador: public IControlador {
         static Controlador* instance;
         chrono::system_clock::time_point fecha_sistema;
         int contador_reserva;
+        int contador_estadia;
 
         //Acá pueden ir pseudoatributos a utilizar. También colecciones. Ejemplo:
         IDictionary* hostales;
@@ -43,6 +44,10 @@ class Controlador: public IControlador {
 
         void set_contador(int numero);
         int get_contador();
+
+        void set_contador_estadia(int numero);
+        int get_contador_estadia();
+        
 
         /* Fecha del sistema*/
         tm* get_fecha_sistema();
@@ -60,6 +65,7 @@ class Controlador: public IControlador {
         void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout);
         void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout);
         OrderedDictionary* obtener_top_3_hostales();
+        void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal);
 		/* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/

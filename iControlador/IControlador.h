@@ -44,6 +44,7 @@ class IControlador {
         virtual void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout) = 0;
         virtual void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout) = 0;
         virtual OrderedDictionary* obtener_top_3_hostales() = 0;
+        virtual void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal) = 0;
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -61,6 +62,8 @@ class IControlador {
         virtual OrderedDictionary* obtener_huespedes() = 0;
         virtual int obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal) = 0;
         virtual OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email) = 0;
+        virtual void set_contador_estadia(int numero) = 0;
+        virtual int get_contador_estadia() = 0;
         /* Fin operaciones auxiliares*/
 };
 

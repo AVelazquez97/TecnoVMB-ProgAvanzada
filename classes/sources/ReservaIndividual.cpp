@@ -1,7 +1,8 @@
 #ifndef RESERVAINDIVIDUAL_CPP_
 #define RESERVAINDIVIDUAL_CPP_
 #include "../headers/ReservaIndividual.h"
-
+#include "../headers/Habitacion.h"
+#include "../headers/Huesped.h"
 ReservaIndividual::ReservaIndividual(){
 
 }

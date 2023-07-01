@@ -152,6 +152,14 @@ int Controlador::get_contador(){
     return contador_reserva;
 }
 
+void Controlador::set_contador_estadia(int numero){
+    contador_estadia = numero;
+}
+
+int Controlador::get_contador_estadia(){
+    return contador_estadia;
+}
+
 bool Controlador::verificar_email(string entrada){
 
     /*
@@ -627,6 +635,21 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     }
     return DTreservas_usuario;
     //FALTA CHECKEAR ESTO CUANDO SE PUEDA CANCElAR UNA RESERVA
+}
+void Controlador::alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal){
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    huesped -> alta_estadia(huesped,codigo_reserva);
+
 }
 /* Fin métodos auxiliares*/
 //

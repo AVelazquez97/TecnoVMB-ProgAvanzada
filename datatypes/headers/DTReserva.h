@@ -20,6 +20,8 @@ class DTReserva: public ICollectible{
         tm* get_checkin();
         tm* get_checkout();
         Estado get_estado();
+        chrono::system_clock::time_point get_checkin_chrono();
+        chrono::system_clock::time_point get_checkout_chrono();
         };
 
 #endif // DTRESERVA_H_

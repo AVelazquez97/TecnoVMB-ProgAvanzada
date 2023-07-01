@@ -1,3 +1,5 @@
+#ifndef DTRESERVA_CPP_
+#define DTRESERVA_CPP_
 #include "../headers/DTReserva.h"
 
 DTReserva::DTReserva(){
@@ -36,3 +38,12 @@ tm* DTReserva::get_checkout(){
 Estado DTReserva::get_estado(){
     return this -> estado_reserva;
 }
+
+chrono::system_clock::time_point DTReserva::get_checkin_chrono(){
+    return this -> checkin;
+}
+chrono::system_clock::time_point DTReserva::get_checkout_chrono(){
+    return this -> checkout;
+}
+
+#endif // DTRESERVA_H_

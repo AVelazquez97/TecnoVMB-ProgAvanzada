@@ -1,7 +1,13 @@
 #ifndef RESERVA_CPP_
 #define RESERVA_CPP_
+
 #include "../headers/Reserva.h"
-#include "../headers/Habitacion.h"
+#include "../headers/Estadia.h"
+#include "../../iControlador/IControlador.h"
+#include "../../fabrica/Fabrica.h"
+
+Fabrica fab_reserva;
+IControlador* controlador_reserva = fab_reserva.getInterface();
 Reserva::Reserva(){}
 
 
@@ -17,6 +23,8 @@ Reserva::Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Ha
     tm checkout_tm = *checkout;
     time_t checkout_time = mktime(&checkout_tm);
     this -> checkout = chrono::system_clock::from_time_t(checkout_time);
+
+    this -> estadias = new OrderedDictionary();
 }
 
 void Reserva::set_checkin(tm* checkin){
@@ -43,9 +51,7 @@ tm* Reserva::get_checkin(){
     return checkin_tm;
 }
 
-chrono::system_clock::time_point Reserva::get_checkin_chrono(){
-    return this -> checkin;
-}
+
 DTReserva Reserva::getDT(){
     return DTReserva(this -> get_codigo(), this -> get_checkin(),this -> get_checkout(), this -> get_estado());
 }
@@ -54,7 +60,9 @@ tm* Reserva::get_checkout(){
     tm* checkout_tm = localtime(&checkout);
     return checkout_tm;
 }
-
+chrono::system_clock::time_point Reserva::get_checkin_chrono(){
+    return this -> checkin;
+}
 chrono::system_clock::time_point Reserva::get_checkout_chrono(){
     return this -> checkout;
 }
@@ -64,5 +72,11 @@ Estado Reserva::get_estado(){
 }
 bool Reserva::pertenece_a_hostal(string nombre_hostal){
     return ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
+}
+void Reserva::alta_estadia(Huesped* ptr_huesped){
+    Estadia* ptr_estadia = new Estadia(controlador_reserva -> get_contador_estadia(),controlador_reserva -> get_fecha_sistema(),ptr_habitacion,ptr_huesped);
+    IKey* ik_estadia = new Integer(ptr_estadia -> get_codigo());
+    this -> estadias -> add(ik_estadia,ptr_estadia);
+    this -> estado_reserva = Cerrada;
 }
 #endif // RESERVA_CPP_

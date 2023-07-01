@@ -4,15 +4,16 @@
 #include "../../datatypes/headers/DTHuesped.h"
 #include "../../ICollection/collections/OrderedDictionary.h"
 #include "../../classes/headers/ReservaGrupal.h"
+#include "../../classes/headers/ReservaIndividual.h"
 #include "../../ICollection/Integer.h"
-
-class ReservaIndividual;
-
+class Estadia;
+class ReservaGrupal;
 class Huesped: public Usuario{
     private:
         bool es_tecno;
         IDictionary* reservas_individuales;
         IDictionary* reservas_grupales;
+        IDictionary* estadias;
     public:
         Huesped();
         Huesped(string nombre, string email, string contrasena, bool es_tecno);
@@ -23,6 +24,8 @@ class Huesped: public Usuario{
         OrderedDictionary* get_reservas_grupales();
         void asignar_reserva(ReservaGrupal* rg);
         void asignar_reserva(ReservaIndividual* ri);
+        void alta_estadia(Huesped* ptr_huesped,int codigo_reserva);
+        void asignar_estadia_usuario(Estadia* ptr_estadia);
 };
 
 

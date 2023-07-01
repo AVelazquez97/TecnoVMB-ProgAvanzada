@@ -1,6 +1,7 @@
 #ifndef RESERVA_H_
 #define RESERVA_H_
 #include "../../ICollection/interfaces/ICollectible.h"
+#include "../../ICollection/collections/OrderedDictionary.h"
 #include "../../datatypes/headers/DTReserva.h"
 #include "../../enums/EnumEstado.h"
 #include <chrono>
@@ -8,7 +9,7 @@
 using namespace std;
 class Habitacion;
 class Hostal;
-
+class Huesped;
 class Reserva: public ICollectible{
     private:
         int codigo;
@@ -16,6 +17,7 @@ class Reserva: public ICollectible{
         chrono::system_clock::time_point checkout;
         Habitacion* ptr_habitacion;
         Estado estado_reserva;
+        IDictionary* estadias;
     public:
         Reserva();
         Reserva(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion);
@@ -29,10 +31,12 @@ class Reserva: public ICollectible{
         /*devuelve el atributo checkin en otro tipo de dato, como no podia 
         tener el mismo nombre de 'get_checkin' se le agrega chrono ya que el tipo
         de dato que devuelve le pertenece a esa libreria*/
-        chrono::system_clock::time_point get_checkin_chrono();
+        
         tm* get_checkout();
+        chrono::system_clock::time_point get_checkin_chrono();
         chrono::system_clock::time_point get_checkout_chrono();
         Estado get_estado();
+        void alta_estadia(Huesped* ptr_huesped);
 };
 
 #endif // RESERVA_H_

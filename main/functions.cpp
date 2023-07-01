@@ -15,7 +15,8 @@ IControlador* controlador = fab.getInterface();
 /* Funciones auxiliares*/
 
 void innit_contador(){
-	controlador -> set_contador(0);
+	controlador -> set_contador(1);
+	controlador -> set_contador_estadia(1);
 }
 
 /// @brief muestra las opciones disponibles del menu principal
@@ -151,16 +152,19 @@ void obtener_hostales() {
 }
 void obtener_reserva_usuario(string nombre_hostal, string email) {
 	OrderedDictionary* DTReservas = new OrderedDictionary();
-	cout<<"1";
+	
 	DTReservas = controlador -> obtener_reserva_usuario(nombre_hostal,email);
-	cout<<"2";
+	
 	cout << endl << GREEN << "| Lista de reservas no canceladas |" << NC << endl << endl;
 
 	for(IIterator* it = DTReservas -> getIterator(); it -> hasCurrent(); it -> next()){
+		
         DTReserva* reserva = dynamic_cast<DTReserva*>(it -> getCurrent());
+		auto checkout = chrono::system_clock::to_time_t(reserva -> get_checkout_chrono());
+		auto checkin = chrono::system_clock::to_time_t(reserva -> get_checkin_chrono());
         cout << "| Codigo: " << reserva->get_codigo() << " |" << endl <<
-		"| Chekin: " << reserva -> get_checkin() ->tm_mday <<"-"<<reserva -> get_checkin() ->tm_mon + 1<<"-"<< reserva -> get_checkin() ->tm_year   << " |" << endl <<
-		"| Checkout: " << reserva -> get_checkout() ->tm_mday <<"-"<<reserva -> get_checkout() ->tm_mon + 1<<"-"<< reserva -> get_checkout() ->tm_year   <<
+		"| Chekin: " << reserva -> get_checkin() ->tm_mday << " |" << endl <<
+		"| Checkout: " <<  reserva -> get_checkout() ->tm_mday  <<
 		 " |" << endl<< "| Estado: " << reserva -> get_estado()<<"|"<<endl << endl;
     }
 }
@@ -576,37 +580,46 @@ void realizar_reserva(){
 }
 
 void consultar_top_3(){
-	OrderedDictionary* lista_top_3 = controlador -> obtener_top_3_hostales();
-	cout << GREEN << "Mostrando el top 3 de hostales" << NC << endl << endl; 
-    int puesto = 1;
-    for(IIterator* it = lista_top_3 -> getIterator(); it -> hasCurrent(); it -> next()){
-        
-        DTHostal* dt_hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
-        cout << GREEN << "|posicion: " << puesto << " |" << NC << endl <<
-		"|nombre: " << dt_hostal -> get_nombre() << " |" << endl <<
-		"|promedio: " << dt_hostal -> get_promedio() << " |" << endl << endl;
-        puesto += 1;
-    }
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void registrar_estadia(){
 	string limpiar_buffer;
-	getline(cin,limpiar_buffer);
-	obtener_hostales();
+	string codigo_reserva = "";
 	string email_huesped;
 	string nombre_hostal;
-	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	getline(cin,limpiar_buffer);
+	obtener_hostales();
 	
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	cout << "Ingrese el nombre del hostal al que pertenece la habitacion: " << endl;
 	getline(cin,nombre_hostal);
 	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
-	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
-	cout << "Ingrese el email del huesped que hizo la reserva para registrar la estadia: " << endl;
-	getline(cin,email_huesped);
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	do{
+		cout << "Ingrese el email del huesped que hizo la reserva para registrar la estadia: " << endl;
+		getline(cin,email_huesped);
+		if(email_huesped == "salir"){return;}
+	}while(!controlador ->verificar_email(email_huesped));
+	
 	if(email_huesped == "salir"){return;} /* en caso de que desee salir*/
 	obtener_reserva_usuario(nombre_hostal,email_huesped);
+	try{//el try and catch es por que si el usuario no ingresa nada y da enter el stoi explota
+		do{
+		cout << "Ingrese el numero de la reserva de la que se quiere registrar la estadia: " << endl;
+		getline(cin,codigo_reserva);
+		if(codigo_reserva == "salir"){return;}
+		}while(stoi(codigo_reserva) < 0 || stoi(codigo_reserva) > controlador -> get_contador() - 1);
+	}catch(invalid_argument const& Excepcion){
+		cout << "Por favor ingrese la opcion correcta!" << endl;
+		return;
+	}
+	
+	
+	controlador -> alta_estadia(stoi(codigo_reserva),email_huesped,nombre_hostal);
+	controlador -> set_contador(controlador -> get_contador() + 1);
+	cout << GREEN "ESTADIA REGISTRADA CON EXITO! " NC << endl;
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
@@ -721,6 +734,7 @@ void datos_prueba(){
 	/*Habitaciones*/
 	controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
+	controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger"); // hay que borrarlo despues XD
 	controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger"); 
 	controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
 	controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
@@ -730,13 +744,7 @@ void datos_prueba(){
 	controlador -> asignar_empleado_hostal("Mochileros","leo@mail.com",Recepcion);
 	controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
 	controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
- 	/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
-	controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger"); // hay que borrarlo despues XD
-	controlador -> alta_hostal(DTHostal("prueba2","Rambla Costanera 333,Rocha","42579512",1.2));
-	controlador -> alta_hostal(DTHostal("prueba1","Av de la playa 123,Maldonado","099111111",0.3));
-	controlador -> alta_hostal(DTHostal("prueba3","Bree (preguntar por Gandalf)","000",4.5));
-	
-
+ 	
 	/* Reservas */
 	/* ======================================================================================================= */
 	// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
