@@ -1,5 +1,6 @@
 #ifndef HABITACION_CPP_
 #define HABITACION_CPP_
+
 #include "../headers/Habitacion.h"
 
 Habitacion::Habitacion(){}
@@ -12,6 +13,7 @@ Habitacion::Habitacion(DTHabitacion nueva_habitacion, Hostal* puntero_hostal){
     this -> estadias = new OrderedDictionary();
     this -> reservas = new OrderedDictionary();
 }
+
 Habitacion::Habitacion(int numero, float precio, int capacidad, Hostal* puntero_hostal){
     this -> numero = numero;
     this -> precio = precio;
@@ -27,6 +29,7 @@ bool Habitacion::pertenece_a_hostal(string nombre_hostal){
         return false;
     }
 }
+
 Habitacion::Habitacion(const Habitacion& original){
     numero = original.numero;
     precio = original.precio;
@@ -76,16 +79,13 @@ DTHabitacion Habitacion::get_DT(){
     return DTHabitacion(this -> get_numero(),this -> get_precio(),this -> get_capacidad());
 }
 
-void Habitacion::crear_reserva(int codigo,Huesped* huesped, tm* checkin, tm* checkout){
-    
+void Habitacion::crear_reserva(int codigo, Huesped* huesped, tm* checkin, tm* checkout){
     ReservaIndividual* ri = new ReservaIndividual(codigo,checkin,checkout,Abierta,this,huesped); //cambiar el codigo
     IKey* ik_ri = new Integer(ri -> get_codigo());
     this -> reservas -> add(ik_ri,ri);
-
 }
 
-void Habitacion::crear_reserva(int codigo,OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout){
-    
+void Habitacion::crear_reserva(int codigo, OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout){    
     ReservaGrupal* rg = new ReservaGrupal(codigo,checkin,checkout,Abierta,this,huespedes_encontrados); //cambiar el codigo
     IKey* ik_rg = new Integer(rg -> get_codigo());
     this -> reservas -> add(ik_rg,rg);

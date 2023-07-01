@@ -1,10 +1,14 @@
 #ifndef DTRESERVA_H_
 #define DTRESERVA_H_
+
 #include "../../ICollection/interfaces/ICollectible.h"
 #include "../../enums/EnumEstado.h"
 #include <iostream>
 #include <chrono>
+
 using namespace std;
+
+class Reserva;
 
 class DTReserva: public ICollectible{
     private:
@@ -14,7 +18,8 @@ class DTReserva: public ICollectible{
         Estado estado_reserva;
     public:
         DTReserva();
-        DTReserva(int codigo,tm* checkin, tm* checkout,Estado estado);
+        DTReserva(int codigo, tm* checkin, tm* checkout, Estado estado);
+        DTReserva(Reserva* reserva);
         //DTEmpleado(string nombre, string email, string nombre_hostal, Cargo cargo);
         int get_codigo();
         tm* get_checkin();
@@ -22,6 +27,7 @@ class DTReserva: public ICollectible{
         Estado get_estado();
         chrono::system_clock::time_point get_checkin_chrono();
         chrono::system_clock::time_point get_checkout_chrono();
-        };
+        friend ostream& operator << (ostream& salida, DTReserva reserva);
+};
 
 #endif // DTRESERVA_H_

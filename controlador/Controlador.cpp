@@ -213,6 +213,19 @@ void Controlador::no_existe_hostal(string nombre){
     }
 }
 
+bool Controlador::existe_hostal_bool(string nombre_hostal){
+    char parce_char[nombre_hostal.length()+1];
+    strcpy(parce_char,nombre_hostal.c_str());
+
+    IKey* ik = new String(parce_char);
+    
+    if(this -> hostales -> member(ik)){
+        return true;
+    }
+    return false;
+}
+
+
 OrderedDictionary* Controlador::obtener_hostales(){
     //por cada iteracion, paso el obj Hostal a DTHostal,
     //lo agrego a la lista y lo devuelvo
@@ -379,8 +392,8 @@ void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habit
 
     Huesped* huesped = dynamic_cast<Huesped*>(this -> huespedes -> find(ik_huesped));
 
-   hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout);
-    
+    hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout);
+    this->set_contador((get_contador()) + 1);
 }
 
 void Controlador::alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout){
@@ -407,6 +420,7 @@ void Controlador::alta_reserva_grupal(string nombre_hostal, int numero_habitacio
     }
 
     hostal -> agregar_reserva(contador_reserva,numero_habitacion, huespedes_encontrados, checkin, checkout);
+    this->set_contador((get_contador()) + 1);
 }
 
 OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
@@ -631,16 +645,17 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
 
         if(reserva_individual -> pertenece_a_hostal(nombre_hostal) && reserva_individual->get_estado() == 0){
             IKey* ik_reserva_individual = new Integer(reserva_individual -> get_codigo());
-            DTReserva* reserva = new DTReserva(reserva_individual ->get_codigo(),reserva_individual ->get_checkin(),reserva_individual ->get_checkout(),reserva_individual ->get_estado());
+            DTReserva* reserva = new DTReserva(reserva_individual);
             DTreservas_usuario -> add(ik_reserva_individual,reserva);
         }
     }
+
     for(IIterator* it = huesped -> get_reservas_grupales()->getIterator(); it -> hasCurrent(); it -> next()){
         ReservaGrupal* reserva_grupal = dynamic_cast< ReservaGrupal*>(it -> getCurrent());
 
         if(reserva_grupal -> pertenece_a_hostal(nombre_hostal) && reserva_grupal->get_estado() == 0){
             IKey* ik_reserva_grupal = new Integer(reserva_grupal -> get_codigo());
-            DTReserva* reserva = new DTReserva(reserva_grupal ->get_codigo(),reserva_grupal ->get_checkin(),reserva_grupal ->get_checkout(),reserva_grupal ->get_estado());
+            DTReserva* reserva = new DTReserva(reserva_grupal);
             DTreservas_usuario -> add(ik_reserva_grupal,reserva);
         }
     }

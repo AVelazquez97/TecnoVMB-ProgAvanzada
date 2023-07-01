@@ -1,13 +1,15 @@
 #ifndef HOSTAL_CPP_
 #define HOSTAL_CPP_
-#include "../headers/Hostal.h"
-//#include "../headers/Empleado.h"
-#include "../../classes/headers/Habitacion.h"
+
 #include <iostream>
 #include <stdlib.h>
-#include "../../ICollection/String.h"
 #include "string.h" 
+
+#include "../headers/Hostal.h"
+#include "../../classes/headers/Habitacion.h"
+#include "../../ICollection/String.h"
 #include "../headers/Empleado.h" 
+
 using namespace std;
 Hostal::Hostal(){
 
@@ -105,7 +107,7 @@ void Hostal::asignar_empleado(Empleado* puntero_empleado){
 void Hostal::agregar_reserva(int codigo,int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout){ 
     IKey* ik_habitacion = new Integer(numero_habitacion);
     Habitacion* habitacion = dynamic_cast<Habitacion*>( this -> habitaciones -> find(ik_habitacion));
-    habitacion -> crear_reserva(codigo,huesped, checkin, checkout);
+    habitacion -> crear_reserva(codigo, huesped, checkin, checkout);
 }
 
 void Hostal::agregar_reserva(int codigo, int numero_habitacion, OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout){

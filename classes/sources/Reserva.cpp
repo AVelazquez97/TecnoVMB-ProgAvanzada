@@ -51,10 +51,6 @@ tm* Reserva::get_checkin(){
     return checkin_tm;
 }
 
-
-DTReserva Reserva::getDT(){
-    return DTReserva(this -> get_codigo(), this -> get_checkin(),this -> get_checkout(), this -> get_estado());
-}
 tm* Reserva::get_checkout(){
     time_t checkout = chrono::system_clock::to_time_t(this->checkout);
     tm* checkout_tm = localtime(&checkout);
@@ -78,6 +74,10 @@ void Reserva::alta_estadia(Huesped* ptr_huesped){
     IKey* ik_estadia = new Integer(ptr_estadia -> get_codigo());
     this -> estadias -> add(ik_estadia,ptr_estadia);
     this -> estado_reserva = Cerrada;
+}
+
+DTReserva Reserva::getDT(){
+    return DTReserva(this -> get_codigo(), this -> get_checkin(),this -> get_checkout(), this -> get_estado());
 }
 
 #endif // RESERVA_CPP_

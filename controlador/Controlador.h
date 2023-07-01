@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string.h>
-#include <iomanip> //lo importo solo para testear imprimir la hora desde el controlador.cpp
 
 #include "../iControlador/IControlador.h"
 
@@ -73,6 +72,7 @@ class Controlador: public IControlador {
         bool verificar_email(string entrada);
         void existe_hostal(string nombre);
         void no_existe_hostal(string nombre);
+        bool existe_hostal_bool(string nombre_hostal);
         OrderedDictionary* obtener_hostales();
         OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal);
         OrderedDictionary* obtener_usuarios();

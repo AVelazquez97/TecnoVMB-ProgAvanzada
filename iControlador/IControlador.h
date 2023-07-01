@@ -55,6 +55,7 @@ class IControlador {
         virtual bool verificar_email(string entrada) = 0;
         virtual void existe_hostal(string nombre) = 0;
         virtual void no_existe_hostal(string nombre) = 0;
+        virtual bool existe_hostal_bool(string nombre_hostal) = 0;
         virtual OrderedDictionary* obtener_hostales() = 0;
         virtual OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal) = 0;
         virtual OrderedDictionary* obtener_usuarios() = 0;
