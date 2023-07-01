@@ -627,12 +627,41 @@ void registrar_estadia(){
 	
 	
 	controlador -> alta_estadia(stoi(codigo_reserva),email_huesped,nombre_hostal);
-	controlador -> set_contador(controlador -> get_contador() + 1);
+	controlador -> set_contador(controlador -> get_contador_estadia() + 1);
 	cout << GREEN "ESTADIA REGISTRADA CON EXITO! " NC << endl;
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void finalizar_estadia(){
+	string nombre_hostal;
+	string email_huesped;
+	int estadia_a_finalizar;
+	string limpiar_buffer;
+	getline(cin,limpiar_buffer);
+	
+	obtener_hostales();
+
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
+	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
+	
+	try{
+		controlador -> no_existe_hostal(nombre_hostal);
+		do{
+			cout << "Ingrese el email del huesped que hizo la reserva para registrar la estadia: " << endl;
+			getline(cin,email_huesped);
+			if(email_huesped == "salir"){return;}
+			if(!controlador -> verificar_email(email_huesped)){
+				cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
+			}
+		}while(!controlador ->verificar_email(email_huesped));
+		estadia_a_finalizar = controlador ->existe_estadia(nombre_hostal,email_huesped);
+		controlador -> finalizar_estadia(estadia_a_finalizar,email_huesped);
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
+	}
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
@@ -759,6 +788,7 @@ void datos_prueba(){
 	istringstream iss_1("10/05/22 - 10");
 	iss_1 >> get_time(&checkout_1, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("La posada del finger",1,"sofia@mail.com",&checkin_1,&checkout_1);
+	controlador -> set_contador((controlador -> get_contador()) + 1);
 	/* ======================================================================================================= */
 	// HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
 	// OrderedDictionary* emails;
@@ -780,6 +810,7 @@ void datos_prueba(){
 	istringstream iss_5("30/06/22 - 11");
 	iss_5 >> get_time(&checkout_3, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("La posada del finger",3,"sofia@mail.com",&checkin_3,&checkout_3);
+	controlador -> set_contador((controlador -> get_contador()) + 1);
 	/* ======================================================================================================= */
 	// HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
 	tm checkin_4 = {};
@@ -789,6 +820,7 @@ void datos_prueba(){
 	istringstream iss_7("30/06/22 - 11");
 	iss_7 >> get_time(&checkout_4, "%d/%m/%y - %H");
 	controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
+	controlador -> set_contador((controlador -> get_contador()) + 1);
 	// /* ======================================================================================================= */
 	
 	/* Estadías */

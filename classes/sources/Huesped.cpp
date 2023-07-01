@@ -59,4 +59,22 @@ void Huesped::asignar_estadia_usuario(Estadia* ptr_estadia){
     IKey* ik_estadia = new Integer(ptr_estadia -> get_codigo());
     this -> estadias -> add(ik_estadia,ptr_estadia);
 }
+int Huesped::existe_estadia_activa(string nombre_hostal){
+    IIterator* it = estadias -> getIterator();
+    while(it -> hasCurrent()){
+        Estadia* ptr_estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        auto ocupada_checkout = chrono::system_clock::to_time_t(ptr_estadia -> get_checkout_chrono());
+        if(ptr_estadia -> get_checkout_chrono().time_since_epoch() == decltype(ptr_estadia -> get_checkout_chrono())::duration::zero()){
+            if(ptr_estadia-> perteneceA(nombre_hostal)){
+                return ptr_estadia -> get_codigo();
+            }
+            
+        }
+    }
+}
+void Huesped::existe_estadia_activa(int codigo_estadia){
+    IKey* ik_estadia = new Integer(codigo_estadia);   
+    Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
+    ptr_estadia -> finalizar();
+}
 #endif // HUESPED_CPP_

@@ -25,7 +25,9 @@ class Estadia: public ICollectible{
         int get_codigo();
         tm* get_checkin();
         tm* get_checkout();
-
+        chrono::system_clock::time_point get_checkout_chrono();
+        bool perteneceA(string nombre_hostal);
+        void finalizar();
 };
 
 #endif // ESTADIA_H_

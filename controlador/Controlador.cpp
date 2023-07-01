@@ -156,6 +156,14 @@ void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empl
     //4.y le paso el empleado al hostal para que lo agrege a su lista de empleados
     ptr_hostal -> asignar_empleado(ptr_empleado);
 }
+
+void Controlador::finalizar_estadia(int codigo_estadia,string email_huesped){
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+    return ptr_huesped -> existe_estadia_activa(codigo_estadia);
+}
 /* Fin métodos de los casos de uso*/
 
 /* Métodos auxiliares*/
@@ -654,5 +662,12 @@ void Controlador::alta_estadia(int codigo_reserva,string email_huesped, string n
     huesped -> alta_estadia(huesped,codigo_reserva);
 
 }
+int Controlador::existe_estadia(string nombre_hostal, string email_huesped){
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+    return ptr_huesped -> existe_estadia_activa(nombre_hostal);
+ }
 /* Fin métodos auxiliares*/
 //

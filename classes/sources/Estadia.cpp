@@ -1,6 +1,11 @@
 #ifndef ESTADIA_CPP_
 #define ESTADIA_CPP_
 #include "../headers/Estadia.h"
+#include "../../iControlador/IControlador.h"
+#include "../../fabrica/Fabrica.h"
+
+Fabrica fab_estadia;
+IControlador* controlador_estadia = fab_estadia.getInterface();
 Estadia::Estadia(){}
 
 
@@ -45,6 +50,15 @@ tm* Estadia::get_checkout(){
     tm* checkout_tm = localtime(&checkout);
     return checkout_tm;
 }
-
-
+chrono::system_clock::time_point Estadia::get_checkout_chrono(){
+    return this -> checkout;
+}
+bool Estadia::perteneceA(string nombre_hostal){
+    return ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
+}
+void Estadia::finalizar(){
+    tm checkout_tm = *controlador_estadia -> get_fecha_sistema();
+    time_t checkout_time = mktime(&checkout_tm);
+    this -> checkout = chrono::system_clock::from_time_t(checkout_time);
+}
 #endif // ESTADIA_CPP_

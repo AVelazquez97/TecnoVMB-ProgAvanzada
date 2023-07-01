@@ -79,4 +79,5 @@ void Reserva::alta_estadia(Huesped* ptr_huesped){
     this -> estadias -> add(ik_estadia,ptr_estadia);
     this -> estado_reserva = Cerrada;
 }
+
 #endif // RESERVA_CPP_

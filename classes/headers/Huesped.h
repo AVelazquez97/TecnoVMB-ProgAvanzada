@@ -26,6 +26,8 @@ class Huesped: public Usuario{
         void asignar_reserva(ReservaIndividual* ri);
         void alta_estadia(Huesped* ptr_huesped,int codigo_reserva);
         void asignar_estadia_usuario(Estadia* ptr_estadia);
+        int existe_estadia_activa(string nombre_hostal);
+        void existe_estadia_activa(int codigo_estadia);
 };
 
 
