@@ -84,6 +84,26 @@ void press_enter() {
 	getchar();
 }
 
+int get_integer_input(const string& prompt) {
+    string input;
+    int number;
+
+    while (true) {
+        cout << endl << prompt;
+        getline(cin, input);
+
+        try {
+            number = stoi(input);
+            break; // Salir del bucle si la conversión fue exitosa
+        } catch (const exception& e) {
+            cout << endl << REDB "Error: No has ingresado un número entero." NC << endl;
+        }
+    }
+
+    return number;
+}
+
+
 /// @brief recibe un cargo en string con valor ["0","1","2","3"] y lo castea a int
 /// @return el cargo que coincida con el string recibido 
 Cargo switch_cargo(string str_cargo) {
@@ -156,14 +176,11 @@ void obtener_hostales() {
     }
 }
 
-void obtener_reserva_usuario(string nombre_hostal, string email) {
-	OrderedDictionary* DTReservas = new OrderedDictionary();
-	
-	DTReservas = controlador -> obtener_reserva_usuario(nombre_hostal,email);
-	
+
+void mostrar_reserva_usuario(OrderedDictionary* dt_reserva) {
 	cout << endl << GREEN << "| Lista de reservas no canceladas |" << NC << endl << endl;
 
-	for(IIterator* it = DTReservas -> getIterator(); it -> hasCurrent(); it -> next()){
+	for(IIterator* it = dt_reserva -> getIterator(); it -> hasCurrent(); it -> next()){
         DTReserva* reserva = dynamic_cast<DTReserva*>(it -> getCurrent());
         cout << *reserva;
     }
@@ -592,9 +609,13 @@ void consultar_top_3() {
 
 void registrar_estadia(){
 	string limpiar_buffer;
-	string codigo_reserva = "";
 	string email_huesped;
 	string nombre_hostal;
+	string entrada_codigo_reserva;
+	int codigo_reserva;
+	bool int_casteado = false, es_miembro = false;
+	OrderedDictionary* lista_reservas_usuario = new OrderedDictionary();
+
 	getline(cin,limpiar_buffer);
 	obtener_hostales();
 	
@@ -620,25 +641,42 @@ void registrar_estadia(){
 		}
 	} while(!controlador ->verificar_email(email_huesped));
 	
-	obtener_reserva_usuario(nombre_hostal,email_huesped);
+	/* Se obtienen las reservas para el hostal y el huesped determinado*/
+	lista_reservas_usuario = controlador -> obtener_reserva_usuario(nombre_hostal, email_huesped);
 
-	try { //el try and catch es por que si el usuario no ingresa nada y da enter el stoi explota
-		do{
-			cout << "Ingrese el numero de la reserva de la que se quiere registrar la estadia: " << endl;
-			getline(cin,codigo_reserva);
+	mostrar_reserva_usuario(lista_reservas_usuario);
 
-			if(codigo_reserva == "salir"){return;}
-		} while(stoi(codigo_reserva) < 0 || stoi(codigo_reserva) > controlador -> get_contador() - 1);
-	} catch(invalid_argument const& Excepcion){
-		cout << "Por favor ingrese la opcion correcta!" << endl;
+	if(lista_reservas_usuario->isEmpty()) { 
+		cout << REDB "No hay reservas para el huesped seleccionado" NC << endl;
 		return;
 	}
+
+	// Si valida que si o si ingrese un número entero y que sea un código del listado de reservas del usuario
+    while (!int_casteado && !es_miembro) {
+        cout << endl << "Ingrese el numero de la reserva de la que se quiere registrar la estadia: ";
+        getline(cin, entrada_codigo_reserva);
+
+		if(entrada_codigo_reserva == "salir"){return;}
+
+        try {
+            codigo_reserva = stoi(entrada_codigo_reserva);
+			int_casteado = true;
+        } catch (const exception& e) {
+            cout << endl << REDB "Error: No has ingresado un número entero." NC << endl;
+        }
+
+		if(lista_reservas_usuario->member(new Integer(codigo_reserva))){
+			es_miembro = true;
+		} else{
+			cout << endl << REDB "Error: Debes ingresar un código que forme parte de la lista de reservas." NC << endl;
+			int_casteado = false;
+		}
+		
+    }
+
+	controlador -> alta_estadia(codigo_reserva, email_huesped, nombre_hostal);
 	
-	
-	controlador -> alta_estadia(stoi(codigo_reserva),email_huesped,nombre_hostal);
-	controlador -> set_contador(controlador -> get_contador_estadia() + 1);
 	cout << GREEN "ESTADIA REGISTRADA CON EXITO! " NC << endl;
-	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
 void finalizar_estadia(){

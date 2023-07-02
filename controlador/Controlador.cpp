@@ -677,6 +677,9 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     IKey* ik_email = new String(parce_nombre_email);   
     Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
 
+    /* HAY QUE CONTROLAR SI EL EMAIL NO PERTENECE A LA LISTA DE HUESPEDEEEEES */
+    /* PORQUE SINO TIRA UN SEGMENTATION FAULT */
+
     for(IIterator* it = huesped -> get_reservas_individuales()->getIterator(); it -> hasCurrent(); it -> next()){
         ReservaIndividual* reserva_individual = dynamic_cast<ReservaIndividual*>(it -> getCurrent());
 
@@ -712,8 +715,9 @@ void Controlador::alta_estadia(int codigo_reserva,string email_huesped, string n
     Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
 
     huesped -> alta_estadia(huesped,codigo_reserva);
-
+    this->set_contador_estadia(this->get_contador_estadia() + 1);
 }
+
 int Controlador::existe_estadia(string nombre_hostal, string email_huesped){
     char parce_nombre_email[email_huesped.length()+1];
     strcpy(parce_nombre_email,email_huesped.c_str());

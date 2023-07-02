@@ -33,6 +33,7 @@ void innit_contador();
 void mostrar_menu_principal();
 int eleccion_menu_principal();
 void press_enter();
+int get_integer_input(const string& prompt);
 Cargo switch_cargo(string str_cargo);
 void imprimir_fecha(tm* fecha);
 bool verificar_fecha(string fecha_hora_str, tm* nueva_fecha);
@@ -43,6 +44,7 @@ void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string s
 void obtener_usuarios();
 void obtener_huesped_completo(string email);
 void obtener_empleado_completo(string email);
+void mostrar_reserva_usuario(OrderedDictionary* dt_reserva);
 /* Fin funciones auxiliares*/
 
 /*Funciones del menu principal*/
