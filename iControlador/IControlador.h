@@ -54,6 +54,7 @@ class IControlador {
 
         /* Operaciones auxiliares*/
         virtual bool verificar_email(string entrada) = 0;
+        virtual bool validar_email_huesped(string email_huesped) = 0;
         virtual void existe_hostal(string nombre) = 0;
         virtual void no_existe_hostal(string nombre) = 0;
         virtual bool existe_hostal_bool(string nombre_hostal) = 0;

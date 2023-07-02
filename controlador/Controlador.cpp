@@ -162,7 +162,7 @@ void Controlador::finalizar_estadia(int codigo_estadia,string email_huesped){
     strcpy(parce_nombre_email,email_huesped.c_str());
     IKey* ik_email = new String(parce_nombre_email);   
     Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
-    return ptr_huesped -> existe_estadia_activa(codigo_estadia);
+    ptr_huesped -> existe_estadia_activa(codigo_estadia);
 }
 
 OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
@@ -176,27 +176,25 @@ OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
 
     for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
         Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
-            for(IIterator* it_reserva = habitacion -> get_reservas() -> getIterator(); it_reserva -> hasCurrent(); it_reserva -> next()){
-                
+        for(IIterator* it_reserva = habitacion -> get_reservas() -> getIterator(); it_reserva -> hasCurrent(); it_reserva -> next()){
+            
             Reserva* reserva = dynamic_cast<Reserva*>(it_reserva -> getCurrent());
 
-                if(reserva -> get_tipo()){
-                    ReservaGrupal* rg = dynamic_cast<ReservaGrupal*>(it_reserva -> getCurrent());
-                    DTReserva_completo* dt_reserva = new DTReserva_completo(rg);
-                    
-                    IKey* ik_reserva = new Integer(rg -> get_codigo());
-                    
-                    dt_reservas_hostal -> add(ik_reserva,dt_reserva);
-
-                }else{
-                    ReservaIndividual* ri = dynamic_cast<ReservaIndividual*>(it_reserva -> getCurrent());
-                    DTReserva_completo* dt_reserva = new DTReserva_completo(ri);
-                    IKey* ik_reserva = new Integer(ri -> get_codigo());
-                    
-                    dt_reservas_hostal -> add(ik_reserva,dt_reserva);
-
-                }
+            if(reserva -> get_tipo()){
+                ReservaGrupal* rg = dynamic_cast<ReservaGrupal*>(it_reserva -> getCurrent());
+                DTReserva_completo* dt_reserva = new DTReserva_completo(rg);
+                
+                IKey* ik_reserva = new Integer(rg -> get_codigo());
+                
+                dt_reservas_hostal -> add(ik_reserva,dt_reserva);
+            } else{
+                ReservaIndividual* ri = dynamic_cast<ReservaIndividual*>(it_reserva -> getCurrent());
+                DTReserva_completo* dt_reserva = new DTReserva_completo(ri);
+                IKey* ik_reserva = new Integer(ri -> get_codigo());
+                
+                dt_reservas_hostal -> add(ik_reserva,dt_reserva);
             }
+        }
     }
     return dt_reservas_hostal;
 }
@@ -227,6 +225,27 @@ bool Controlador::verificar_email(string entrada){
     }
 
 }
+
+/// @brief Verifica que exista un huesped con el email recibido por param
+/// @return true si el mail es de un huesped, false en cualquier otro caso.
+bool Controlador::validar_email_huesped(string email_huesped){
+    
+    /* parceamos la entrada de string a un array de caracteres
+    porque es lo que recibe como parametro la String que proporciona
+    ICollections. */
+
+    char parce_char[email_huesped.length()+1];
+    strcpy(parce_char, email_huesped.c_str());
+
+    IKey* ik = new String(parce_char);
+    
+    if(!(this -> huespedes -> member(ik))){
+        return false;
+    }
+    
+    return true;
+}
+
 
 void Controlador::existe_hostal(string nombre){
     char parce_char[nombre.length()+1];
@@ -383,7 +402,6 @@ int Controlador::verificar_email_y_tipo(string email){
     }else if(this -> empleados -> member(ik)){
         return 1;
     }else{
-        cout << email << "|";
         return -1;
     }
  }
@@ -677,9 +695,6 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     IKey* ik_email = new String(parce_nombre_email);   
     Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
 
-    /* HAY QUE CONTROLAR SI EL EMAIL NO PERTENECE A LA LISTA DE HUESPEDEEEEES */
-    /* PORQUE SINO TIRA UN SEGMENTATION FAULT */
-
     for(IIterator* it = huesped -> get_reservas_individuales()->getIterator(); it -> hasCurrent(); it -> next()){
         ReservaIndividual* reserva_individual = dynamic_cast<ReservaIndividual*>(it -> getCurrent());
 
@@ -702,7 +717,7 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     return DTreservas_usuario;
     //FALTA CHECKEAR ESTO CUANDO SE PUEDA CANCElAR UNA RESERVA
 }
-void Controlador::alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal){
+void Controlador::alta_estadia(int codigo_reserva, string email_huesped, string nombre_hostal){
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
     IKey* ik_hostal = new String(parce_nombre_hostal);
@@ -726,4 +741,4 @@ int Controlador::existe_estadia(string nombre_hostal, string email_huesped){
     return ptr_huesped -> existe_estadia_activa(nombre_hostal);
  }
 /* Fin métodos auxiliares*/
-//
+

@@ -94,5 +94,8 @@ OrderedDictionary* DTReserva_completo::get_huespedes(){
     return dynamic_cast<OrderedDictionary*>(huespedes);
 }
 
+ostream& operator << (ostream& salida, DTReserva_completo r_c){
+
+}
 
 #endif // DTRESERVA_COMPLETO_CPP_

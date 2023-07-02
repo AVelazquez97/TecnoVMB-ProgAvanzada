@@ -1,11 +1,13 @@
 #ifndef ESTADIA_H_
 #define ESTADIA_H_
+#include <chrono>
+#include <iostream>
+
 #include "../../ICollection/interfaces/ICollectible.h"
 #include "../../enums/EnumEstado.h"
 #include "Habitacion.h"
 #include "Huesped.h"
-#include <chrono>
-#include <iostream>
+
 using namespace std;
 
 class Estadia: public ICollectible{

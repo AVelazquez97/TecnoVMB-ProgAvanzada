@@ -72,6 +72,7 @@ class Controlador: public IControlador {
 
         /* Operaciones auxiliares*/
         bool verificar_email(string entrada);
+        bool validar_email_huesped(string email_huesped);
         void existe_hostal(string nombre);
         void no_existe_hostal(string nombre);
         bool existe_hostal_bool(string nombre_hostal);
