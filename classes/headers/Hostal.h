@@ -20,6 +20,7 @@ class Hostal: public ICollectible{
         IDictionary* reviews; /*lista de reviews en ese hostal*/
         IDictionary* empleados; /*lista de empleados en ese hostal*/
         float promedio;
+
     public:
         Hostal();
         Hostal(DTHostal nuevo_hostal);
