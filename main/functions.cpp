@@ -1,4 +1,5 @@
 #include "functions.h"
+#include "../datatypes/headers/DTEstadia.h"
 using namespace std;
 
 /*
@@ -17,6 +18,7 @@ IControlador* controlador = fab.getInterface();
 void innit_contador(){
 	controlador -> set_contador(1);
 	controlador -> set_contador_estadia(1);
+	controlador -> set_contador_review(1);
 }
 
 /// @brief muestra las opciones disponibles del menu principal
@@ -175,7 +177,17 @@ void obtener_hostales() {
 		"| Telefono: " << hostal -> get_telefono() << " |" << endl << endl;
     }
 }
+void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
+	OrderedDictionary* DT_Estadia = new OrderedDictionary();
+	DT_Estadia = controlador -> obtener_estadias_fin_huesped(nombre_hostal,email_huesped);
+	
+	cout << endl << GREEN << "| Lista de estadias finalizadas |" << NC << endl << endl;
 
+	for(IIterator* it = DT_Estadia -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTEstadia* estadia = dynamic_cast<DTEstadia*>(it -> getCurrent());
+        cout << *estadia << endl;
+    }
+}
 
 void mostrar_reserva_usuario(OrderedDictionary* dt_reserva) {
 	cout << endl << GREEN << "| Lista de reservas no canceladas |" << NC << endl << endl;
@@ -712,6 +724,51 @@ void finalizar_estadia(){
 }
 
 void calificar_estadia(){
+	string nombre_hostal;
+	string email_huesped;
+	string comentario;
+	string calificacion;
+	string codigo_estadia;
+	string limpiar_buffer;
+	getline(cin,limpiar_buffer);
+	
+	obtener_hostales();
+
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	cout << "Ingrese el nombre del hostal al que está asignada la estadía: " << endl;
+	getline(cin,nombre_hostal);
+	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
+	
+	try{
+		controlador -> no_existe_hostal(nombre_hostal);
+		do{
+			cout << "Ingrese el nombre del huesped al que está asignada la estadía: " << endl;
+			getline(cin,email_huesped);
+			if(email_huesped == "salir"){return;}
+		}while(!controlador -> verificar_email(email_huesped));
+		obtener_estadias_huesped_fin(nombre_hostal,email_huesped);
+
+		//queda pendiente meter un control al numero de estadia ingresado
+		cout << "Seleccione la estadia que desea calificar: " << endl;
+		getline(cin,codigo_estadia);
+		if(codigo_estadia == "salir"){return;}
+
+		cout << "Por favor ingrese su opinion" << endl;
+		getline(cin,comentario);
+		if(comentario == "salir"){return;}
+
+		do{
+			cout << "Por favor ingrese una calificacion del 1 al 5" << endl;
+			getline(cin,calificacion);
+			if(calificacion == "salir"){return;}
+		}while(stoi(calificacion) < 1 || stoi(calificacion) > 5  );
+		
+		controlador -> calificar_estadia(nombre_hostal,stoi(codigo_estadia),comentario,stoi(calificacion),email_huesped);
+		cout << "ESTADIA CALIFICADA CON EXITO!" << endl;
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
+	}
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 

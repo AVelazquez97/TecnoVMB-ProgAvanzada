@@ -1,6 +1,7 @@
 #ifndef HUESPED_CPP_
 #define HUESPED_CPP_
 #include "../headers/Huesped.h"
+#include "../../datatypes/headers/DTEstadia.h"
 #include "../../classes/headers/ReservaIndividual.h"
 #include "../../classes/headers/ReservaGrupal.h"
 #include "../../classes/headers/Estadia.h"
@@ -76,5 +77,23 @@ void Huesped::existe_estadia_activa(int codigo_estadia){
     IKey* ik_estadia = new Integer(codigo_estadia);   
     Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
     ptr_estadia -> finalizar();
+}
+OrderedDictionary* Huesped::estadia_fin(string nombre_hostal){
+    OrderedDictionary* estadias_a_devolver = new OrderedDictionary();
+    for(IIterator* it = estadias -> getIterator(); it -> hasCurrent(); it -> next()){
+        Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        if(estadia -> finalizo(nombre_hostal)){
+            IKey* ik_estadia = new Integer(estadia -> get_codigo());
+            DTEstadia* DT_Estadia = new DTEstadia(estadia -> get_codigo(),estadia -> get_checkin(),estadia -> get_email());
+            estadias_a_devolver -> add(ik_estadia,DT_Estadia);
+        }
+    }
+    return estadias_a_devolver;
+}
+void Huesped::calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion){
+    IKey* ik_estadia = new Integer(codigo_estadia);
+    cout << "||CCC||" << codigo_estadia << endl;
+    Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
+    ptr_estadia -> agregarCalificacion(ptr_hostal,comentario,calificacion);
 }
 #endif // HUESPED_CPP_

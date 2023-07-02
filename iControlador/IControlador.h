@@ -37,6 +37,8 @@ class IControlador {
         virtual int get_contador() = 0;
         virtual void set_contador_estadia(int numero) = 0;
         virtual int get_contador_estadia() = 0;
+        virtual void set_contador_review(int numero) = 0;
+        virtual int get_contador_review() = 0;
 
         /* Operaciones de los casos de uso*/
         virtual void alta_huesped(DTHuesped nuevo_huesped) = 0;
@@ -50,6 +52,7 @@ class IControlador {
         virtual void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal) = 0;
         virtual void finalizar_estadia(int codigo_estadia,string email_huesped) = 0;
         virtual OrderedDictionary* obtener_reservas_hostal(string nombre_hostal) = 0;
+        virtual void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped) = 0;
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -70,6 +73,7 @@ class IControlador {
         virtual int obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal) = 0;
         virtual OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email) = 0;
         virtual int existe_estadia(string nombre_hostal, string email_huesped) = 0;
+        virtual OrderedDictionary* obtener_estadias_fin_huesped(string nombre_hostal,string email_huesped) = 0;
         
 
         /* Fin operaciones auxiliares*/

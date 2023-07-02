@@ -28,6 +28,8 @@ class Huesped: public Usuario{
         void asignar_estadia_usuario(Estadia* ptr_estadia);
         int existe_estadia_activa(string nombre_hostal);
         void existe_estadia_activa(int codigo_estadia);
+        OrderedDictionary* estadia_fin(string nombre_hostal);
+        void calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion);
 };
 
 

@@ -7,6 +7,7 @@
 
 #include "../headers/Hostal.h"
 #include "../../classes/headers/Habitacion.h"
+#include "../../classes/headers/Review.h"
 #include "../../ICollection/String.h"
 #include "../headers/Empleado.h" 
 
@@ -102,6 +103,11 @@ void Hostal::asignar_empleado(Empleado* puntero_empleado){
 
     IKey* ik = new String(parce_email);
     this -> empleados -> add(ik,puntero_empleado);
+}
+void Hostal::asignar_review(Review* ptr_review){
+    int codigo = ptr_review -> get_codigo();
+    IKey* ik_review = new Integer(codigo);
+    this -> reviews -> add(ik_review,ptr_review);
 }
 
 void Hostal::agregar_reserva(int codigo,int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout, bool tipo){ 

@@ -21,6 +21,8 @@ Estadia::Estadia(int codigo, tm* checkin, Habitacion* ptr_habitacion, Huesped* p
     this -> ptr_huesped = ptr_huesped;
 
     ptr_huesped -> asignar_estadia_usuario(this);
+
+    this -> ptr_review = NULL;
 }
 
 void Estadia::set_checkin(tm* checkin){
@@ -60,5 +62,20 @@ void Estadia::finalizar(){
     tm checkout_tm = *controlador_estadia -> get_fecha_sistema();
     time_t checkout_time = mktime(&checkout_tm);
     this -> checkout = chrono::system_clock::from_time_t(checkout_time);
+}
+string Estadia::get_email(){
+    return this -> ptr_huesped -> get_email();
+}
+bool Estadia::finalizo(string nombre_hostal){
+    if(get_checkout_chrono().time_since_epoch() != decltype(get_checkout_chrono())::duration::zero()){
+        return this -> ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
+    }else{
+        return false;
+    }
+}
+void Estadia::agregarCalificacion(Hostal* ptr_hostal,string comentario,int calificacion){
+    Review* review = new Review(controlador_estadia ->get_contador_review(),controlador_estadia ->get_fecha_sistema(),calificacion,comentario,ptr_hostal);
+    this -> ptr_review = review;
+    ptr_hostal -> asignar_review(review);
 }
 #endif // ESTADIA_CPP_

@@ -96,6 +96,13 @@ int Controlador::get_contador_estadia(){
     return contador_estadia;
 }
 
+void Controlador::set_contador_review(int numero){
+    contador_review = numero;
+}
+
+int Controlador::get_contador_review(){
+    return contador_review;
+}
 /* Métodos de los casos de uso*/
 void Controlador::alta_huesped(DTHuesped nuevo_huesped){
     string email = nuevo_huesped.get_email();
@@ -197,8 +204,21 @@ OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
         }
     }
     return dt_reservas_hostal;
+   
 }
+ void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped){
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
 
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    ptr_huesped -> calificarHostal(ptr_hostal,codigo_estadia,comentario,calificacion);    
+ }
 /* Fin métodos de los casos de uso*/
 
 /* Métodos auxiliares*/
@@ -740,5 +760,19 @@ int Controlador::existe_estadia(string nombre_hostal, string email_huesped){
     Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
     return ptr_huesped -> existe_estadia_activa(nombre_hostal);
  }
+OrderedDictionary* Controlador::obtener_estadias_fin_huesped(string nombre_hostal, string email_huesped){
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    return ptr_huesped -> estadia_fin(nombre_hostal);
+}
 /* Fin métodos auxiliares*/
 

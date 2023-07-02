@@ -13,6 +13,7 @@ Review::Review(int codigo, tm* fecha, int calificacion, string comentario,Hostal
     this -> calificacion = calificacion;
     this -> comentario = comentario;
     this -> ptr_hostal = ptr_hostal;
+    //this -> ptr_hostal -> asignar_review(this);
 }
 int Review::get_codigo(){
     return this -> codigo;
