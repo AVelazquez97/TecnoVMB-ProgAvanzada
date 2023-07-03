@@ -30,22 +30,25 @@
 #include "../fabrica/Fabrica.h"
 
 /* Funciones auxiliares*/
-void innit_contador();
+
 void mostrar_menu_principal();
 int eleccion_menu_principal();
 void press_enter();
-int get_integer_input(const string& prompt);
 Cargo switch_cargo(string str_cargo);
 void imprimir_fecha(tm* fecha);
+void imprimir_fecha_sin_salto(tm* fecha);
 bool verificar_fecha(string fecha_hora_str, tm* nueva_fecha);
 void obtener_hostales();
+void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped);
+void mostrar_reserva_usuario(OrderedDictionary* dt_reserva);
 void obtener_hostales_con_promedio();
-void obtener_no_empleados_hostal(string nombre_hostal);
+OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal);
 void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout);
-void obtener_usuarios();
+OrderedDictionary* obtener_usuarios();
+void obtener_huespedes();
 void obtener_huesped_completo(string email);
 void obtener_empleado_completo(string email);
-void mostrar_reserva_usuario(OrderedDictionary* dt_reserva);
+
 /* Fin funciones auxiliares*/
 
 /*Funciones del menu principal*/

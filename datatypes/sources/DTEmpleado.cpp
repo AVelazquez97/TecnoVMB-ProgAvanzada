@@ -43,6 +43,7 @@ Cargo DTEmpleado::get_cargo(){
 
 ostream& operator << (ostream& salida, DTEmpleado empleado) {
     string cargo;
+	string nombre_hostal = (!(empleado.get_nombre_hostal()).empty()) ? empleado.get_nombre_hostal() : "No tiene hostal asignado";
 
     switch(empleado.get_cargo()){
 		case 0:{
@@ -65,9 +66,8 @@ ostream& operator << (ostream& salida, DTEmpleado empleado) {
 
     salida << "| Nombre: " << empleado.get_nombre() << " |" << endl <<
 	"| Email: " << empleado.get_email() << " |" << endl <<
-	"| Trabaja para el hostal de nombre: " << empleado.get_nombre_hostal() << " |" << endl <<
-	"| Cargo: " 
-	<< cargo << endl;
+	"| Trabaja para el hostal de nombre: " << nombre_hostal << " |" << endl <<
+	"| Cargo: " << cargo << " |" << endl;
 
     return salida;
 } 

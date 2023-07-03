@@ -33,8 +33,8 @@ class IControlador {
         /* Fin fecha del sistema*/
 
         /* Contadores */
-        virtual void set_contador(int numero) = 0;
-        virtual int get_contador() = 0;
+        virtual void set_contador_reserva(int numero) = 0;
+        virtual int get_contador_reserva() = 0;
         virtual void set_contador_estadia(int numero) = 0;
         virtual int get_contador_estadia() = 0;
         virtual void set_contador_review(int numero) = 0;
@@ -49,7 +49,7 @@ class IControlador {
         virtual void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout) = 0;
         virtual void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout) = 0;
         virtual OrderedDictionary* obtener_top_3_hostales() = 0;
-        virtual void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal) = 0;
+        virtual void alta_estadia(int codigo_reserva,string email_huesped /*,string nombre_hostal*/) = 0;
         virtual void finalizar_estadia(int codigo_estadia,string email_huesped) = 0;
         virtual OrderedDictionary* obtener_reservas_hostal(string nombre_hostal) = 0;
         virtual void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped) = 0;

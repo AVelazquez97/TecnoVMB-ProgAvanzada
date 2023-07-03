@@ -9,7 +9,6 @@
 
 int main(int argc, char* argv[]){
     int opcion = 0;
-    innit_contador();
 
     while(opcion != 18){
 		opcion = eleccion_menu_principal();

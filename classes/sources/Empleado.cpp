@@ -35,12 +35,12 @@ Empleado::~Empleado(){
 }
 
 Hostal* Empleado::get_puntero_hostal(){
-    if(this -> puntero_hostal != nullptr){
-
-        return this -> puntero_hostal;
-    }else{
-        return nullptr;
-    }
+    // if(this -> puntero_hostal != nullptr){
+    //     return this -> puntero_hostal;
+    // }else{
+    //     return nullptr;
+    // }
+    return this -> puntero_hostal;
 }
 
 Cargo Empleado::get_cargo(){
@@ -48,7 +48,10 @@ Cargo Empleado::get_cargo(){
 }
 
 DTEmpleado Empleado::get_DT(){
-    return DTEmpleado(this->get_nombre(), this -> get_email(),"",this -> puntero_hostal->get_nombre(), this -> get_cargo());
+    if(this->get_puntero_hostal()){
+        return DTEmpleado(this->get_nombre(), this -> get_email(),"",this -> puntero_hostal->get_nombre(), this -> get_cargo());
+    }
+    return DTEmpleado(this->get_nombre(), this -> get_email(),"", "", this -> get_cargo());
 }
 
 void Empleado::asignar_cargo(Cargo cargo ,Hostal* puntero_hostal){

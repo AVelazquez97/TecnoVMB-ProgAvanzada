@@ -9,10 +9,13 @@ Controlador::~Controlador() {
 }
 
 Controlador::Controlador() {
-    this -> hostales = new OrderedDictionary();
-    this -> huespedes = new OrderedDictionary();
-    this -> empleados = new OrderedDictionary();
-    this->fecha_sistema = chrono::system_clock::now(); //Se setea la fecha actual del sistema 
+    this->hostales = new OrderedDictionary();
+    this->huespedes = new OrderedDictionary();
+    this->empleados = new OrderedDictionary();
+    this->fecha_sistema = chrono::system_clock::now(); //Se setea la fecha actual del sistema
+    this->set_contador_reserva(1);
+	this->set_contador_estadia(1);
+	this->set_contador_review(1);
 }
 
 /// @brief implementación del singleton.
@@ -80,11 +83,11 @@ bool Controlador::comparar_fechas_reserva(Reserva* r, tm* fecha_deseada_checkin,
 /* Fin fecha del sistema*/
 
 /* Contadores */
-void Controlador::set_contador(int numero){
+void Controlador::set_contador_reserva(int numero){
     contador_reserva = numero;
 }
 
-int Controlador::get_contador(){
+int Controlador::get_contador_reserva(){
     return contador_reserva;
 }
 
@@ -410,6 +413,9 @@ OrderedDictionary* Controlador::obtener_usuarios(){
     return nombre_usuarios;
 }
 
+/// @brief verifica a que tipo de usuario corresponde un determinado email
+/// @param email 
+/// @return retorna 0 si corresponde a un huesped, 1 si corresponde a un empleado y -1 si no existe el email
 int Controlador::verificar_email_y_tipo(string email){
 
     char parce_char[email.length()+1];
@@ -421,9 +427,9 @@ int Controlador::verificar_email_y_tipo(string email){
         return 0;
     }else if(this -> empleados -> member(ik)){
         return 1;
-    }else{
-        return -1;
     }
+    
+    return -1;
  }
 
 DTHuesped Controlador::obtener_huesped_completo(string email){
@@ -445,7 +451,7 @@ DTEmpleado Controlador::obtener_empleado_completo(string email){
     IKey* ik_empleado = new String(parce_char_email);
 
     Empleado* empleado = dynamic_cast<Empleado*>(empleados -> find(ik_empleado));
- 
+    
     DTEmpleado empleado_completo(empleado -> get_DT());
     return empleado_completo;
 }
@@ -468,7 +474,7 @@ void Controlador::alta_reserva_individual(string nombre_hostal, int numero_Habit
     Huesped* huesped = dynamic_cast<Huesped*>(this -> huespedes -> find(ik_huesped));
 
     hostal -> agregar_reserva(contador_reserva,numero_Habitacion, huesped, checkin, checkout, 0);
-    this->set_contador((get_contador()) + 1);
+    this->set_contador_reserva((get_contador_reserva()) + 1);
 }
 
 void Controlador::alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout){
@@ -495,7 +501,7 @@ void Controlador::alta_reserva_grupal(string nombre_hostal, int numero_habitacio
     }
 
     hostal -> agregar_reserva(contador_reserva,numero_habitacion, huespedes_encontrados, checkin, checkout, 1);
-    this->set_contador((get_contador()) + 1);
+    this->set_contador_reserva((get_contador_reserva()) + 1);
 }
 
 OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout){
@@ -737,12 +743,12 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     return DTreservas_usuario;
     //FALTA CHECKEAR ESTO CUANDO SE PUEDA CANCElAR UNA RESERVA
 }
-void Controlador::alta_estadia(int codigo_reserva, string email_huesped, string nombre_hostal){
-    char parce_nombre_hostal[nombre_hostal.length()+1];
+void Controlador::alta_estadia(int codigo_reserva, string email_huesped /* ,string nombre_hostal */){
+    /* char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
     IKey* ik_hostal = new String(parce_nombre_hostal);
 
-    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal)); */
 
     char parce_nombre_email[email_huesped.length()+1];
     strcpy(parce_nombre_email,email_huesped.c_str());

@@ -6,8 +6,8 @@
 
 Fabrica fab_estadia;
 IControlador* controlador_estadia = fab_estadia.getInterface();
-Estadia::Estadia(){}
 
+Estadia::Estadia(){}
 
 Estadia::Estadia(int codigo, tm* checkin, Habitacion* ptr_habitacion, Huesped* ptr_huesped){
     this -> codigo = codigo;

@@ -46,7 +46,7 @@ void Huesped::asignar_reserva(ReservaIndividual* ri){
     IKey* ik_ri = new Integer(ri -> get_codigo());
     this -> reservas_individuales -> add(ik_ri,ri);
 }
-void Huesped::alta_estadia(Huesped* ptr_huesped,int codigo_reserva){
+void Huesped::alta_estadia(Huesped* ptr_huesped, int codigo_reserva){
     IKey* Ik_reserva = new Integer(codigo_reserva);
     if(reservas_individuales -> member(Ik_reserva)){
         ReservaIndividual* ri = static_cast<ReservaIndividual*>(reservas_individuales -> find(Ik_reserva));

@@ -51,8 +51,8 @@ class Controlador: public IControlador {
 		/* Fin fecha del sistema*/
 
         /* Contadores */
-        void set_contador(int numero);
-        int get_contador();
+        void set_contador_reserva(int numero);
+        int get_contador_reserva();
 
         void set_contador_estadia(int numero);
         int get_contador_estadia();
@@ -69,7 +69,7 @@ class Controlador: public IControlador {
         void alta_reserva_individual(string nombre_hostal, int numero_Habitacion, string email_huesped, tm* checkin, tm* checkout);
         void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout);
         OrderedDictionary* obtener_top_3_hostales();
-        void alta_estadia(int codigo_reserva,string email_huesped, string nombre_hostal);
+        void alta_estadia(int codigo_reserva,string email_huesped /* ,string nombre_hostal */);
         void finalizar_estadia(int codigo_estadia,string email_huesped);
         OrderedDictionary* obtener_reservas_hostal(string nombre_hostal);
         void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped);

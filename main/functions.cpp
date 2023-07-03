@@ -15,12 +15,6 @@ IControlador* controlador = fab.getInterface();
 
 /* Funciones auxiliares*/
 
-void innit_contador(){
-	controlador -> set_contador(1);
-	controlador -> set_contador_estadia(1);
-	controlador -> set_contador_review(1);
-}
-
 /// @brief muestra las opciones disponibles del menu principal
 void mostrar_menu_principal() {
 	system("clear");
@@ -86,27 +80,7 @@ void press_enter() {
 	getchar();
 }
 
-int get_integer_input(const string& prompt) {
-    string input;
-    int number;
-
-    while (true) {
-        cout << endl << prompt;
-        getline(cin, input);
-
-        try {
-            number = stoi(input);
-            break; // Salir del bucle si la conversión fue exitosa
-        } catch (const exception& e) {
-            cout << endl << REDB "Error: No has ingresado un número entero." NC << endl;
-        }
-    }
-
-    return number;
-}
-
-
-/// @brief recibe un cargo en string con valor ["0","1","2","3"] y lo castea a int
+/// @brief recibe un cargo en string con valor ["0","1","2","3"] y lo castea a su correspondiente cargo
 /// @return el cargo que coincida con el string recibido 
 Cargo switch_cargo(string str_cargo) {
 	Cargo cargo;
@@ -177,6 +151,7 @@ void obtener_hostales() {
 		"| Telefono: " << hostal -> get_telefono() << " |" << endl << endl;
     }
 }
+
 void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
 	OrderedDictionary* DT_Estadia = new OrderedDictionary();
 	DT_Estadia = controlador -> obtener_estadias_fin_huesped(nombre_hostal,email_huesped);
@@ -212,7 +187,7 @@ void obtener_hostales_con_promedio() {
 }
 
 /// @brief imprime todos los empleados que no trabajan para un hostal en específico 
-void obtener_no_empleados_hostal(string nombre_hostal) {
+OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal) {
 	OrderedDictionary* DTEmpleados = new OrderedDictionary();
 	DTEmpleados = controlador -> obtener_no_empleados_hostal(nombre_hostal);
 
@@ -223,6 +198,7 @@ void obtener_no_empleados_hostal(string nombre_hostal) {
         cout << "| " << empleado->get_nombre() << "|" <<
 		empleado -> get_email() << "|" << endl << endl;
     }
+	return DTEmpleados;
 }
 
 /// @brief permite listar las habitaciones de un hostal determinado, pero que esten disponibles
@@ -233,15 +209,17 @@ void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string s
 }
 
 /// @brief permita listar todos los usuarios registrados del sistema
-void obtener_usuarios() {
+OrderedDictionary* obtener_usuarios() {
 	OrderedDictionary* emails = controlador -> obtener_usuarios();
 	
-	cout << endl << GREEN << "| Lista de usuarios registrados en el sistema: " << NC << endl << endl;
+	cout << endl << GREEN << "Lista de usuarios registrados en el sistema: " << NC << endl << endl;
 	
 	for(IIterator* it = emails -> getIterator(); it -> hasCurrent(); it -> next()){
         String* email_usuario = dynamic_cast<String*>(it -> getCurrent());
         cout << "| " << email_usuario->getValue() << " |" << endl;
     }	
+
+	return emails;
 }
 
 void obtener_huespedes(){
@@ -308,9 +286,12 @@ void alta_usuario(){
 	if(contrasena == "salir"){return;} /* en caso de que desee salir*/
 
 	while(tipo != "0" && tipo != "1"){
-	cout << "Ingrese el tipo de usuario que quiere registrar: 0 = Huesped | 1 = Empleado" << endl;
-	getline(cin,tipo);
-	if(tipo == "salir"){return;} /* en caso de que desee salir*/
+		cout << "Ingrese el tipo de usuario que quiere registrar: 0 = Huesped | 1 = Empleado" << endl;
+		getline(cin,tipo);
+		if(tipo == "salir"){return;} /* en caso de que desee salir*/
+		if(tipo != "0" && tipo != "1" ){
+			cout << endl << REDB "Debes ingresar un tipo válido." NC << endl;
+		}
 	}
 
 	if(tipo == "0"){
@@ -333,6 +314,9 @@ void alta_usuario(){
 			cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
 			getline(cin,entrada);
 			if(entrada == "salir"){return;} /* en caso de que desee salir*/
+			if(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
+				cout << endl << REDB "Debes ingresar un cargo válido." NC << endl;
+			}
 		}
 		cargo = switch_cargo(entrada);
 		/*hacer la llamada al sistema con el DTEmpleado*/
@@ -429,6 +413,7 @@ void asignar_empleado_hostal(){
 	Cargo cargo;
 	string limpiar_buffer;
 	string entrada;
+	OrderedDictionary* lista_empleados_sin_hostal;
 	getline(cin,limpiar_buffer);
 	
 	obtener_hostales();
@@ -441,12 +426,16 @@ void asignar_empleado_hostal(){
 	
 	try{
 		controlador -> no_existe_hostal(nombre_hostal);
-		obtener_no_empleados_hostal(nombre_hostal);
+		lista_empleados_sin_hostal = obtener_no_empleados_hostal(nombre_hostal);
+
+		if(lista_empleados_sin_hostal->isEmpty()){
+			cout << endl << REDB "No hay ningún empleado sin hostal asignado." NC << endl;
+			return;
+		}
 
 		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 		cout << "Ingrese el email del empleado al que le sera asignado el hostal: "  << endl;
 		getline(cin,email_empleado);
-		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 		cout << "Ingrese el cargo que se le asignara al empleado: "  << endl;
 		
 		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
@@ -540,7 +529,6 @@ void realizar_reserva(){
 			}while(!controlador -> verificar_email(email_huesped));
 
 			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
-			// controlador -> set_contador((controlador -> get_contador()) + 1);
 		}else if(str_tipo == "1"){ //Reserva Grupal
 			tipo = true;
 
@@ -685,7 +673,7 @@ void registrar_estadia(){
 		
     }
 
-	controlador -> alta_estadia(codigo_reserva, email_huesped, nombre_hostal);
+	controlador -> alta_estadia(codigo_reserva, email_huesped /* ,nombre_hostal */);
 	
 	cout << endl << GREEN "ESTADIA REGISTRADA CON EXITO! " NC << endl;
 }
@@ -779,24 +767,30 @@ void comentar_calificacion(){
 void consulta_usuario(){
 	string email;
 	int existe_email = -2;
+	OrderedDictionary* emails;
+
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
 
-	obtener_usuarios();
+	emails = obtener_usuarios();
 
-	while(existe_email != -1 && existe_email != 0 && existe_email != 1 ){
-		cout << endl << "Ingresa el email del usuario que deseas consultar: " ;
-		getline(cin,email);
-		if(email == "salir"){return;} /* en caso de que desee salir*/
-		existe_email = controlador -> verificar_email_y_tipo(email);
+	if (!(emails->isEmpty())){
+		while(existe_email < -1 || existe_email > 1){
+			cout << endl << "Ingresa el email del usuario que deseas consultar: " ;
+			getline(cin,email);
+			if(email == "salir"){return;} /* en caso de que desee salir*/
+			existe_email = controlador -> verificar_email_y_tipo(email);
 
-		if(existe_email == 0){
-			obtener_huesped_completo(email);
-		}else if(existe_email == 1){
-			obtener_empleado_completo(email);
-		}else {
-			cout << endl << REDB "No existe un usuario con ese email. Intenta de nuevo... " NC << endl;
+			if(existe_email == 0){
+				obtener_huesped_completo(email);
+			}else if(existe_email == 1){
+				obtener_empleado_completo(email);
+			}else {
+				cout << endl << REDB "No existe un usuario con ese email." NC << endl;
+			}
 		}
+	} else{
+		cout << endl << REDB "No hay usuarios registrados en el sistema." NC << endl;
 	}
 }
 
@@ -974,25 +968,12 @@ void datos_prueba(){
 		// /* ======================================================================================================= */
 	
 	/* Estadías */
-		// Ref  Reserva  Huesped Check in
-		
-		// ES1	R1	     H1      01/05/22 - 6pm
-		// controlador -> alta_estadia(1, "sofia@mail.com", "");
-		
-		// ES2	R2	     H2      04/01/01 - 9pm
-		// controlador -> alta_estadia(2, "frodo@mail.com", "");
-
-		// ES3	R2	     H3      04/01/01 - 9pm
-		// controlador -> alta_estadia(2, "sam@mail.com", "");
-
-		// ES4	R2	     H4      04/01/01 - 9pm
-		// controlador -> alta_estadia(2, "merry@mail.com", "");
-
-		// ES5	R2	     H5      04/01/01 - 9pm
-		// controlador -> alta_estadia(2, "pippin@mail.com", "");
-		
-		// ES6	R4	     H6      07/06/22 - 6pm
-		// controlador -> alta_estadia(4, "seba@mail.com", "");
+		controlador -> alta_estadia(1, "sofia@mail.com");
+		controlador -> alta_estadia(2, "frodo@mail.com");
+		controlador -> alta_estadia(2, "sam@mail.com");
+		controlador -> alta_estadia(2, "merry@mail.com");
+		controlador -> alta_estadia(2, "pippin@mail.com");
+		controlador -> alta_estadia(4, "seba@mail.com");
 			
 	/* Finalización de estadías */
 		// Estadía  Huesped   Check out
