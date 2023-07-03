@@ -55,6 +55,54 @@ ComparacionFecha Controlador::compararFechas(tm* nueva_fecha){
     }
 }
 
+/// @brief compara el primer parametro contra el segundo (ambos fechas)
+/// @return devuelve si la primera fecha es menor, mayor o igual que la segunda
+ComparacionFecha Controlador::comparar_fechas_generico(tm* primera_fecha, tm* segunda_fecha){
+    auto fecha_nueva_primera = chrono::system_clock::from_time_t(mktime(primera_fecha));
+    auto fecha_nueva_segunda = chrono::system_clock::from_time_t(mktime(segunda_fecha));
+
+    if (chrono::operator<(fecha_nueva_primera,fecha_nueva_segunda)) {
+        return ComparacionFecha::Menor;
+    } else if (chrono::operator>(fecha_nueva_primera,fecha_nueva_segunda)) {
+        return ComparacionFecha::Mayor;
+    } else {
+        return ComparacionFecha::Igual;
+    }
+}
+/// @brief una vez actualizada la fecha del sistema, recorre todas las reservas de todos los usuarios y todas
+///aquellas reservas que haya pasado su fecha de checkout y no tengan estadias, es decir, nadie se presento,
+///cambia su estado a canceladas
+void Controlador::actualizar_estado_reservas(){
+    for(IIterator* it_huespedes = huespedes -> getIterator(); it_huespedes -> hasCurrent(); it_huespedes -> next()){
+        /*por cada huesped*/
+        Huesped* huesped = dynamic_cast<Huesped*>(it_huespedes -> getCurrent());
+        /*recorro sus reservas individuales*/
+        for(IIterator* it_ri = huesped -> get_reservas_individuales() -> getIterator(); it_ri -> hasCurrent(); it_ri -> next()){
+        Reserva* ri = dynamic_cast<Reserva*>(it_ri -> getCurrent());
+        
+            /*buscamos targetear reservas que no se encuentren cancelada y ademas nadie se presento e hizo una estadia*/
+            if(ri -> get_estado() != 2 && ri -> get_cantidad_estadias() == 0){
+                tm* checkout = ri -> get_checkout();
+                if(compararFechas(checkout) == 0){
+                    ri -> set_estado(Cancelada);
+                }
+            }
+        }
+        /*recorro sus reservas grupales*/
+        for(IIterator* it_rg = huesped -> get_reservas_grupales() -> getIterator(); it_rg -> hasCurrent(); it_rg -> next()){
+        Reserva* rg = dynamic_cast<Reserva*>(it_rg -> getCurrent());
+        
+            /*buscamos targetear reservas que no se encuentren cancelada y ademas nadie se presento e hizo una estadia*/
+            if(rg -> get_estado() != 2 && rg -> get_cantidad_estadias() == 0){
+                tm* checkout = rg -> get_checkout();
+                if(compararFechas(checkout) == 0){
+                    rg -> set_estado(Cancelada);
+                }
+            }
+        }
+    }
+}
+
 /// @brief compara la fecha que el usuario 'desea' reservar contra las que ya estan 'ocupadas' en una reserva
 /// @param r la reserva donde se encuentran las fechas ya 'ocupadas'
 /// @param fecha_deseada_checkin la fecha que el usuario 'desea' para el checkin
@@ -535,7 +583,7 @@ OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_
         /* Si la habitación no tiene reservas y ademas es individual entonces == disponible
         si no es individual ya se marca como no valida, ya que se puede
         dar el caso de que tenga todas reservas validas pero la habitacion no sea individual*/
-        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() == 1) { 
+        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() >= 1) { 
             disponible = true;
         }else if(habitacion -> get_capacidad() != 1){
             disponible = false;
@@ -547,11 +595,9 @@ OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_
         if(!(habitacion -> get_reservas() -> isEmpty())){
             for(IIterator* it = habitacion -> get_reservas() -> getIterator(); it -> hasCurrent(); it -> next()){
                 Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
-                /*este if se encarga de que si una reserva esta cerrada
-                o la capacidad de la habitacion a la que pertenece no es 1, sea
-                automaticamente descartada y no se tenga en cuenta para agregarla a la 
-                lista de habitaciones disponibles*/
-                if(reserva -> get_estado() == Cerrada || habitacion -> get_capacidad() != 1){
+                /*este if se encarga de que si la capacidad de la habitacion a la que pertenece no es 1, sea
+                automaticamente descartada y no se tenga en cuenta para agregarla a la lista de habitaciones disponibles*/
+                if(habitacion -> get_capacidad() != 1){
                     disponible = false;
                     flag_disponible += 1;
                 }
@@ -598,7 +644,7 @@ OrderedDictionary* Controlador::obtener_habitaciones_grupales(string nombre_host
             for(IIterator* it = habitacion -> get_reservas() -> getIterator(); it -> hasCurrent(); it -> next()){
                 Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
                 
-                if(reserva -> get_estado() == Cerrada || habitacion -> get_capacidad() <= 1){
+                if(habitacion -> get_capacidad() <= 1){
                     disponible = false;
                     flag_disponible += 1;
                 }
