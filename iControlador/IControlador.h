@@ -53,6 +53,7 @@ class IControlador {
         virtual void finalizar_estadia(int codigo_estadia,string email_huesped) = 0;
         virtual OrderedDictionary* obtener_reservas_hostal(string nombre_hostal) = 0;
         virtual void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped) = 0;
+        virtual void alta_respuesta(int codigo_review,string email_empleado, string respuesta) = 0;
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -74,7 +75,7 @@ class IControlador {
         virtual OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email) = 0;
         virtual int existe_estadia(string nombre_hostal, string email_huesped) = 0;
         virtual OrderedDictionary* obtener_estadias_fin_huesped(string nombre_hostal,string email_huesped) = 0;
-        
+        virtual OrderedDictionary* listar_comentarios_sin_responder(string email_empleado) = 0;
 
         /* Fin operaciones auxiliares*/
 };

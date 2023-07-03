@@ -24,7 +24,9 @@ Estadia::Estadia(int codigo, tm* checkin, Habitacion* ptr_habitacion, Huesped* p
 
     this -> ptr_review = NULL;
 }
-
+Habitacion* Estadia::get_ptr_habitacion(){
+    return this -> ptr_habitacion;
+}
 void Estadia::set_checkin(tm* checkin){
     tm checkin_tm = *checkin;
     time_t checkin_time = mktime(&checkin_tm);
@@ -77,5 +79,19 @@ void Estadia::agregarCalificacion(Hostal* ptr_hostal,string comentario,int calif
     Review* review = new Review(controlador_estadia ->get_contador_review(),controlador_estadia ->get_fecha_sistema(),calificacion,comentario,ptr_hostal);
     this -> ptr_review = review;
     ptr_hostal -> asignar_review(review);
+}
+bool Estadia::tenes_review(){
+    return this -> ptr_review == NULL;
+}
+DTReview Estadia::darDTReview(){
+    return this -> ptr_review -> get_DT();
+}
+Review* Estadia::get_review(){
+    return this->ptr_review;
+}
+Review* Estadia::get_review_sin_responder(){
+    if(this->ptr_review -> get_ptr_respuesta()){
+        return this->ptr_review;
+    }    
 }
 #endif // ESTADIA_CPP_

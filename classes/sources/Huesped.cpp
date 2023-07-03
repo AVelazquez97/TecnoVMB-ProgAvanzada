@@ -2,6 +2,7 @@
 #define HUESPED_CPP_
 #include "../headers/Huesped.h"
 #include "../../datatypes/headers/DTEstadia.h"
+#include "../../datatypes/headers/DTReview.h"
 #include "../../classes/headers/ReservaIndividual.h"
 #include "../../classes/headers/ReservaGrupal.h"
 #include "../../classes/headers/Estadia.h"
@@ -92,8 +93,21 @@ OrderedDictionary* Huesped::estadia_fin(string nombre_hostal){
 }
 void Huesped::calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion){
     IKey* ik_estadia = new Integer(codigo_estadia);
-    cout << "||CCC||" << codigo_estadia << endl;
     Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
     ptr_estadia -> agregarCalificacion(ptr_hostal,comentario,calificacion);
+}
+OrderedDictionary* Huesped::listar_comentarios_sin_resp(string nombre_hostal){
+    OrderedDictionary* reviews_a_devolver = new OrderedDictionary();
+    for(IIterator* it = estadias->getIterator(); it -> hasCurrent(); it -> next()){
+        Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        if(estadia -> get_ptr_habitacion() -> pertenece_a_hostal(nombre_hostal)){
+            if(estadia -> get_review() != NULL){
+                DTReview* review = new DTReview(estadia->get_review_sin_responder() -> get_DT());
+                IKey* Ik_review = new Integer(review ->get_codigo());
+                reviews_a_devolver->add(Ik_review,review);
+            }
+        }
+    }
+    return reviews_a_devolver;
 }
 #endif // HUESPED_CPP_

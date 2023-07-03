@@ -20,6 +20,7 @@ class Empleado: public Usuario{
         Cargo get_cargo();
         DTEmpleado get_DT();
         void asignar_cargo(Cargo cargo,Hostal* puntero_hostal);
+        Hostal* get_hostal();
 };
 
 

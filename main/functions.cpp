@@ -1,5 +1,6 @@
 #include "functions.h"
 #include "../datatypes/headers/DTEstadia.h"
+#include "../datatypes/headers/DTReview.h"
 using namespace std;
 
 /*
@@ -164,7 +165,17 @@ void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
         cout << *estadia << endl;
     }
 }
+OrderedDictionary* listar_comentarios_sr(string email_empleado){
+	OrderedDictionary* DT_Reviews = new OrderedDictionary();
+	DT_Reviews = controlador -> listar_comentarios_sin_responder(email_empleado);
+	
+	cout << endl << GREEN << "| Lista de comentarios sin responder |" << NC << endl << endl;
 
+	for(IIterator* it = DT_Reviews -> getIterator(); it -> hasCurrent(); it -> next()){
+        DTReview* review = dynamic_cast<DTReview*>(it -> getCurrent());
+        cout << *review << endl;
+    }
+}
 void mostrar_reserva_usuario(OrderedDictionary* dt_reserva) {
 	cout << endl << GREEN << "| Lista de reservas no canceladas |" << NC << endl << endl;
 
@@ -815,7 +826,30 @@ void calificar_estadia(){
 }
 
 void comentar_calificacion(){
+	string nombre_hostal;
+	string email_empleado;
+	string codigo_review;
+	OrderedDictionary* DT_reviews = new OrderedDictionary();
+	string limpiar_buffer;
+	getline(cin,limpiar_buffer);
+	try{
+		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+		do{
+			cout << "Ingrese el nombre del empleado que va a responder la review: " << endl;
+			getline(cin,email_empleado);
+		}while(!controlador -> verificar_email(email_empleado));
+
+		DT_reviews = listar_comentarios_sr(email_empleado);
+		//getline(cin,codigo_review);
+
+	}catch(invalid_argument const& Excepcion){
+		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
+	}
+
+
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+
+
 }
 
 void consulta_usuario(){

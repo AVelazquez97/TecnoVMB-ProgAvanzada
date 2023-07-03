@@ -730,7 +730,7 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     for(IIterator* it = huesped -> get_reservas_individuales()->getIterator(); it -> hasCurrent(); it -> next()){
         ReservaIndividual* reserva_individual = dynamic_cast<ReservaIndividual*>(it -> getCurrent());
 
-        if(reserva_individual -> pertenece_a_hostal(nombre_hostal) && reserva_individual->get_estado() == 0){
+        if(reserva_individual -> pertenece_a_hostal(nombre_hostal) && reserva_individual->get_estado() == 0 || reserva_individual->get_estado() == 1){
             IKey* ik_reserva_individual = new Integer(reserva_individual -> get_codigo());
             DTReserva* reserva = new DTReserva(reserva_individual);
             DTreservas_usuario -> add(ik_reserva_individual,reserva);
@@ -740,7 +740,7 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     for(IIterator* it = huesped -> get_reservas_grupales()->getIterator(); it -> hasCurrent(); it -> next()){
         ReservaGrupal* reserva_grupal = dynamic_cast< ReservaGrupal*>(it -> getCurrent());
 
-        if(reserva_grupal -> pertenece_a_hostal(nombre_hostal) && reserva_grupal->get_estado() == 0){
+        if(reserva_grupal -> pertenece_a_hostal(nombre_hostal) && reserva_grupal->get_estado() == 0 || reserva_grupal->get_estado() == 1){
             IKey* ik_reserva_grupal = new Integer(reserva_grupal -> get_codigo());
             DTReserva* reserva = new DTReserva(reserva_grupal);
             DTreservas_usuario -> add(ik_reserva_grupal,reserva);
@@ -786,5 +786,23 @@ OrderedDictionary* Controlador::obtener_estadias_fin_huesped(string nombre_hosta
 
     return ptr_huesped -> estadia_fin(nombre_hostal);
 }
+OrderedDictionary* Controlador::listar_comentarios_sin_responder(string email_empleado){
+    OrderedDictionary* reviews_a_devolver = new OrderedDictionary();
+    OrderedDictionary* respuestas_de_huespedes = new OrderedDictionary();
+    char parce_nombre_email[email_empleado.length()+1];
+    strcpy(parce_nombre_email,email_empleado.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_email));
+
+    Hostal* ptr_hostal = ptr_empleado -> get_puntero_hostal();
+
+    for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
+        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
+        reviews_a_devolver = huesped -> listar_comentarios_sin_resp(ptr_hostal ->get_nombre());
+
+    }
+    return reviews_a_devolver;
+}
+void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta){}
 /* Fin métodos auxiliares*/
 

@@ -13,12 +13,15 @@ Review::Review(int codigo, tm* fecha, int calificacion, string comentario,Hostal
     this -> calificacion = calificacion;
     this -> comentario = comentario;
     this -> ptr_hostal = ptr_hostal;
+    this -> respuesta == NULL;
     //this -> ptr_hostal -> asignar_review(this);
 }
 int Review::get_codigo(){
     return this -> codigo;
 }
-
+DTReview Review::get_DT(){
+    return DTReview(this -> get_codigo(),this -> get_fecha(),this ->get_calificacion(),this -> get_comentario());
+}
 tm* Review::get_fecha(){
     time_t fecha = chrono::system_clock::to_time_t(this->fecha);
     tm* fecha_tm = localtime(&fecha);
@@ -35,5 +38,8 @@ Hostal* Review::get_ptr_hostal(){
 }
 Respuesta* Review::get_ptr_respuesta(){
     return this -> respuesta;
+}
+bool Review::get_sin_responder(){
+    return this -> get_ptr_respuesta() == NULL;
 }
 #endif // REVIEW_CPP_

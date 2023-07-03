@@ -73,6 +73,7 @@ class Controlador: public IControlador {
         void finalizar_estadia(int codigo_estadia,string email_huesped);
         OrderedDictionary* obtener_reservas_hostal(string nombre_hostal);
         void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped);
+        void alta_respuesta(int codigo_review,string email_empleado, string respuesta);
 		/* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/
@@ -94,6 +95,7 @@ class Controlador: public IControlador {
         OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email);
         int existe_estadia(string nombre_hostal, string email_huesped);
         OrderedDictionary* obtener_estadias_fin_huesped(string nombre_hostal,string email_huesped);
+        OrderedDictionary* listar_comentarios_sin_responder(string email_empleado);
         /* Fin operaciones auxiliares*/
 };
     

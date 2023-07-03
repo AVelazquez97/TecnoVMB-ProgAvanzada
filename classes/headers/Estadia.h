@@ -5,6 +5,7 @@
 
 #include "../../ICollection/interfaces/ICollectible.h"
 #include "../../enums/EnumEstado.h"
+#include "../../datatypes/headers/DTReview.h"
 #include "Habitacion.h"
 #include "Huesped.h"
 #include "Review.h"
@@ -29,12 +30,18 @@ class Estadia: public ICollectible{
         int get_codigo();
         tm* get_checkin();
         tm* get_checkout();
+        Habitacion* get_ptr_habitacion(); 
         string get_email();
         chrono::system_clock::time_point get_checkout_chrono();
         bool perteneceA(string nombre_hostal);
         void finalizar();
         bool finalizo(string nombre_hostal);
         void agregarCalificacion(Hostal* ptr_hostal,string comentario,int calificacion);
+        bool tenes_review();
+        DTReview darDTReview();
+        Review* get_review();
+        Review* get_review_sin_responder();
+        
 };
 
 #endif // ESTADIA_H_

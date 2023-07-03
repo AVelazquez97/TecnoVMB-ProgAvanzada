@@ -1,6 +1,7 @@
 #ifndef REVIEW_H_
 #define REVIEW_H_
 #include "../../ICollection/collections/OrderedDictionary.h"
+#include "../../datatypes/headers/DTReview.h"
 #include "Hostal.h"
 #include "Respuesta.h"
 #include <iostream>
@@ -23,9 +24,10 @@ class Review: public ICollectible{
         int get_calificacion();
         string get_comentario();
         Hostal* get_ptr_hostal();
-        // DTReview get_DT();
+        DTReview get_DT();
         void destruir_review_respuesta();
         Respuesta* get_ptr_respuesta();
+        bool get_sin_responder();
 };
 
 
