@@ -138,7 +138,7 @@ bool verificar_fecha(string fecha_hora_str, tm* nueva_fecha) {
 
 /// @brief va hasta el controlador y trae los DTHostales. Luego los imprime.
 /// Sirve tenerla como auxiliar ya que se pide en distintos casos de uso
-void obtener_hostales() {
+OrderedDictionary* obtener_hostales() {
 	OrderedDictionary* DTHostales = new OrderedDictionary();
 	DTHostales = controlador -> obtener_hostales();
 
@@ -150,6 +150,7 @@ void obtener_hostales() {
 		"| Direccion: " << hostal -> get_direccion() << " |" << endl <<
 		"| Telefono: " << hostal -> get_telefono() << " |" << endl << endl;
     }
+	return DTHostales;
 }
 
 void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
@@ -174,7 +175,7 @@ void mostrar_reserva_usuario(OrderedDictionary* dt_reserva) {
 }
 
 /// @brief lo mismo que obtener_hostales pero adicionalmente muestra el promedio de calificación de cada hostal
-void obtener_hostales_con_promedio() {
+OrderedDictionary* obtener_hostales_con_promedio() {
 	OrderedDictionary* DTHostales = new OrderedDictionary();
 	DTHostales = controlador -> obtener_hostales();
 
@@ -184,6 +185,7 @@ void obtener_hostales_con_promedio() {
         DTHostal* hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
 		cout << *hostal;
     }
+	return DTHostales;
 }
 
 /// @brief imprime todos los empleados que no trabajan para un hostal en específico 
@@ -368,13 +370,18 @@ void alta_habitacion(){
 	string str_numero_hab;
 	string str_precio_hab;
 	string str_capacidad_hab;
-	int numero_hab;
+	int numero_hab, capacidad_hab;
 	float precio_hab;
-	int capacidad_hab;
+	OrderedDictionary* hostales;
 	string limpiar_buffer; 
 	getline(cin,limpiar_buffer);
 
-	obtener_hostales();
+	hostales = obtener_hostales();
+	
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -387,7 +394,9 @@ void alta_habitacion(){
 
 		cout << "Ingrese el numero de la habitacion: " << endl;
 		getline(cin,str_numero_hab);
+		
 		if(str_numero_hab == "salir"){return;} /* en caso de que desee salir*/
+		
 		numero_hab = stoi(str_numero_hab); /*parceo la entrada de str a int*/
 
 		cout << "Ingrese el precio de la habitacion: " << endl;
@@ -401,7 +410,7 @@ void alta_habitacion(){
 		capacidad_hab = stoi(str_capacidad_hab); /*parceo la entrada de str a float*/
 
 		controlador -> alta_habitacion(DTHabitacion(numero_hab, precio_hab, capacidad_hab),nombre_hostal);
-		cout << "Habitacion ingresada correctamente" << endl;
+		cout << endl << GREEN "HABITACIÓN INGRESADA CON ÉXITO! " NC << endl;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -414,41 +423,60 @@ void asignar_empleado_hostal(){
 	string limpiar_buffer;
 	string entrada;
 	OrderedDictionary* lista_empleados_sin_hostal;
+	OrderedDictionary*  hostales;
+	bool es_miembro = false;
 	getline(cin,limpiar_buffer);
 	
-	obtener_hostales();
+	hostales = obtener_hostales();
+	
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
-	cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
-	getline(cin,nombre_hostal);
-	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
-	
 	try{
+		cout << "Ingrese el nombre del hostal al que sera asignado el empleado: " << endl;
+		getline(cin,nombre_hostal);
+		if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
 		controlador -> no_existe_hostal(nombre_hostal);
-		lista_empleados_sin_hostal = obtener_no_empleados_hostal(nombre_hostal);
-
-		if(lista_empleados_sin_hostal->isEmpty()){
-			cout << endl << REDB "No hay ningún empleado sin hostal asignado." NC << endl;
-			return;
-		}
-
-		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
-		cout << "Ingrese el email del empleado al que le sera asignado el hostal: "  << endl;
-		getline(cin,email_empleado);
-		cout << "Ingrese el cargo que se le asignara al empleado: "  << endl;
-		
-		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
-			cout << RED "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " NC<< endl;
-			getline(cin,entrada);
-			if(entrada == "salir"){return;} /* en caso de que desee salir*/
-		}
-		cargo = switch_cargo(entrada);
-		
-		controlador -> asignar_empleado_hostal(nombre_hostal,email_empleado,cargo);
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
+		return;
 	}
+
+	lista_empleados_sin_hostal = obtener_no_empleados_hostal(nombre_hostal);
+
+	if(lista_empleados_sin_hostal->isEmpty()){
+		cout << endl << REDB "No hay ningún empleado para asignar al hostal." NC << endl;
+		return;
+	}
+
+	while (!es_miembro) { // Por defecto, es miembro viene con false para entrar en el while
+		cout << endl << "Ingresa el nombre del empleado que deseas asignar al hostal: ";
+		getline(cin, email_empleado);
+
+		if(email_empleado == "salir"){return;}
+
+		char parce_char[email_empleado.length()+1];
+		strcpy(parce_char, email_empleado.c_str());
+		if(lista_empleados_sin_hostal->member(new String(parce_char))){
+			es_miembro = true;
+		} else{
+			cout << endl << REDB "Error: Debes ingresar un mail que forme parte de la lista de empleados." NC << endl;
+		}
+	}
+	
+	while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
+		cout << endl << RED "Indique el cargo del empleado (0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura): " NC << endl;
+		getline(cin,entrada);
+		if(entrada == "salir"){return;} /* en caso de que desee salir*/
+	}
+	
+	cargo = switch_cargo(entrada);
+	controlador -> asignar_empleado_hostal(nombre_hostal, email_empleado, cargo);
+	cout << endl << GREEN "El empleado con el email " << email_empleado << " fue asignado al hostal " << nombre_hostal << NC << endl;
 }
 
 void realizar_reserva(){
@@ -463,13 +491,20 @@ void realizar_reserva(){
 	bool habitacion_valida = false;
 	int numero_habitacion;
 	string str_numero_habitacion;
-	string limpiar_buffer;
 	bool fecha_valida_checkin = false;
 	bool fecha_valida_checkout = false;
+	OrderedDictionary* hostales;
+
+	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
 	
 	
-	obtener_hostales_con_promedio();
+	hostales = obtener_hostales_con_promedio();
+	
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -607,16 +642,22 @@ void consultar_top_3() {
 }
 
 void registrar_estadia(){
-	string limpiar_buffer;
 	string email_huesped;
 	string nombre_hostal;
 	string entrada_codigo_reserva;
 	int codigo_reserva;
 	bool int_casteado = false, es_miembro = false;
-	OrderedDictionary* lista_reservas_usuario = new OrderedDictionary();
+	OrderedDictionary* lista_reservas_usuario;
+	OrderedDictionary* hostales;
 
+	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
-	obtener_hostales();
+
+	hostales = obtener_hostales();
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 	
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -682,10 +723,16 @@ void finalizar_estadia(){
 	string nombre_hostal;
 	string email_huesped;
 	int estadia_a_finalizar;
+	OrderedDictionary* hostales;
+
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
 	
-	obtener_hostales();
+	hostales = obtener_hostales();
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -717,10 +764,17 @@ void calificar_estadia(){
 	string comentario;
 	string calificacion;
 	string codigo_estadia;
+	OrderedDictionary* hostales;
+
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
 	
-	obtener_hostales();
+	
+	hostales = obtener_hostales();
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
@@ -766,7 +820,7 @@ void comentar_calificacion(){
 
 void consulta_usuario(){
 	string email;
-	int existe_email = -2;
+	int existe_email = -1;
 	OrderedDictionary* emails;
 
 	string limpiar_buffer;
@@ -774,23 +828,26 @@ void consulta_usuario(){
 
 	emails = obtener_usuarios();
 
-	if (!(emails->isEmpty())){
-		while(existe_email < -1 || existe_email > 1){
-			cout << endl << "Ingresa el email del usuario que deseas consultar: " ;
-			getline(cin,email);
-			if(email == "salir"){return;} /* en caso de que desee salir*/
-			existe_email = controlador -> verificar_email_y_tipo(email);
-
-			if(existe_email == 0){
-				obtener_huesped_completo(email);
-			}else if(existe_email == 1){
-				obtener_empleado_completo(email);
-			}else {
-				cout << endl << REDB "No existe un usuario con ese email." NC << endl;
-			}
-		}
-	} else{
+	if (emails->isEmpty()){
 		cout << endl << REDB "No hay usuarios registrados en el sistema." NC << endl;
+		return;
+	}
+
+	cout << endl <<  CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+
+	while(existe_email == -1){
+		cout << endl << "Ingresa el email del usuario que deseas consultar: " ;
+		getline(cin,email);
+		if(email == "salir"){return;} /* en caso de que desee salir*/
+		existe_email = controlador -> verificar_email_y_tipo(email);
+
+		if(existe_email == 0){
+			obtener_huesped_completo(email);
+		}else if(existe_email == 1){
+			obtener_empleado_completo(email);
+		}else {
+			cout << endl << REDB "No existe un usuario con ese email. Intenta de nuevo..." NC << endl;
+		}
 	}
 }
 
@@ -800,11 +857,17 @@ void consulta_hostal(){
 
 void consulta_reserva(){
 	string nombre_hostal = "";
+	OrderedDictionary* hostales;
 
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
 
-	obtener_hostales_con_promedio();
+	hostales = obtener_hostales_con_promedio();
+	
+	if (hostales->isEmpty()){
+		cout << endl << REDB "No hay hostales registrados en el sistema." NC << endl;
+		return;
+	}
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	

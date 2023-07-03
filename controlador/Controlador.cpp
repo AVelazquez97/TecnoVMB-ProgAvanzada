@@ -138,14 +138,20 @@ void Controlador::alta_hostal(DTHostal nuevo_hostal){
 }
 
 void Controlador::alta_habitacion(DTHabitacion nueva_habitacion, string nombre_hostal){
-    char parce_char[nombre_hostal.length()+1];
-    strcpy(parce_char,nombre_hostal.c_str());
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
 
-    IKey* ik = new String(parce_char);
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
 
-    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik));
+    /* Se busca si el número de habitación a ingresar ya existe en el hostal */
+    IKey* ik_habitacion = new Integer(nueva_habitacion.get_numero());
+    Habitacion* habitacion = dynamic_cast<Habitacion*>(ptr_hostal->get_habitaciones() -> find(ik_habitacion));
 
-    ptr_hostal -> alta_habitacion(nueva_habitacion,ptr_hostal);
+    if(habitacion){ // En caso de que exista la habitación se lanza una exepción
+        throw invalid_argument("El número de habitación que ingresaste ya existe en el hostal!");  
+    }
+    ptr_hostal -> alta_habitacion(nueva_habitacion, ptr_hostal); // Si no existe, se da de alta
 }
 
 void Controlador::asignar_empleado_hostal(string nombre_hostal,string email_empleado,Cargo cargo){
