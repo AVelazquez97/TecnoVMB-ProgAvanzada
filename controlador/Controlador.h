@@ -94,6 +94,8 @@ class Controlador: public IControlador {
         OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email);
         int existe_estadia(string nombre_hostal, string email_huesped);
         OrderedDictionary* obtener_estadias_fin_huesped(string nombre_hostal,string email_huesped);
+        ComparacionFecha comparar_fechas_generico(tm* primera_fecha, tm* segunda_fecha);
+        void actualizar_estado_reservas();
         /* Fin operaciones auxiliares*/
 };
     

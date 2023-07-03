@@ -74,6 +74,8 @@ class IControlador {
         virtual OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email) = 0;
         virtual int existe_estadia(string nombre_hostal, string email_huesped) = 0;
         virtual OrderedDictionary* obtener_estadias_fin_huesped(string nombre_hostal,string email_huesped) = 0;
+        virtual ComparacionFecha comparar_fechas_generico(tm* primera_fecha, tm* segunda_fecha) = 0;
+        virtual void actualizar_estado_reservas() = 0;
         
 
         /* Fin operaciones auxiliares*/

@@ -101,4 +101,14 @@ DTReserva Reserva::getDT(){
     return DTReserva(this -> get_codigo(), this -> get_checkin(),this -> get_checkout(), this -> get_estado());
 }
 
+int Reserva::get_cantidad_estadias(){
+    int cant = 0;
+    cant += this -> estadias -> getSize();
+    return cant;
+}
+
+void Reserva::set_estado(Estado estado){
+    this -> estado_reserva = estado;
+}
+
 #endif // RESERVA_CPP_
