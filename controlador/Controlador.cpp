@@ -641,12 +641,13 @@ OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_
         /* Si la habitación no tiene reservas y ademas es individual entonces == disponible
         si no es individual ya se marca como no valida, ya que se puede
         dar el caso de que tenga todas reservas validas pero la habitacion no sea individual*/
-        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() >= 1) { 
+        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() >= 1) {
             disponible = true;
-        }else if(habitacion -> get_capacidad() != 1){
+        }/*else if(habitacion -> get_capacidad() != 1){
+            cout << habitacion -> get_numero() << " caso2" << endl; 
             disponible = false;
             flag_disponible += 1;
-        }
+        }*/
 
         /* Si la habitación tiene reservas, se debe recorrerlas para ver cual no se solapa con el rango de fechas
          recibido por parámtro */ 
@@ -655,7 +656,7 @@ OrderedDictionary* Controlador::obtener_habitaciones_individuales(string nombre_
                 Reserva* reserva = dynamic_cast<Reserva*>(it -> getCurrent());
                 /*este if se encarga de que si la capacidad de la habitacion a la que pertenece no es 1, sea
                 automaticamente descartada y no se tenga en cuenta para agregarla a la lista de habitaciones disponibles*/
-                if(habitacion -> get_capacidad() != 1){
+                if(habitacion -> get_capacidad() < 1){
                     disponible = false;
                     flag_disponible += 1;
                 }
@@ -691,7 +692,8 @@ OrderedDictionary* Controlador::obtener_habitaciones_grupales(string nombre_host
         Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
         IKey* ik_habitacion = new Integer(habitacion -> get_numero());
 
-        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() < 1) { 
+        if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() > 1) { 
+            cout << habitacion -> get_numero() << "caso1" << endl;
             disponible = true;
         }else if(habitacion -> get_capacidad() <= 1){
             disponible = false;

@@ -309,6 +309,11 @@ void obtener_huespedes(){
     }
 }
 
+OrderedDictionary* obtener_huespedes_con_return(){
+	OrderedDictionary* emails = controlador -> obtener_huespedes();
+	return emails;
+}
+
 /// @brief permite listar la información detallada de un huesped determinado 
 void obtener_huesped_completo(string email) {
 	DTHuesped huesped_completo = controlador -> obtener_huesped_completo(email);
@@ -647,6 +652,7 @@ void realizar_reserva(){
 				for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
 					DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
 					cout << "| Habitacion nro. " << habitacion -> get_numero() << " |" << endl 
+					<< "| Capacidad: " << habitacion -> get_capacidad() << " |" << endl
 					<< "| Precio: " << habitacion -> get_precio() << " |" << endl << endl;
 				}
 
@@ -672,12 +678,13 @@ void realizar_reserva(){
 			}while(!controlador -> verificar_email(email_huesped));
 
 			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
+			cout << GREEN << "Reserva Individual realizada correctamente" << NC << endl;
 		}else if(str_tipo == "1"){ //Reserva Grupal
 			tipo = true;
 
 			OrderedDictionary* habitaciones = controlador -> obtener_habitaciones_grupales(nombre_hostal, str_tipo, &checkin, &checkout);
 			if(habitaciones -> getSize() >= 1){
-				cout << endl << GREEN << "Mostrando informacion sobre las habitaciones grupales del hostal: " << nombre_hostal << NC << endl;
+				cout << endl << GREEN << "Mostrando informacion sobre las habitaciones grupales del hostal: " << nombre_hostal << NC << endl << endl;
 				
 					for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
 						DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
@@ -699,13 +706,34 @@ void realizar_reserva(){
 			}
 			
 			/*lista con los emails de los huespedes seleccionados para la reserva*/
+			OrderedDictionary* lista_huespedes_disponibles = obtener_huespedes_con_return();
+			/*si no hay huespedes registrados no se le da la opcion de ingresar huespedes*/
+			if(lista_huespedes_disponibles -> getSize() <= 0){
+				cout << endl << REDB << "No existen huespedes registrados para poder agregar a la reserva, intente de nuevo!" << NC << endl << endl;
+				return;
+			}
 			OrderedDictionary* lista_huespedes_seleccionados = new OrderedDictionary();
 			bool seguir_ingresando = true;
 			for (int i = 0; i < controlador -> obtener_capacidad_habitacion(numero_habitacion, nombre_hostal); i++){
 					do{
-						obtener_huespedes();
-						cout << "Ingrese un huesped o ingrese 'parar' para dejar de ingresar huespedes:" << endl;
-						getline(cin,email_huesped);
+						/*si no quedan huespedes que mostrar se va del for y hace la reserva grupal con los que tenga ingresados
+						hasta el momento*/
+						if(lista_huespedes_disponibles -> getSize() <= 0){
+							cout << endl << GREEN << "| Todos los huespedes disponibles fueron registrados en la reserva! |" << NC << endl << endl;
+							email_huesped = "parar";
+						}else{
+							cout << endl << GREEN << "| Lista de huespedes registrados en el sistema: |" << NC << endl << endl;
+		
+								for(IIterator* it = lista_huespedes_disponibles -> getIterator(); it -> hasCurrent(); it -> next()){
+									String* email_huesped = dynamic_cast<String*>(it -> getCurrent());
+									cout << "| " << email_huesped->getValue() << " |" << endl;
+								}
+
+							cout << "Ingrese un huesped o ingrese 'parar' para dejar de ingresar huespedes:" << endl;
+							getline(cin,email_huesped);
+						}
+						
+
 						//si quiere dejar de ingresar huespedes pero no tiene ninguno registrado
 						if(email_huesped == "parar" && lista_huespedes_seleccionados -> getSize() < 1){
 							cout << RED << "Debe ingresar al menos un huesped, intente denuevo." << NC << endl;
@@ -732,9 +760,11 @@ void realizar_reserva(){
 					String* email_huesped = new String(parce_email_huesped); //creo un icollectible con el email_huesped
 
 					lista_huespedes_seleccionados -> add(ik_huesped,email_huesped);	
+					lista_huespedes_disponibles -> remove(ik_huesped);
 				}
 			}
 			controlador -> alta_reserva_grupal(nombre_hostal, numero_habitacion, lista_huespedes_seleccionados, &checkin, &checkout);
+			cout << GREEN << "Reserva Grupal realizada correctamente" << NC << endl;
 		}
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
@@ -1068,7 +1098,7 @@ void consulta_reserva(){
 		 	cout << "|Codigo: " << CYAN << reserva -> get_codigo() << NC << " |" << endl <<
 			"|Estado: " << CYAN << estado << NC << " |" << endl <<
 			"|Numero habitacion: " << CYAN << reserva -> get_numero_habitacion() << NC << " |" << endl;
-			cout << "|Huesped(es): "; 
+			cout << "|Huesped(es): " << endl;
 
 			for(IIterator* it_huespedes = reserva -> get_huespedes() -> getIterator(); it_huespedes -> hasCurrent(); it_huespedes -> next()){
 				String* nombre_usuario = dynamic_cast<String*>(it_huespedes -> getCurrent());
