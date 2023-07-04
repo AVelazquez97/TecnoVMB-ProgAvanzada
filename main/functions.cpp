@@ -905,6 +905,7 @@ void comentar_calificacion(){
 	string nombre_hostal;
 	string email_empleado;
 	string codigo_review;
+	string respuesta;
 	OrderedDictionary* DT_reviews = new OrderedDictionary();
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
@@ -914,10 +915,14 @@ void comentar_calificacion(){
 			cout << "Ingrese el nombre del empleado que va a responder la review: " << endl;
 			getline(cin,email_empleado);
 		}while(!controlador -> verificar_email(email_empleado));
-
+		//a controlar lo de le review que sea valido el codigo
 		DT_reviews = listar_comentarios_sr(email_empleado);
-		//getline(cin,codigo_review);
-
+		cout << "Ingrese el codigo de la review a comentar: " << endl;
+		getline(cin,codigo_review);
+		cout << "Ingrese la respuesta: " << endl;
+		getline(cin,respuesta);
+		controlador -> alta_respuesta(stoi(codigo_review),email_empleado,respuesta);
+		cout << "RESPUESTA INGRESA CORRECTAMENTE!" << endl;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -1144,6 +1149,8 @@ void datos_prueba(){
 	
 	/* Estadías */
 		controlador -> alta_estadia(1, "sofia@mail.com");
+		controlador -> finalizar_estadia(1,"sofia@mail.com");
+		controlador -> calificar_estadia("La posada del finger",1,"muy malo",2,"sofia@mail.com");
 		controlador -> alta_estadia(2, "frodo@mail.com");
 		controlador -> alta_estadia(2, "sam@mail.com");
 		controlador -> alta_estadia(2, "merry@mail.com");

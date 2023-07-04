@@ -90,8 +90,23 @@ Review* Estadia::get_review(){
     return this->ptr_review;
 }
 Review* Estadia::get_review_sin_responder(){
-    if(this->ptr_review -> get_ptr_respuesta()){
+    if(this->ptr_review -> get_ptr_respuesta() == NULL){
         return this->ptr_review;
     }    
+}
+bool Estadia::coincide(int codigo_review){
+    if(this -> ptr_review != NULL){
+        if(this -> ptr_review -> get_codigo() == codigo_review){
+            return true;
+        }else{
+            return false;
+            }
+    }else{
+        return false;
+    }
+
+}
+void Estadia::alta_respuesta(Empleado* ptr_empleado,string respuesta){
+    this -> ptr_review -> alta_respuesta(ptr_empleado,respuesta);
 }
 #endif // ESTADIA_CPP_

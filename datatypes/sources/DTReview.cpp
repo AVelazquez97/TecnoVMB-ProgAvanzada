@@ -43,7 +43,7 @@ string DTReview::get_comentario(){
 ostream& operator << (ostream& salida, DTReview review){
     salida << "| Codigo: " << review.get_codigo() << " |" << endl 
         << "| Fecha: " << put_time(review.get_fecha(), "%d/%m/%y - %H") << " hs" << " |" << endl 
-        << "| Comentario: " << review.get_comentario() << " hs" << " |" << endl<< "| Calificacion: " 
+        << "| Comentario: " << review.get_comentario() << " |" << endl<< "| Calificacion: " 
         << review.get_calificacion() << " |" << endl  << endl;
 
     return salida;

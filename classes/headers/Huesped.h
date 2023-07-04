@@ -1,6 +1,7 @@
 #ifndef HUESPED_H_
 #define HUESPED_H_
 #include "Usuario.h"
+#include "Empleado.h"
 #include "../../datatypes/headers/DTHuesped.h"
 #include "../../ICollection/collections/OrderedDictionary.h"
 #include "../../classes/headers/ReservaGrupal.h"
@@ -31,6 +32,7 @@ class Huesped: public Usuario{
         OrderedDictionary* estadia_fin(string nombre_hostal);
         void calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion);
         OrderedDictionary* listar_comentarios_sin_resp(string nombre_hostal);
+        void alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta);
 };
 
 

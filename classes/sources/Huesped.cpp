@@ -70,7 +70,7 @@ int Huesped::existe_estadia_activa(string nombre_hostal){
             if(ptr_estadia-> perteneceA(nombre_hostal)){
                 return ptr_estadia -> get_codigo();
             }
-            
+            //ni idea pero aca puede que haga falta agregar ek it->next(), si llega a dar error tener esto en cuenta
         }
     }
 }
@@ -101,7 +101,7 @@ OrderedDictionary* Huesped::listar_comentarios_sin_resp(string nombre_hostal){
     for(IIterator* it = estadias->getIterator(); it -> hasCurrent(); it -> next()){
         Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
         if(estadia -> get_ptr_habitacion() -> pertenece_a_hostal(nombre_hostal)){
-            if(estadia -> get_review() != NULL){
+            if(!estadia -> tenes_review()){
                 DTReview* review = new DTReview(estadia->get_review_sin_responder() -> get_DT());
                 IKey* Ik_review = new Integer(review ->get_codigo());
                 reviews_a_devolver->add(Ik_review,review);
@@ -109,5 +109,20 @@ OrderedDictionary* Huesped::listar_comentarios_sin_resp(string nombre_hostal){
         }
     }
     return reviews_a_devolver;
+}
+void Huesped::alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta){
+    IIterator* it = estadias -> getIterator();
+    bool coincide = false;
+    while(it -> hasCurrent()){
+        Estadia* ptr_estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        if (ptr_estadia -> get_review() != NULL){
+            if(ptr_estadia -> get_review() ->get_codigo() == codigo_review){
+                ptr_estadia -> alta_respuesta(ptr_empleado,respuesta);
+            return;
+            }
+            
+        }
+        it ->next();
+    }
 }
 #endif // HUESPED_CPP_

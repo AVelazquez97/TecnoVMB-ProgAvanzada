@@ -41,6 +41,8 @@ class Estadia: public ICollectible{
         DTReview darDTReview();
         Review* get_review();
         Review* get_review_sin_responder();
+        bool coincide(int codigo_review);
+        void alta_respuesta(Empleado* ptr_empleado,string respuesta);
         
 };
 

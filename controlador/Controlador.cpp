@@ -1,5 +1,6 @@
 #include "Controlador.h"
 #include "../classes/headers/Habitacion.h"
+#include "../classes/headers/Review.h"
 using namespace std;
 
 Controlador *Controlador::instance = nullptr;
@@ -263,7 +264,7 @@ OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
     return dt_reservas_hostal;
    
 }
- void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped){
+void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped){
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
     IKey* ik_hostal = new String(parce_nombre_hostal);
@@ -275,7 +276,19 @@ OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
     Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
 
     ptr_huesped -> calificarHostal(ptr_hostal,codigo_estadia,comentario,calificacion);    
- }
+}
+ void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta){
+    char parce_nombre_email[email_empleado.length()+1];
+    strcpy(parce_nombre_email,email_empleado.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_email));
+
+    for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
+        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
+        huesped -> alta_respuesta(codigo_review,ptr_empleado,respuesta);
+    }
+
+}
 /* Fin métodos de los casos de uso*/
 
 /* Métodos auxiliares*/
@@ -844,11 +857,15 @@ OrderedDictionary* Controlador::listar_comentarios_sin_responder(string email_em
 
     for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
         Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
-        reviews_a_devolver = huesped -> listar_comentarios_sin_resp(ptr_hostal ->get_nombre());
-
+        respuestas_de_huespedes = huesped -> listar_comentarios_sin_resp(ptr_hostal ->get_nombre());
+       for(IIterator* it = respuestas_de_huespedes->getIterator(); it -> hasCurrent(); it -> next()){
+            DTReview* review = dynamic_cast<DTReview*>(it -> getCurrent());
+            IKey* ik_review = new Integer(review -> get_codigo());
+            reviews_a_devolver -> add(ik_review,review);
+        }
     }
-    return reviews_a_devolver;
+   return reviews_a_devolver;
 }
-void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta){}
+
 /* Fin métodos auxiliares*/
 
