@@ -82,7 +82,25 @@ DTHostal_completo Hostal::get_DTCompleto(){
     /// Falta hacer magia acá
     cout << endl <<  "Estoy en DTHostal_completo Hostal::get_DTCompleto()" << endl;
     cout << "Hasta acá llega la lógica actualmente. Falta obtener el hostal completo" << endl; 
-    return DTHostal_completo();
+    
+    // if(!(this->get_habitaciones()) && !(this->get_reviews())) {
+    //     // retornar dt sin habitaciones ni reviews
+    //     return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio());
+    // }
+    
+    // if(!(this->get_habitaciones())) {
+    //     // retornar dt sin habitaciones
+    // //    return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), this->get_reviews());
+    // }
+    
+    // if(!(this->get_reviews())){
+    //     // retornar dt sin reviews
+    //     // return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), this->get_habitaciones()); 
+    // }
+    
+    // Si no se cumple ninguna de las anteriores condiciones retornar dt completo
+    // return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), this->get_reviews(), this->get_habitaciones());
+    return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio());
 }
 
 void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){
@@ -131,4 +149,10 @@ void Hostal::agregar_reserva(int codigo, int numero_habitacion, OrderedDictionar
 OrderedDictionary* Hostal::get_habitaciones(){
     return dynamic_cast<OrderedDictionary*>(habitaciones);
 }
+
+OrderedDictionary* Hostal::get_reviews(){
+    return dynamic_cast<OrderedDictionary*>(reviews);
+}
+
+
 #endif // HOSTAL_CPP_

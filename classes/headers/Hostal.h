@@ -45,6 +45,7 @@ class Hostal: public ICollectible{
         void agregar_reserva(int codigo,int numero_habitacion, Huesped* huesped, tm* checkin, tm* checkout, bool tipo);
         void agregar_reserva(int codigo, int numero_habitacion, OrderedDictionary* huespedes_encontrados, tm* checkin, tm* checkout, bool tipo);
         OrderedDictionary* get_habitaciones();
+        OrderedDictionary* get_reviews();
 };
 
 #endif // HOSTAL_H_

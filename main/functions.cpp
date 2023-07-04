@@ -949,7 +949,7 @@ void comentar_calificacion(){
 		cout << "Ingrese la respuesta: " << endl;
 		getline(cin,respuesta);
 		controlador -> alta_respuesta(stoi(codigo_review),email_empleado,respuesta);
-		cout << "RESPUESTA INGRESA CORRECTAMENTE!" << endl;
+		cout << "RESPUESTA INGRESADA CORRECTAMENTE!" << endl;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -994,9 +994,7 @@ void consulta_usuario(){
 }
 
 void consulta_hostal(){
-	string nombre_hostal, str_numero_hab, str_precio_hab, str_capacidad_hab;
-	int numero_hab, capacidad_hab;
-	float precio_hab;
+	string nombre_hostal;
 	OrderedDictionary* hostales;
 	OrderedDictionary* reservas_hostal;
 	
@@ -1017,6 +1015,7 @@ void consulta_hostal(){
 	if(nombre_hostal == "salir"){return;} /* en caso de que desee salir*/
 
 	try{
+		/* Si no existe el hostal se lanza una excepción y se retorna al menú principal */
 		controlador -> no_existe_hostal(nombre_hostal);
 	} catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
@@ -1034,7 +1033,6 @@ void consulta_hostal(){
 	}
 	mostrar_reservas_hostal(reservas_hostal, nombre_hostal);
 }
-
 
 /* Si da el tiempo, toda la impresión de las reservas se podría hacer sobrecargando el operador << en DTReserva_completo */
 void consulta_reserva(){

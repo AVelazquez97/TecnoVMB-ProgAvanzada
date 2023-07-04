@@ -70,6 +70,7 @@ ComparacionFecha Controlador::comparar_fechas_generico(tm* primera_fecha, tm* se
         return ComparacionFecha::Igual;
     }
 }
+
 /// @brief una vez actualizada la fecha del sistema, recorre todas las reservas de todos los usuarios y todas
 ///aquellas reservas que haya pasado su fecha de checkout y no tengan estadias, es decir, nadie se presento,
 ///cambia su estado a canceladas
@@ -332,8 +333,7 @@ DTHostal_completo Controlador::obtener_hostal_completo(string nombre_hostal){
 
     Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
 
-    DTHostal_completo hostal_completo(hostal -> get_DTCompleto());
-    return hostal_completo;
+    return DTHostal_completo(hostal -> get_DTCompleto());
 }
 
 /* Fin métodos de los casos de uso*/
@@ -906,7 +906,7 @@ OrderedDictionary* Controlador::listar_comentarios_sin_responder(string email_em
     for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
         Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
         respuestas_de_huespedes = huesped -> listar_comentarios_sin_resp(ptr_hostal ->get_nombre());
-       for(IIterator* it = respuestas_de_huespedes->getIterator(); it -> hasCurrent(); it -> next()){
+        for(IIterator* it = respuestas_de_huespedes->getIterator(); it -> hasCurrent(); it -> next()){
             DTReview* review = dynamic_cast<DTReview*>(it -> getCurrent());
             IKey* ik_review = new Integer(review -> get_codigo());
             reviews_a_devolver -> add(ik_review,review);
