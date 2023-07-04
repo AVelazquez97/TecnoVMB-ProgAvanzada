@@ -155,6 +155,7 @@ void Controlador::set_contador_review(int numero){
 int Controlador::get_contador_review(){
     return contador_review;
 }
+
 /* Métodos de los casos de uso*/
 void Controlador::alta_huesped(DTHuesped nuevo_huesped){
     string email = nuevo_huesped.get_email();
@@ -230,7 +231,34 @@ void Controlador::finalizar_estadia(int codigo_estadia,string email_huesped){
     ptr_huesped -> existe_estadia_activa(codigo_estadia);
 }
 
-OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
+void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped){
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    ptr_huesped -> calificarHostal(ptr_hostal,codigo_estadia,comentario,calificacion);    
+}
+
+void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta){
+    char parce_nombre_email[email_empleado.length()+1];
+    strcpy(parce_nombre_email,email_empleado.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_email));
+
+    for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
+        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
+        huesped -> alta_respuesta(codigo_review,ptr_empleado,respuesta);
+    }
+
+}
+
+OrderedDictionary* Controlador::obtener_reservas_completas_hostal(string nombre_hostal){
     OrderedDictionary* dt_reservas_hostal = new OrderedDictionary();
     
     char parce_nombre_hostal[nombre_hostal.length()+1];
@@ -262,33 +290,52 @@ OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
         }
     }
     return dt_reservas_hostal;
-   
 }
-void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped){
+
+OrderedDictionary* Controlador::obtener_reservas_hostal(string nombre_hostal){
+    OrderedDictionary* dt_reservas_hostal = new OrderedDictionary();
+    
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
     IKey* ik_hostal = new String(parce_nombre_hostal);
-    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
 
-    char parce_nombre_email[email_huesped.length()+1];
-    strcpy(parce_nombre_email,email_huesped.c_str());
-    IKey* ik_email = new String(parce_nombre_email);   
-    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
 
-    ptr_huesped -> calificarHostal(ptr_hostal,codigo_estadia,comentario,calificacion);    
-}
- void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta){
-    char parce_nombre_email[email_empleado.length()+1];
-    strcpy(parce_nombre_email,email_empleado.c_str());
-    IKey* ik_email = new String(parce_nombre_email);   
-    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_email));
+    for(IIterator* it = hostal -> get_habitaciones() -> getIterator(); it -> hasCurrent(); it -> next()){
+        Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
 
-    for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
-        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
-        huesped -> alta_respuesta(codigo_review,ptr_empleado,respuesta);
+        for(IIterator* it_reserva = habitacion -> get_reservas() -> getIterator(); it_reserva -> hasCurrent(); it_reserva -> next()){
+            
+            Reserva* reserva = dynamic_cast<Reserva*>(it_reserva -> getCurrent());
+
+            if(reserva -> get_tipo()){
+                ReservaGrupal* rg = dynamic_cast<ReservaGrupal*>(it_reserva -> getCurrent());
+                DTReserva* reserva = new DTReserva(rg);
+                
+                dt_reservas_hostal -> add(new Integer(rg -> get_codigo()), reserva);
+            } else{
+                ReservaIndividual* ri = dynamic_cast<ReservaIndividual*>(it_reserva -> getCurrent());
+
+                DTReserva* reserva = new DTReserva(ri);
+                dt_reservas_hostal -> add(new Integer(ri -> get_codigo()),reserva);   
+            }
+        }
     }
-
+    return dt_reservas_hostal;
 }
+
+DTHostal_completo Controlador::obtener_hostal_completo(string nombre_hostal){
+    char parsed_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parsed_nombre_hostal, nombre_hostal.c_str());
+
+    IKey* ik_hostal = new String(parsed_nombre_hostal);
+
+    Hostal* hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    DTHostal_completo hostal_completo(hostal -> get_DTCompleto());
+    return hostal_completo;
+}
+
 /* Fin métodos de los casos de uso*/
 
 /* Métodos auxiliares*/
@@ -336,7 +383,6 @@ bool Controlador::validar_email_huesped(string email_huesped){
     return true;
 }
 
-
 void Controlador::existe_hostal(string nombre){
     char parce_char[nombre.length()+1];
     strcpy(parce_char,nombre.c_str());
@@ -370,7 +416,6 @@ bool Controlador::existe_hostal_bool(string nombre_hostal){
     }
     return false;
 }
-
 
 OrderedDictionary* Controlador::obtener_hostales(){
     //por cada iteracion, paso el obj Hostal a DTHostal,
@@ -808,6 +853,7 @@ OrderedDictionary* Controlador::obtener_reserva_usuario(string nombre_hostal,str
     return DTreservas_usuario;
     //FALTA CHECKEAR ESTO CUANDO SE PUEDA CANCElAR UNA RESERVA
 }
+
 void Controlador::alta_estadia(int codigo_reserva, string email_huesped /* ,string nombre_hostal */){
     /* char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
@@ -831,6 +877,7 @@ int Controlador::existe_estadia(string nombre_hostal, string email_huesped){
     Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
     return ptr_huesped -> existe_estadia_activa(nombre_hostal);
  }
+
 OrderedDictionary* Controlador::obtener_estadias_fin_huesped(string nombre_hostal, string email_huesped){
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
@@ -845,6 +892,7 @@ OrderedDictionary* Controlador::obtener_estadias_fin_huesped(string nombre_hosta
 
     return ptr_huesped -> estadia_fin(nombre_hostal);
 }
+
 OrderedDictionary* Controlador::listar_comentarios_sin_responder(string email_empleado){
     OrderedDictionary* reviews_a_devolver = new OrderedDictionary();
     OrderedDictionary* respuestas_de_huespedes = new OrderedDictionary();

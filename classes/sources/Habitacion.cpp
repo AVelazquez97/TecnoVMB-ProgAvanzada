@@ -75,6 +75,7 @@ Hostal* Habitacion::get_puntero_hostal(){
 OrderedDictionary* Habitacion::get_reservas(){
     return dynamic_cast<OrderedDictionary*>(reservas);
 }
+
 DTHabitacion Habitacion::get_DT(){
     return DTHabitacion(this -> get_numero(),this -> get_precio(),this -> get_capacidad());
 }

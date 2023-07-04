@@ -78,13 +78,19 @@ DTHostal Hostal::get_DT(){
     return DTHostal(this -> get_nombre(),this -> get_direccion(), this -> get_telefono(), this -> get_promedio());
 }
 
+DTHostal_completo Hostal::get_DTCompleto(){
+    /// Falta hacer magia acá
+    cout << endl <<  "Estoy en DTHostal_completo Hostal::get_DTCompleto()" << endl;
+    cout << "Hasta acá llega la lógica actualmente. Falta obtener el hostal completo" << endl; 
+    return DTHostal_completo();
+}
+
 void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){
     Habitacion* nueva_habitacion = new Habitacion(hab,ptr_hostal);
 
     IKey* ik = new Integer(nueva_habitacion -> get_numero());
 
     this -> habitaciones -> add(ik,nueva_habitacion);
-
 }
 
  bool Hostal::no_es(string email){

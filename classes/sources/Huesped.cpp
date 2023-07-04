@@ -19,7 +19,7 @@ Huesped::Huesped(string nombre, string email, string contrasena, bool es_tecno):
 
 Huesped::Huesped(DTHuesped nuevo_huesped):Usuario(nuevo_huesped.get_nombre(), nuevo_huesped.get_email(),nuevo_huesped.get_contrasena()){
     this -> es_tecno = nuevo_huesped.get_es_tecno();
-     this -> reservas_grupales = new OrderedDictionary();
+    this -> reservas_grupales = new OrderedDictionary();
     this -> reservas_individuales = new OrderedDictionary();
     this -> estadias = new OrderedDictionary();
 }

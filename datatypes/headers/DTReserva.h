@@ -9,6 +9,8 @@
 using namespace std;
 
 class Reserva;
+class ReservaGrupal;
+class ReservaIndividual;
 
 class DTReserva: public ICollectible{
     private:
@@ -20,7 +22,6 @@ class DTReserva: public ICollectible{
         DTReserva();
         DTReserva(int codigo, tm* checkin, tm* checkout, Estado estado);
         DTReserva(Reserva* reserva);
-        //DTEmpleado(string nombre, string email, string nombre_hostal, Cargo cargo);
         int get_codigo();
         tm* get_checkin();
         tm* get_checkout();

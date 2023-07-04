@@ -2,12 +2,14 @@
 #define HOSTAL_H_
 //#include "../../classes/headers/Habitacion.h"
 #include "../../datatypes/headers/DTHostal.h"
+#include "../../datatypes/headers/DTHostal_completo.h"
 //#include "Empleado.h"
 #include "../../datatypes/headers/DTHabitacion.h"
 #include "../../ICollection/collections/OrderedDictionary.h"
 #include "../../ICollection/Integer.h"
 #include <iostream>
 using namespace std;
+
 class Empleado;
 class Huesped;
 class Review;
@@ -35,6 +37,7 @@ class Hostal: public ICollectible{
         string get_telefono();
         float get_promedio();
         DTHostal get_DT();
+        DTHostal_completo get_DTCompleto();
         bool no_es(string email);
         void alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal);
         void asignar_empleado(Empleado* puntero_empleado);

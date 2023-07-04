@@ -10,6 +10,7 @@
 #include "../datatypes/headers/DTUsuario.h"
 #include "../datatypes/headers/DTHuesped.h"
 #include "../datatypes/headers/DTEmpleado.h"
+#include "../datatypes/headers/DTHostal_completo.h"
 
 #include "../enums/EnumCargo.h"
 #include "../enums/EnumEstado.h"
@@ -51,9 +52,12 @@ class IControlador {
         virtual OrderedDictionary* obtener_top_3_hostales() = 0;
         virtual void alta_estadia(int codigo_reserva,string email_huesped /*,string nombre_hostal*/) = 0;
         virtual void finalizar_estadia(int codigo_estadia,string email_huesped) = 0;
-        virtual OrderedDictionary* obtener_reservas_hostal(string nombre_hostal) = 0;
         virtual void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped) = 0;
         virtual void alta_respuesta(int codigo_review,string email_empleado, string respuesta) = 0;
+        virtual OrderedDictionary* obtener_reservas_completas_hostal(string nombre_hostal) = 0;
+        virtual OrderedDictionary* obtener_reservas_hostal(string nombre_hostal) = 0;
+        virtual DTHostal_completo obtener_hostal_completo(string nombre_hostal) = 0;
+
         /* Fin operaciones de los casos de uso*/
 
         /* Operaciones auxiliares*/

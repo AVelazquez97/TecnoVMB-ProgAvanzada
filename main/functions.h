@@ -36,18 +36,21 @@ int eleccion_menu_principal();
 void press_enter();
 Cargo switch_cargo(string str_cargo);
 void imprimir_fecha(tm* fecha);
-void imprimir_fecha_sin_salto(tm* fecha);
 bool verificar_fecha(string fecha_hora_str, tm* nueva_fecha);
+bool verificar_fecha_checkin(string fecha_hora_str, tm* nueva_fecha);
+bool verificar_fecha_checkout(string fecha_hora_str, tm* fecha_checkout, tm* fecha_checkin);
 OrderedDictionary* obtener_hostales();
 void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped);
+OrderedDictionary* listar_comentarios_sr(string email_empleado);
 void mostrar_reserva_usuario(OrderedDictionary* dt_reserva);
+void mostrar_reservas_hostal(OrderedDictionary* dt_reserva, string nombre_hostal);
 OrderedDictionary* obtener_hostales_con_promedio();
 OrderedDictionary* obtener_no_empleados_hostal(string nombre_hostal);
-void obtener_habitaciones_entre(string nombre_hostal,string str_checkin,string str_checkout);
 OrderedDictionary* obtener_usuarios();
 void obtener_huespedes();
 void obtener_huesped_completo(string email);
 void obtener_empleado_completo(string email);
+string obtener_estado_reserva(Estado tipo_estado);
 
 /* Fin funciones auxiliares*/
 
