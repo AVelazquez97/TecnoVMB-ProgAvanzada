@@ -213,16 +213,16 @@ OrderedDictionary* obtener_hostales() {
 	return DTHostales;
 }
 
-void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
+int obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
 	OrderedDictionary* DT_Estadia = new OrderedDictionary();
 	DT_Estadia = controlador -> obtener_estadias_fin_huesped(nombre_hostal,email_huesped);
-	cout << DT_Estadia -> getSize() << "tamaño" << endl; 
 	cout << endl << GREEN << "| Lista de estadias finalizadas |" << NC << endl << endl;
 
 	for(IIterator* it = DT_Estadia -> getIterator(); it -> hasCurrent(); it -> next()){
         DTEstadia* estadia = dynamic_cast<DTEstadia*>(it -> getCurrent());
         cout << *estadia << endl;
     }
+	return DT_Estadia -> getSize();
 }
 
 OrderedDictionary* listar_comentarios_sr(string email_empleado){
@@ -665,10 +665,10 @@ void realizar_reserva(){
 				obtener_huespedes();
 				cout << "Ingrese huesped que realiza la reserva:" << endl;
 				getline(cin,email_huesped);
-				if(!controlador -> verificar_email(email_huesped)){
+				if(!controlador -> validar_email_huesped(email_huesped)){
 					cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
 				}
-			}while(!controlador -> verificar_email(email_huesped));
+			}while(!controlador -> validar_email_huesped(email_huesped));
 
 			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
 			cout << GREEN << "Reserva Individual realizada correctamente" << NC << endl;
@@ -735,10 +735,10 @@ void realizar_reserva(){
 							seguir_ingresando = false;
 							i = controlador -> obtener_capacidad_habitacion(numero_habitacion, nombre_hostal); //me aseguro que el for pare
 						}
-						if(!controlador -> verificar_email(email_huesped) && email_huesped != "parar"){
+						if(!controlador -> validar_email_huesped(email_huesped) && email_huesped != "parar"){
 							cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
 						}
-					}while(!controlador -> verificar_email(email_huesped) && seguir_ingresando);
+					}while(!controlador ->validar_email_huesped(email_huesped) && seguir_ingresando);
 				/*en caso de que haya salido del while y no haya sido porque puso parar*/
 				if(email_huesped != "parar"){
 					cout << endl << CYAN << "Huesped con el mail: "<< email_huesped << " ingresado a la reserva correctamente" << NC << endl;
@@ -889,10 +889,10 @@ void finalizar_estadia(){
 			cout << "Ingrese el email del huesped para finalizar la estadía activa: " << endl;
 			getline(cin,email_huesped);
 			if(email_huesped == "salir"){return;}
-			if(!controlador -> verificar_email(email_huesped)){
+			if(!controlador -> validar_email_huesped(email_huesped)){
 				cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
 			}
-		}while(!controlador ->verificar_email(email_huesped));
+		}while(!controlador ->validar_email_huesped(email_huesped));
 			if(controlador -> contar_estadias_activas(email_huesped,nombre_hostal) == 0){
 			cout << RED << "Este huesped no tiene ninguna estadia activa en este hostal." << NC << endl;
 			return;
@@ -935,9 +935,12 @@ void calificar_estadia(){
 			cout << "Ingrese el nombre del huesped al que está asignada la estadía: " << endl;
 			getline(cin,email_huesped);
 			if(email_huesped == "salir"){return;}
-		}while(!controlador -> verificar_email(email_huesped));
+		}while(!controlador -> validar_email_huesped(email_huesped));
 		
-		obtener_estadias_huesped_fin(nombre_hostal,email_huesped);
+		if(obtener_estadias_huesped_fin(nombre_hostal,email_huesped) == 0){
+			cout<< REDB "Este huesped no tiene estadias finalizadas/registradas para hacer una calificacion en este hostal" NC << endl;
+			return;
+		}
 
 		//queda pendiente meter un control al numero de estadia ingresado
 		cout << "Seleccione la estadia que desea calificar: " << endl;
@@ -982,9 +985,9 @@ void comentar_calificacion(){
 		cout << endl <<  "Ingresa el email del empleado que va a responder la review: ";
 		getline(cin, email_empleado);
 		if(email_empleado == "salir"){return;} /* en caso de que desee salir*/
-		existe_email = controlador -> verificar_email(email_empleado);
+		existe_email = controlador -> verificar_email_empleado(email_empleado);
 		if(!existe_email){
-			cout << endl << REDB "No existe un usuario registrado con ese email. Intenta de nuevo... " NC << endl;
+			cout << endl << REDB "No existe un empleado registrado con ese email. Intenta de nuevo... " NC << endl;
 		}
 	}
 

@@ -28,6 +28,7 @@ class IControlador {
         virtual ~IControlador();
 
         /* Fecha del sistema*/
+        virtual chrono::system_clock::time_point get_fecha_sistema_chronos() = 0;
         virtual tm* get_fecha_sistema() = 0; 
         virtual void set_fecha_sistema(tm* nueva_fecha) = 0;
         virtual ComparacionFecha compararFechas(tm* fechaNueva) = 0;
@@ -81,7 +82,7 @@ class IControlador {
         virtual int existe_estadia(string nombre_hostal, string email_huesped) = 0;
         virtual OrderedDictionary* obtener_estadias_fin_huesped(string nombre_hostal,string email_huesped) = 0;
         virtual OrderedDictionary* listar_comentarios_sin_responder(string email_empleado) = 0;
-
+        virtual bool verificar_email_empleado(string email_empleado) = 0;
         virtual ComparacionFecha comparar_fechas_generico(tm* primera_fecha, tm* segunda_fecha) = 0;
         virtual void actualizar_estado_reservas() = 0;
         virtual int contar_estadias_activas(string email_huesped) = 0;

@@ -103,15 +103,14 @@ void Huesped::existe_estadia_activa(int codigo_estadia){
     Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
     ptr_estadia -> finalizar();
 }
+
 OrderedDictionary* Huesped::estadia_fin(string nombre_hostal){
     OrderedDictionary* estadias_a_devolver = new OrderedDictionary();
     for(IIterator* it = estadias -> getIterator(); it -> hasCurrent(); it -> next()){
         Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
-        cout << "ajuira" << endl;
         if(estadia -> finalizo(nombre_hostal)){
-            cout << "dentro" << endl;
             IKey* ik_estadia = new Integer(estadia -> get_codigo());
-            DTEstadia* DT_Estadia = new DTEstadia(estadia -> get_codigo(),estadia -> get_checkin(),estadia -> get_email());
+            DTEstadia* DT_Estadia = new DTEstadia(estadia -> get_codigo(),estadia -> get_checkin_chrono(),estadia -> get_checkout_chrono(),estadia -> get_email());
             estadias_a_devolver -> add(ik_estadia,DT_Estadia);
         }
     }

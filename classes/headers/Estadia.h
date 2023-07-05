@@ -33,6 +33,7 @@ class Estadia: public ICollectible{
         Habitacion* get_ptr_habitacion(); 
         string get_email();
         chrono::system_clock::time_point get_checkout_chrono();
+        chrono::system_clock::time_point get_checkin_chrono();
         bool perteneceA(string nombre_hostal);
         void finalizar();
         bool finalizo(string nombre_hostal);

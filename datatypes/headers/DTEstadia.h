@@ -18,9 +18,10 @@ class DTEstadia: public ICollectible{
         string promo;
     public:
         DTEstadia();
-        DTEstadia(int codigo, tm* checkin, string email);
+        DTEstadia(int codigo, chrono::system_clock::time_point checkin,chrono::system_clock::time_point checkout, string email);
         void set_checkin(tm* checkin);
         void set_checkout(tm* checkout);
+        void set_checkout_chrono(chrono::system_clock::time_point checkout);
         int get_codigo();
         tm* get_checkin();
         tm* get_checkout();

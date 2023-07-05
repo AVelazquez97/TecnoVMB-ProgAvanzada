@@ -7,12 +7,11 @@
 DTEstadia::DTEstadia(){}
 
 
-DTEstadia::DTEstadia(int codigo, tm* checkin, string email){
+DTEstadia::DTEstadia(int codigo, chrono::system_clock::time_point checkin,chrono::system_clock::time_point checkout, string email){
     this -> codigo = codigo;
    
-    tm checkin_tm = *checkin;
-    time_t checkin_time = mktime(&checkin_tm);
-    this -> checkin = chrono::system_clock::from_time_t(checkin_time);
+    this -> checkin = checkin;
+    this -> checkout = checkout;
 
     this -> email = email;
     this -> promo = " ";
@@ -29,7 +28,9 @@ void DTEstadia::set_checkout(tm* checkout){
     time_t checkout_time = mktime(&checkout_tm);
     this -> checkout = chrono::system_clock::from_time_t(checkout_time);
 }
-
+void DTEstadia::set_checkout_chrono(chrono::system_clock::time_point checkout){
+    this -> checkout = checkout;
+}
 int DTEstadia::get_codigo(){
     return this -> codigo;
 }

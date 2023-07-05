@@ -36,6 +36,9 @@ tm* Controlador::get_fecha_sistema() {
     tm* fecha_tm = localtime(&fecha_time);
     return fecha_tm;
 }
+chrono::system_clock::time_point Controlador::get_fecha_sistema_chronos() {
+    return this -> fecha_sistema;
+}
 
 void Controlador::set_fecha_sistema(tm* nueva_fecha) {
     tm fecha_tm = *nueva_fecha;
@@ -982,6 +985,22 @@ int Controlador::contar_estadias_activas(string email_huesped, string nombre_hos
     Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
     return huesped -> contar_estadias_activas(nombre_hostal);
 }
+bool Controlador::verificar_email_empleado(string email_empleado){
+     
+    /* parceamos la entrada de string a un array de caracteres
+    porque es lo que recibe como parametro la String que proporciona
+    ICollections. */
 
+    char parce_char[email_empleado.length()+1];
+    strcpy(parce_char, email_empleado.c_str());
+
+    IKey* ik = new String(parce_char);
+    
+    if(!(this -> empleados -> member(ik))){
+        return false;
+    }
+    
+    return true;
+}
 /* Fin métodos auxiliares*/
 

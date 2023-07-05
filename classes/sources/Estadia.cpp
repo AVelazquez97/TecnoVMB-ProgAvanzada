@@ -57,13 +57,19 @@ tm* Estadia::get_checkout(){
 chrono::system_clock::time_point Estadia::get_checkout_chrono(){
     return this -> checkout;
 }
+chrono::system_clock::time_point Estadia::get_checkin_chrono(){
+    return this -> checkin;
+}
 bool Estadia::perteneceA(string nombre_hostal){
     return ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
 }
-void Estadia::finalizar(){
+/*void Estadia::finalizar(){
     tm checkout_tm = *controlador_estadia -> get_fecha_sistema();
     time_t checkout_time = mktime(&checkout_tm);
     this -> checkout = chrono::system_clock::from_time_t(checkout_time);
+}*/
+void Estadia::finalizar(){
+   this -> checkout = controlador_estadia -> get_fecha_sistema_chronos();
 }
 string Estadia::get_email(){
     return this -> ptr_huesped -> get_email();

@@ -44,6 +44,7 @@ class Controlador: public IControlador {
         static Controlador* getInstance();        
 
         /* Fecha del sistema*/
+        chrono::system_clock::time_point get_fecha_sistema_chronos();
         tm* get_fecha_sistema();
         void set_fecha_sistema(tm* nueva_fecha);
         ComparacionFecha compararFechas(tm* fechaNueva);
@@ -103,6 +104,7 @@ class Controlador: public IControlador {
         OrderedDictionary* listar_comentarios_sin_responder(string email_empleado);
         int contar_estadias_activas(string email_huesped);
         int contar_estadias_activas(string email_huesped, string nombre_hostal);
+        bool verificar_email_empleado(string email_empleado);
         /* Fin operaciones auxiliares*/
 };
     
