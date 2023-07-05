@@ -31,10 +31,12 @@ class DTReserva_completo: public ICollectible{
         tm* get_checkin();
         tm* get_checkout();
         Estado get_estado();
+        int get_costo();
         chrono::system_clock::time_point get_checkin_chrono();
         chrono::system_clock::time_point get_checkout_chrono();
         OrderedDictionary* get_huespedes();
         friend ostream& operator << (ostream& salida, DTReserva_completo r_c);
+        
 };
 
 

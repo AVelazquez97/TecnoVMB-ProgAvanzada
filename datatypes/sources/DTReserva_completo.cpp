@@ -35,7 +35,7 @@ DTReserva_completo::DTReserva_completo(ReservaGrupal* rg){
         this -> huespedes -> add(ik, huesped_email); 
     }
 
-    this -> costo = 0;
+    this -> costo = rg -> get_costo();
 }
 
 DTReserva_completo::DTReserva_completo(ReservaIndividual* ri){
@@ -56,7 +56,7 @@ DTReserva_completo::DTReserva_completo(ReservaIndividual* ri){
 
     this -> huespedes -> add(ik, huesped_email);
 
-    this -> costo = 0;
+    this -> costo = ri -> get_costo();
 }
 
 int DTReserva_completo::get_codigo(){
@@ -78,7 +78,9 @@ tm* DTReserva_completo::get_checkout(){
     tm* checkout_tm = localtime(&checkout);
     return checkout_tm;
 }
-    
+int DTReserva_completo::get_costo(){
+    return this -> costo;
+ }
 Estado DTReserva_completo::get_estado(){
     return this -> estado;
 }

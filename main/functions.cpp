@@ -1119,7 +1119,7 @@ void consulta_reserva(){
 		 	cout << "|Codigo: " << CYAN << reserva -> get_codigo() << NC << " |" << endl <<
 			"|Estado: " << CYAN << estado << NC << " |" << endl <<
 			"|Numero habitacion: " << CYAN << reserva -> get_numero_habitacion() << NC << " |" << endl;
-			cout << "|Huesped(es): " << endl;
+			cout << "|Huesped(es): " << endl <<"|Costo: "<<CYAN << reserva -> get_costo() << NC <<"|"<<endl<< endl;
 
 			for(IIterator* it_huespedes = reserva -> get_huespedes() -> getIterator(); it_huespedes -> hasCurrent(); it_huespedes -> next()){
 				String* nombre_usuario = dynamic_cast<String*>(it_huespedes -> getCurrent());

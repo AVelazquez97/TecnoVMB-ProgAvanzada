@@ -9,6 +9,7 @@ class ReservaIndividual: public Reserva{
         ReservaIndividual();  
         ReservaIndividual(int codigo,tm *checkin, tm *checkout, Estado estado_reserva, Habitacion* ptr_habitacion, Huesped* ptr_huesped,bool tipo);
         string get_nombre_huesped();
+        float get_costo();
 };
 
 #endif // RESERVAINDIVIDUAL_H_
