@@ -224,7 +224,11 @@ int obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
     }
 	return DT_Estadia -> getSize();
 }
-
+OrderedDictionary* obtener_estadias_huesped_fin_checkeo(string nombre_hostal,string email_huesped){
+	OrderedDictionary* DT_Estadia = new OrderedDictionary();
+	DT_Estadia = controlador -> obtener_estadias_fin_huesped(nombre_hostal,email_huesped);
+	return DT_Estadia;
+}
 OrderedDictionary* listar_comentarios_sr(string email_empleado){
 	OrderedDictionary* DT_Reviews = new OrderedDictionary();
 	DT_Reviews = controlador -> listar_comentarios_sin_responder(email_empleado);
@@ -235,6 +239,7 @@ OrderedDictionary* listar_comentarios_sr(string email_empleado){
         DTReview* review = dynamic_cast<DTReview*>(it -> getCurrent());
         cout << *review << endl;
     }
+	return DT_Reviews;
 }
 
 void mostrar_reserva_usuario(OrderedDictionary* dt_reserva) {
@@ -294,7 +299,6 @@ OrderedDictionary* obtener_usuarios() {
         String* email_usuario = dynamic_cast<String*>(it -> getCurrent());
         cout << "| " << email_usuario->getValue() << " |" << endl;
     }	
-
 	return emails;
 }
 
@@ -307,6 +311,7 @@ void obtener_huespedes(){
         String* email_huesped = dynamic_cast<String*>(it -> getCurrent());
         cout << "| " << email_huesped->getValue() << " |" << endl;
     }
+	delete emails;
 }
 
 OrderedDictionary* obtener_huespedes_con_return(){
@@ -319,6 +324,7 @@ void obtener_huesped_completo(string email) {
 	DTHuesped huesped_completo = controlador -> obtener_huesped_completo(email);
 	cout << endl << GREEN << "Mostrando informacion sobre el huesped con el email: " << email << NC << endl;
 	cout << huesped_completo;
+
 }
 
 /// @brief permite listar la información detallada de un empleado determinado
@@ -514,6 +520,7 @@ void alta_habitacion(){
 
 		controlador -> alta_habitacion(DTHabitacion(numero_hab, precio_hab, capacidad_hab),nombre_hostal);
 		cout << endl << GREEN "HABITACIÓN INGRESADA CON ÉXITO! " NC << endl;
+		delete hostales;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -580,6 +587,8 @@ void asignar_empleado_hostal(){
 	cargo = switch_cargo(entrada);
 	controlador -> asignar_empleado_hostal(nombre_hostal, email_empleado, cargo);
 	cout << endl << GREEN "El empleado con el email " << email_empleado << " fue asignado al hostal " << nombre_hostal << NC << endl;
+	delete hostales;
+	delete lista_empleados_sin_hostal;
 }
 
 void realizar_reserva(){
@@ -648,12 +657,12 @@ void realizar_reserva(){
 					DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
 					cout << *habitacion << endl;
 				}
-
 				while(!habitacion_valida){
 					cout << "Ingrese el numero de la habitacion deseada: ";
 					getline(cin,str_numero_habitacion);
 					IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
 					habitacion_valida = habitaciones -> member(ik_habitacion);
+					delete ik_habitacion;
 				}
 				numero_habitacion = stoi(str_numero_habitacion);
 			}else{
@@ -672,6 +681,7 @@ void realizar_reserva(){
 
 			controlador -> alta_reserva_individual(nombre_hostal, numero_habitacion, email_huesped, &checkin, &checkout);
 			cout << GREEN << "Reserva Individual realizada correctamente" << NC << endl;
+			delete habitaciones;
 		}else if(str_tipo == "1"){ //Reserva Grupal
 			tipo = true;
 
@@ -689,8 +699,10 @@ void realizar_reserva(){
 							getline(cin,str_numero_habitacion);
 							IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
 							habitacion_valida = habitaciones -> member(ik_habitacion);
+							delete ik_habitacion;
 						}
 				numero_habitacion = stoi(str_numero_habitacion);
+				
 			}else{
 				cout << RED << "Este hostal no tiene habitaciones ingresadas, intente con otro o ingrese habitaciones a dicho hostal." << NC << endl;
 				return;
@@ -756,7 +768,11 @@ void realizar_reserva(){
 			}
 			controlador -> alta_reserva_grupal(nombre_hostal, numero_habitacion, lista_huespedes_seleccionados, &checkin, &checkout);
 			cout << GREEN << "Reserva Grupal realizada correctamente" << NC << endl;
+			delete habitaciones;
+			delete lista_huespedes_disponibles;
+			delete lista_huespedes_seleccionados;
 		}
+		delete hostales;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
@@ -777,7 +793,7 @@ void consultar_top_3() {
 			puesto += 1;
 		}
 	}
-	
+	delete lista_top_3;
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
@@ -860,6 +876,8 @@ void registrar_estadia(){
 	controlador -> alta_estadia(codigo_reserva, email_huesped /* ,nombre_hostal */);
 	
 	cout << endl << GREEN "ESTADIA REGISTRADA CON EXITO! " NC << endl;
+	delete hostales;
+	delete lista_reservas_usuario;
 }
 
 void finalizar_estadia(){
@@ -903,6 +921,7 @@ void finalizar_estadia(){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
 	cout << endl << GREEN "ESTADIA FINALIZADA CON EXITO! " NC << endl;
+	delete hostales;
 }
 
 void calificar_estadia(){
@@ -943,9 +962,16 @@ void calificar_estadia(){
 		}
 
 		//queda pendiente meter un control al numero de estadia ingresado
-		cout << "Seleccione la estadia que desea calificar: " << endl;
-		getline(cin,codigo_estadia);
-		if(codigo_estadia == "salir"){return;}
+		bool checkeo_estadia = false;
+		while(!checkeo_estadia){
+			cout << "Seleccione la estadia que desea calificar: " << endl;
+			getline(cin,codigo_estadia);
+			if(codigo_estadia == "salir"){return;}
+			IKey* ik_checkeo = new Integer(stoi(codigo_estadia));
+			checkeo_estadia = obtener_estadias_huesped_fin_checkeo(nombre_hostal,email_huesped) -> member(ik_checkeo);
+		}
+		
+		
 
 		cout << "Por favor ingrese su opinion" << endl;
 		getline(cin,comentario);
@@ -963,12 +989,13 @@ void calificar_estadia(){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+	delete hostales;
 }
 
 void comentar_calificacion(){
 	string nombre_hostal, email_empleado, codigo_review, respuesta;
 	bool existe_email = false;
-	OrderedDictionary* DT_reviews = new OrderedDictionary();
+	
 	OrderedDictionary* empleados; 
 
 	string limpiar_buffer;
@@ -978,7 +1005,6 @@ void comentar_calificacion(){
 		cout << endl << REDB "Para poder comentar una calificación debes registrar empleados en el sistema." << NC << endl;
 		return;
 	}
-
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
 	while(!existe_email){
@@ -991,11 +1017,16 @@ void comentar_calificacion(){
 		}
 	}
 
-	DT_reviews = listar_comentarios_sr(email_empleado);
+	OrderedDictionary* DT_reviews = listar_comentarios_sr(email_empleado);
+	bool checkeo_review = false;
+	while(!checkeo_review){
+		cout << endl << "Ingrese el codigo de la review a comentar: ";
+		getline(cin, codigo_review);
+		if(codigo_review == "salir"){return;} /* en caso de que desee salir*/
+		IKey* ik_checkeo = new Integer(stoi(codigo_review));
+		checkeo_review = DT_reviews -> member(ik_checkeo);
+	}
 	
-	cout << endl << "Ingrese el codigo de la review a comentar: ";
-	getline(cin, codigo_review);
-	if(codigo_review == "salir"){return;} /* en caso de que desee salir*/
 
 	cout << endl << "Ingrese la respuesta: ";
 	getline(cin, respuesta);
@@ -1003,6 +1034,7 @@ void comentar_calificacion(){
 
 	try{
 		//Falta controlar que el codigo review pertenezca al DT_reviews, algo similar se hace en registrar estadía
+
 		controlador -> alta_respuesta(stoi(codigo_review),email_empleado,respuesta);
 		cout << GREEN << "RESPUESTA INGRESADA CORRECTAMENTE!" NC << endl;
 	}catch(invalid_argument const& Excepcion){
@@ -1043,6 +1075,7 @@ void consulta_usuario(){
 			cout << endl << REDB "No existe un usuario con ese email. Intenta de nuevo..." NC << endl;
 		}
 	}
+	delete emails;
 }
 
 void consulta_hostal(){
@@ -1084,6 +1117,8 @@ void consulta_hostal(){
 		return;
 	}
 	mostrar_reservas_hostal(reservas_hostal, nombre_hostal);
+	delete hostales;
+	delete reservas_hostal;
 }
 
 /* Si da el tiempo, toda la impresión de las reservas se podría hacer sobrecargando el operador << en DTReserva_completo */
@@ -1131,6 +1166,7 @@ void consulta_reserva(){
 			cout << " |" << endl << "|Checkout: ";
 			imprimir_fecha(reserva -> get_checkout());
 			cout << " |" << endl << endl << endl;
+			delete hostales;
         }
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
@@ -1282,6 +1318,47 @@ void datos_prueba(){
 			controlador -> alta_estadia(2, "pippin@mail.com",&checkin_6);
 			tm checkin_7 = {};
 			istringstream iss_10("07/06/2022 - 18");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			iss_10 >> get_time(&checkin_7, "%d/%m/%y - %H");
 			controlador -> alta_estadia(4, "seba@mail.com",&checkin_7);
 			

@@ -178,7 +178,7 @@ ICollectible *OrderedDictionary::getMin()
     return root->getLeastElement()->getVal();
 }
 
-OrderedDictionary::~OrderedDictionary() {
+OrderedDictionary::~OrderedDictionary(){
     root->deleteInDepth();
     delete root;
 }

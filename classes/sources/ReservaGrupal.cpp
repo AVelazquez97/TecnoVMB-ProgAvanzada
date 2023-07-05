@@ -59,8 +59,6 @@ ReservaGrupal::ReservaGrupal(
     this -> huespedes = new OrderedDictionary();
     int contador_finger = 0;
     std::chrono::duration<float, std::ratio<86400>> diff = Reserva::get_checkout_chrono() - Reserva::get_checkin_chrono();
-    cout<<"huespedes_encontrado:" << huespedes_encontrados -> getSize()<< "diff cout"<< diff.count() << endl;
-    getchar();
     this -> costo = ptr_habitacion ->get_precio() * diff.count() * huespedes_encontrados -> getSize();
 
     for(IIterator* it = huespedes_encontrados -> getIterator(); it -> hasCurrent(); it -> next()){

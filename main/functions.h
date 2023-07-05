@@ -41,6 +41,7 @@ bool verificar_fecha_checkin(string fecha_hora_str, tm* nueva_fecha);
 bool verificar_fecha_checkout(string fecha_hora_str, tm* fecha_checkout, tm* fecha_checkin);
 OrderedDictionary* obtener_hostales();
 int obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped);
+OrderedDictionary* obtener_estadias_huesped_fin_checkeo(string nombre_hostal,string email_huesped);
 OrderedDictionary* listar_comentarios_sr(string email_empleado);
 void mostrar_reserva_usuario(OrderedDictionary* dt_reserva);
 void mostrar_reservas_hostal(OrderedDictionary* dt_reserva, string nombre_hostal);
