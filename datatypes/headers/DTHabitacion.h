@@ -18,6 +18,7 @@ class DTHabitacion: public ICollectible{
         float get_precio();
         int get_capacidad();
         string get_nombre_hostal();
+        friend ostream& operator << (ostream& salida, DTHabitacion habitacion);
 };
 
 

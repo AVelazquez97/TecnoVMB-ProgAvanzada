@@ -32,4 +32,12 @@ string DTHabitacion::get_nombre_hostal(){
     return this -> nombre_hostal;
 }
 
+ostream& operator << (ostream& salida, DTHabitacion habitacion){
+    salida << "| Número: " << habitacion.get_numero() << " |" << endl <<
+	"| Precio: " << habitacion.get_precio() << " |" << endl <<
+	"| Capacidad: " << habitacion.get_capacidad() << " |" << endl;
+
+    return salida;
+}
+
 #endif // DTHABITACION_CPP_
