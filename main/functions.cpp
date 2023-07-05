@@ -1083,7 +1083,6 @@ void consulta_reserva(){
 
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
-
 	hostales = obtener_hostales_con_promedio();
 	
 	if (hostales->isEmpty()){
@@ -1164,145 +1163,152 @@ void modificar_fecha() {
 	imprimir_fecha(controlador->get_fecha_sistema());
 	cout << endl << endl;
 }
-
+int cargados = 0;
 void datos_prueba(){
-	/*Empleados*/
-		controlador -> alta_empleado(DTEmpleado("Emilia","emilia@mail.com","123",Cargo::Recepcion));
-		controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Cargo::Recepcion));
-		controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Cargo::Administracion));
-		controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Cargo::Recepcion));
-	/*Huespedes*/
-		controlador -> alta_huesped(DTHuesped("Sofia","sofia@mail.com","123",true));
-		controlador -> alta_huesped(DTHuesped("Frodo","frodo@mail.com","123",true));
-		controlador -> alta_huesped(DTHuesped("Sam","sam@mail.com","123",false));
-		controlador -> alta_huesped(DTHuesped("Merry","merry@mail.com","123",false));
-		controlador -> alta_huesped(DTHuesped("Pippin","pippin@mail.com","123",false));
-		controlador -> alta_huesped(DTHuesped("Seba","seba@mail.com","123",true));
-	/*Hostales*/
-		controlador -> alta_hostal(DTHostal("La posada del finger","Av de la playa 123,Maldonado","099111111"));
-		controlador -> alta_hostal(DTHostal("Mochileros","Rambla Costanera 333,Rocha","42579512"));
-		controlador -> alta_hostal(DTHostal("El Pony Pisador","Bree (preguntar por Gandalf)","000"));
-		controlador -> alta_hostal(DTHostal("Altos del Fing","Av del Toro 1424","099892992"));
-		controlador -> alta_hostal(DTHostal("Caverna Lujosa","Amaya 2515","233233235"));
-	/*Habitaciones*/
-		controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
-		controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
-		controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger"); 
-		controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
-		controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
-		controlador -> alta_habitacion(DTHabitacion(1,9,5),"El Pony Pisador");
-	/*Asignación de empleados a hostales*/
-		controlador -> asignar_empleado_hostal("La posada del finger","emilia@mail.com",Recepcion);
-		controlador -> asignar_empleado_hostal("Mochileros","leo@mail.com",Recepcion);
-		controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
-		controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
-	/* Reservas */
-		/* ======================================================================================================= */
-		// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
-		// HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
-		tm checkin_1 = {};
-		istringstream iss_0("01/05/2022 - 14");
-		iss_0 >> get_time(&checkin_1, "%d/%m/%y - %H");
-		
-		tm checkout_1 = {};
-		istringstream iss_1("10/05/2022 - 10");
-		iss_1 >> get_time(&checkout_1, "%d/%m/%y - %H");
-		controlador -> alta_reserva_individual("La posada del finger",1,"sofia@mail.com",&checkin_1,&checkout_1);
-		/* ======================================================================================================= */
-		// HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
-		OrderedDictionary* dict_emails = new OrderedDictionary();		
-		string emails[] = {"frodo@mail.com","sam@mail.com","merry@mail.com","pippin@mail.com"}; 
-		char parsed_email_1[emails[0].length()+1];
-		strcpy(parsed_email_1,emails[0].c_str());
-		dict_emails -> add(new String(parsed_email_1), new String(parsed_email_1));	
-		
-		char parsed_email_2[emails[1].length()+1];
-		strcpy(parsed_email_2,emails[1].c_str());
-		dict_emails -> add(new String(parsed_email_2), new String(parsed_email_2));	
-		
-		char parsed_email_3[emails[2].length()+1];
-		strcpy(parsed_email_3,emails[2].c_str());
-		dict_emails -> add(new String(parsed_email_3), new String(parsed_email_3));
-
-		char parsed_email_4[emails[3].length()+1];
-		strcpy(parsed_email_4,emails[3].c_str());
-		dict_emails -> add(new String(parsed_email_4), new String(parsed_email_4));		
-
-		tm checkin_2 = {};
-		istringstream iss_2("04/01/2001 - 20");
-		iss_2 >> get_time(&checkin_2, "%d/%m/%y - %H");
-		
-		tm checkout_2 = {};
-		istringstream iss_3("05/01/2001 - 02");
-		iss_3 >> get_time(&checkout_2, "%d/%m/%y - %H");
-		controlador -> alta_reserva_grupal("El Pony Pisador", 1, dict_emails, &checkin_2, &checkout_2);
-		/* ======================================================================================================= */
-		// HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
-		tm checkin_3 = {};
-		istringstream iss_4("07/06/2022 - 14");
-		iss_4 >> get_time(&checkin_3, "%d/%m/%y - %H");
-		tm checkout_3 = {};
-		istringstream iss_5("30/06/2022 - 11");
-		iss_5 >> get_time(&checkout_3, "%d/%m/%y - %H");
-		controlador -> alta_reserva_individual("La posada del finger",3,"sofia@mail.com",&checkin_3,&checkout_3);
-
-		/* ======================================================================================================= */
-		// HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
-		tm checkin_4 = {};
-		istringstream iss_6("10/06/2022 - 14");
-		iss_6 >> get_time(&checkin_4, "%d/%m/%y - %H");
-		tm checkout_4 = {};
-		istringstream iss_7("30/06/2022 - 11");
-		iss_7 >> get_time(&checkout_4, "%d/%m/%y - %H");
-		controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
-		// /* ======================================================================================================= */
-	
-	/* Estadías */
-		controlador -> alta_estadia(1, "sofia@mail.com");
-		controlador -> alta_estadia(2, "frodo@mail.com");
-		controlador -> alta_estadia(2, "sam@mail.com");
-		controlador -> alta_estadia(2, "merry@mail.com");
-		controlador -> alta_estadia(2, "pippin@mail.com");
-		controlador -> alta_estadia(4, "seba@mail.com");
+	if(cargados == 0){
+		cargados += 1;
+		/*Empleados*/
+			controlador -> alta_empleado(DTEmpleado("Emilia","emilia@mail.com","123",Cargo::Recepcion));
+			controlador -> alta_empleado(DTEmpleado("Leonardo","leo@mail.com","123",Cargo::Recepcion));
+			controlador -> alta_empleado(DTEmpleado("Alina","alina@mail.com","123",Cargo::Administracion));
+			controlador -> alta_empleado(DTEmpleado("Barliman","barli@mail.com","123",Cargo::Recepcion));
+		/*Huespedes*/
+			controlador -> alta_huesped(DTHuesped("Sofia","sofia@mail.com","123",true));
+			controlador -> alta_huesped(DTHuesped("Frodo","frodo@mail.com","123",true));
+			controlador -> alta_huesped(DTHuesped("Sam","sam@mail.com","123",false));
+			controlador -> alta_huesped(DTHuesped("Merry","merry@mail.com","123",false));
+			controlador -> alta_huesped(DTHuesped("Pippin","pippin@mail.com","123",false));
+			controlador -> alta_huesped(DTHuesped("Seba","seba@mail.com","123",true));
+		/*Hostales*/
+			controlador -> alta_hostal(DTHostal("La posada del finger","Av de la playa 123,Maldonado","099111111"));
+			controlador -> alta_hostal(DTHostal("Mochileros","Rambla Costanera 333,Rocha","42579512"));
+			controlador -> alta_hostal(DTHostal("El Pony Pisador","Bree (preguntar por Gandalf)","000"));
+			controlador -> alta_hostal(DTHostal("Altos del Fing","Av del Toro 1424","099892992"));
+			controlador -> alta_hostal(DTHostal("Caverna Lujosa","Amaya 2515","233233235"));
+		/*Habitaciones*/
+			controlador -> alta_habitacion(DTHabitacion(1,40,2),"La posada del finger");
+			controlador -> alta_habitacion(DTHabitacion(2,10,7),"La posada del finger");
+			controlador -> alta_habitacion(DTHabitacion(3,30,3),"La posada del finger"); 
+			controlador -> alta_habitacion(DTHabitacion(4,5,12),"La posada del finger");
+			controlador -> alta_habitacion(DTHabitacion(1,3,2),"Caverna Lujosa");
+			controlador -> alta_habitacion(DTHabitacion(1,9,5),"El Pony Pisador");
+		/*Asignación de empleados a hostales*/
+			controlador -> asignar_empleado_hostal("La posada del finger","emilia@mail.com",Recepcion);
+			controlador -> asignar_empleado_hostal("Mochileros","leo@mail.com",Recepcion);
+			controlador -> asignar_empleado_hostal("Mochileros","alina@mail.com",Administracion);
+			controlador -> asignar_empleado_hostal("El Pony Pisador","barli@mail.com",Recepcion);
+		/* Reservas */
+			/* ======================================================================================================= */
+			// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
+			// HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
+			tm checkin_1 = {};
+			istringstream iss_0("01/05/2022 - 14");
+			iss_0 >> get_time(&checkin_1, "%d/%m/%y - %H");
 			
-		// controlador -> finalizar_estadia(1,"sofia@mail.com");
-		// controlador -> calificar_estadia("La posada del finger",1,"muy malo",2,"sofia@mail.com");
+			tm checkout_1 = {};
+			istringstream iss_1("10/05/2022 - 10");
+			iss_1 >> get_time(&checkout_1, "%d/%m/%y - %H");
+			controlador -> alta_reserva_individual("La posada del finger",1,"sofia@mail.com",&checkin_1,&checkout_1);
+			/* ======================================================================================================= */
+			// HO3    HA6 		  Grupal      04/01/01 - 8pm  05/01/01 - 2am    H2,H3,H4,H5
+			OrderedDictionary* dict_emails = new OrderedDictionary();		
+			string emails[] = {"frodo@mail.com","sam@mail.com","merry@mail.com","pippin@mail.com"}; 
+			char parsed_email_1[emails[0].length()+1];
+			strcpy(parsed_email_1,emails[0].c_str());
+			dict_emails -> add(new String(parsed_email_1), new String(parsed_email_1));	
+			
+			char parsed_email_2[emails[1].length()+1];
+			strcpy(parsed_email_2,emails[1].c_str());
+			dict_emails -> add(new String(parsed_email_2), new String(parsed_email_2));	
+			
+			char parsed_email_3[emails[2].length()+1];
+			strcpy(parsed_email_3,emails[2].c_str());
+			dict_emails -> add(new String(parsed_email_3), new String(parsed_email_3));
 
-	/* Finalización de estadías */
-		// Estadía  Huesped   Check out
-		// ES1 		H1 		  10/05/22 - 9am
-		// ES2 		H2 		  05/01/01 - 2am
-		// ES6 		H6 		  15/06/22 - 10pm
+			char parsed_email_4[emails[3].length()+1];
+			strcpy(parsed_email_4,emails[3].c_str());
+			dict_emails -> add(new String(parsed_email_4), new String(parsed_email_4));		
 
-	/* Calificar estadía */
-		/* Ref Estadía Huesped Comentario Calificación Fecha */
+			tm checkin_2 = {};
+			istringstream iss_2("04/01/2001 - 20");
+			iss_2 >> get_time(&checkin_2, "%d/%m/%y - %H");
+			
+			tm checkout_2 = {};
+			istringstream iss_3("05/01/2001 - 02");
+			iss_3 >> get_time(&checkout_2, "%d/%m/%y - %H");
+			controlador -> alta_reserva_grupal("El Pony Pisador", 1, dict_emails, &checkin_2, &checkout_2);
+			/* ======================================================================================================= */
+			// HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
+			tm checkin_3 = {};
+			istringstream iss_4("07/06/2022 - 14");
+			iss_4 >> get_time(&checkin_3, "%d/%m/%y - %H");
+			tm checkout_3 = {};
+			istringstream iss_5("30/06/2022 - 11");
+			iss_5 >> get_time(&checkout_3, "%d/%m/%y - %H");
+			controlador -> alta_reserva_individual("La posada del finger",3,"sofia@mail.com",&checkin_3,&checkout_3);
+
+			/* ======================================================================================================= */
+			// HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
+			tm checkin_4 = {};
+			istringstream iss_6("10/06/2022 - 14");
+			iss_6 >> get_time(&checkin_4, "%d/%m/%y - %H");
+			tm checkout_4 = {};
+			istringstream iss_7("30/06/2022 - 11");
+			iss_7 >> get_time(&checkout_4, "%d/%m/%y - %H");
+			controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
+			// /* ======================================================================================================= */
 		
-		/* C1  ES1     H1 
-			Un poco caro para lo que ofrecen. 
-			El famoso gimnasio era una caminadora (que hacía tremendo ruido) y 2 pesas, la piscina parecía
-			el lago del Parque Rodó y el desayuno eran 2 tostadas con mermelada. Internet se pasaba cayendo. No vuelvo.
-			3 11/05/22 - 6pm
-		*/
+		/* Estadías */
+			controlador -> alta_estadia(1, "sofia@mail.com");
+			controlador -> alta_estadia(2, "frodo@mail.com");
+			controlador -> alta_estadia(2, "sam@mail.com");
+			controlador -> alta_estadia(2, "merry@mail.com");
+			controlador -> alta_estadia(2, "pippin@mail.com");
+			controlador -> alta_estadia(4, "seba@mail.com");
+				
+			// controlador -> finalizar_estadia(1,"sofia@mail.com");
+			// controlador -> calificar_estadia("La posada del finger",1,"muy malo",2,"sofia@mail.com");
 
-		/* C2 ES2 H2 Se pone peligroso de noche, no recomiendo. Además no hay caja fuerte para guardar anillos.
-			2 05/01/01 - 3am 
-		*/
-		
-	    /* C3 ES6 H6 Había pulgas en la habitación. Que lugar más mamarracho!! 1 15/06/22 - 11pm */
+		/* Finalización de estadías */
+			// Estadía  Huesped   Check out
+			// ES1 		H1 		  10/05/22 - 9am
+			// ES2 		H2 		  05/01/01 - 2am
+			// ES6 		H6 		  15/06/22 - 10pm
 
-	/* Comentar calificación */
-		// Calificación Empleado Respuesta 						Fecha
-		// C2 			 E4 	  Desapareció y se fue sin pagar.   06/01/01 - 3pm
+		/* Calificar estadía */
+			/* Ref Estadía Huesped Comentario Calificación Fecha */
+			
+			/* C1  ES1     H1 
+				Un poco caro para lo que ofrecen. 
+				El famoso gimnasio era una caminadora (que hacía tremendo ruido) y 2 pesas, la piscina parecía
+				el lago del Parque Rodó y el desayuno eran 2 tostadas con mermelada. Internet se pasaba cayendo. No vuelvo.
+				3 11/05/22 - 6pm
+			*/
 
-	/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
-		controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger");
-		controlador -> alta_hostal(DTHostal("prueba2","Rambla Costanera 333,Rocha","42579512",1.2));
-		controlador -> alta_hostal(DTHostal("prueba1","Av de la playa 123,Maldonado","099111111",0.3));
-		controlador -> alta_hostal(DTHostal("prueba3","Bree (preguntar por Gandalf)","000",4.5));
-	/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
+			/* C2 ES2 H2 Se pone peligroso de noche, no recomiendo. Además no hay caja fuerte para guardar anillos.
+				2 05/01/01 - 3am 
+			*/
+			
+			/* C3 ES6 H6 Había pulgas en la habitación. Que lugar más mamarracho!! 1 15/06/22 - 11pm */
 
-	cout << GREEN "Datos de prueba cargados correctamente!" NC << endl;
-	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+		/* Comentar calificación */
+			// Calificación Empleado Respuesta 						Fecha
+			// C2 			 E4 	  Desapareció y se fue sin pagar.   06/01/01 - 3pm
+
+		/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
+			controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger");
+			controlador -> alta_hostal(DTHostal("prueba2","Rambla Costanera 333,Rocha","42579512",1.2));
+			controlador -> alta_hostal(DTHostal("prueba1","Av de la playa 123,Maldonado","099111111",0.3));
+			controlador -> alta_hostal(DTHostal("prueba3","Bree (preguntar por Gandalf)","000",4.5));
+		/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
+
+		cout << GREEN "Datos de prueba cargados correctamente!" NC << endl;
+		controlador -> actualizar_estado_reservas();
+		getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+	}else{
+		cout << RED << "Los datos de prueba ya han sido cargados!, si desea cargarlos nuevamente reinicie el programa." << NC << endl;
+		getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
+	}
 }
 
 void exit(){

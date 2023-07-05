@@ -89,6 +89,18 @@ void Controlador::actualizar_estado_reservas(){
                     ri -> set_estado(Cancelada);
                 }
             }
+            if(ri -> get_estado() == 2 && ri -> get_cantidad_estadias() == 0){
+                tm* checkout = ri -> get_checkout();
+                if(compararFechas(checkout) == 2){
+                    ri -> set_estado(Abierta);
+                }
+            }else if(ri -> get_estado() == 2 && ri -> get_cantidad_estadias() >= 1){
+                tm* checkout = ri -> get_checkout();
+                if(compararFechas(checkout) == 2){
+                    ri -> set_estado(Cerrada);
+                }
+            }
+
         }
         /*recorro sus reservas grupales*/
         for(IIterator* it_rg = huesped -> get_reservas_grupales() -> getIterator(); it_rg -> hasCurrent(); it_rg -> next()){
