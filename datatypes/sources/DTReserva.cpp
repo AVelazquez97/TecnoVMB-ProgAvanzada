@@ -76,8 +76,8 @@ ostream& operator << (ostream& salida, DTReserva reserva){
 	}
 
     salida << "| Codigo: " << reserva.get_codigo() << " |" << endl 
-        << "| Chekin: " << put_time(reserva.get_checkin(), "%d/%m/%y - %H") << " hs" << " |" << endl 
-        << "| Checkout: " << put_time(reserva.get_checkout(), "%d/%m/%y - %H") << " hs" << " |" << endl<< "| Estado: " 
+        << "| Chekin: " << put_time(reserva.get_checkin(), "%d/%m/%Y - %H") << " hs" << " |" << endl 
+        << "| Checkout: " << put_time(reserva.get_checkout(), "%d/%m/%Y - %H") << " hs" << " |" << endl<< "| Estado: " 
         << estado << " |" <<endl << endl;
 
     return salida;

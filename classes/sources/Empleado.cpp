@@ -35,11 +35,6 @@ Empleado::~Empleado(){
 }
 
 Hostal* Empleado::get_puntero_hostal(){
-    // if(this -> puntero_hostal != nullptr){
-    //     return this -> puntero_hostal;
-    // }else{
-    //     return nullptr;
-    // }
     return this -> puntero_hostal;
 }
 

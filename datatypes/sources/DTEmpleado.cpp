@@ -43,7 +43,7 @@ Cargo DTEmpleado::get_cargo(){
 
 ostream& operator << (ostream& salida, DTEmpleado empleado) {
     string cargo;
-	string nombre_hostal = (!(empleado.get_nombre_hostal()).empty()) ? empleado.get_nombre_hostal() : "No tiene hostal asignado";
+	string nombre_hostal = (!(empleado.get_nombre_hostal()).empty()) ? empleado.get_nombre_hostal() : "Sin hostal asignado";
 
     switch(empleado.get_cargo()){
 		case 0:{

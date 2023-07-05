@@ -109,7 +109,7 @@ Cargo switch_cargo(string str_cargo) {
 /// @brief Imprime una fecha en un formato específico
 void imprimir_fecha(tm* fecha) { 
     // Imprimir la fecha y hora en un formato legible
-	cout << CYAN "" << put_time(fecha, "%d/%m/%y - %H") << " hs" NC;
+	cout << CYAN "" << put_time(fecha, "%d/%m/%Y - %H") << " hs" NC;
 }
 
 /// @brief verifica si la fecha ingresada cumple con el formato establecido.
@@ -1059,7 +1059,7 @@ void consulta_hostal(){
 	/* 3.. */
 	reservas_hostal = controlador->obtener_reservas_hostal(nombre_hostal);
 	if(reservas_hostal->isEmpty()) { 
-		cout << REDB "No se han realizado reservas para el hostal indicado anteriormente." NC << endl;
+		cout << endl << REDB "No se han realizado reservas para el hostal indicado anteriormente." NC << endl;
 		return;
 	}
 	mostrar_reservas_hostal(reservas_hostal, nombre_hostal);
@@ -1138,7 +1138,7 @@ void modificar_fecha() {
 	cout << endl << endl;
 
 	while(!fecha_valida) {
-		cout << "Ingrese la fecha y hora con el siguiente formato de ejemplo " << RED "'12/12/24 - 18'" NC ": ";
+		cout << "Ingrese la fecha y hora con el siguiente formato de ejemplo " << RED "'25/07/2023 - 18'" NC ": ";
 		/* Se ingresa una nueva fecha por teclado */
 		getline(cin, fecha_hora_str); 
 
@@ -1189,11 +1189,11 @@ void datos_prueba(){
 		// Hostel Habitación  Tipo 		  CheckIn 		  CheckOut 			Huespedes
 		// HO1 	  HA1 		  Individual  01/05/22 - 2pm  10/05/22 - 10am   H1
 		tm checkin_1 = {};
-		istringstream iss_0("01/05/22 - 14");
+		istringstream iss_0("01/05/2022 - 14");
 		iss_0 >> get_time(&checkin_1, "%d/%m/%y - %H");
 		
 		tm checkout_1 = {};
-		istringstream iss_1("10/05/22 - 10");
+		istringstream iss_1("10/05/2022 - 10");
 		iss_1 >> get_time(&checkout_1, "%d/%m/%y - %H");
 		controlador -> alta_reserva_individual("La posada del finger",1,"sofia@mail.com",&checkin_1,&checkout_1);
 		/* ======================================================================================================= */
@@ -1217,44 +1217,45 @@ void datos_prueba(){
 		dict_emails -> add(new String(parsed_email_4), new String(parsed_email_4));		
 
 		tm checkin_2 = {};
-		istringstream iss_2("04/01/01 - 20");
+		istringstream iss_2("04/01/2001 - 20");
 		iss_2 >> get_time(&checkin_2, "%d/%m/%y - %H");
 		
 		tm checkout_2 = {};
-		istringstream iss_3("05/01/01 - 02");
+		istringstream iss_3("05/01/2001 - 02");
 		iss_3 >> get_time(&checkout_2, "%d/%m/%y - %H");
 		controlador -> alta_reserva_grupal("El Pony Pisador", 1, dict_emails, &checkin_2, &checkout_2);
 		/* ======================================================================================================= */
 		// HO1    HA3 		  Individual  7/06/22 - 2pm   30/06/22 - 11am   H1
 		tm checkin_3 = {};
-		istringstream iss_4("07/06/22 - 14");
+		istringstream iss_4("07/06/2022 - 14");
 		iss_4 >> get_time(&checkin_3, "%d/%m/%y - %H");
 		tm checkout_3 = {};
-		istringstream iss_5("30/06/22 - 11");
+		istringstream iss_5("30/06/2022 - 11");
 		iss_5 >> get_time(&checkout_3, "%d/%m/%y - %H");
 		controlador -> alta_reserva_individual("La posada del finger",3,"sofia@mail.com",&checkin_3,&checkout_3);
 
 		/* ======================================================================================================= */
 		// HO5    HA5 		  Individual  10/06/22 - 2pm  30/06/22 - 11am   H6
 		tm checkin_4 = {};
-		istringstream iss_6("10/06/22 - 14");
+		istringstream iss_6("10/06/2022 - 14");
 		iss_6 >> get_time(&checkin_4, "%d/%m/%y - %H");
 		tm checkout_4 = {};
-		istringstream iss_7("30/06/22 - 11");
+		istringstream iss_7("30/06/2022 - 11");
 		iss_7 >> get_time(&checkout_4, "%d/%m/%y - %H");
 		controlador -> alta_reserva_individual("Caverna Lujosa",1,"seba@mail.com",&checkin_4,&checkout_4);
 		// /* ======================================================================================================= */
 	
 	/* Estadías */
 		controlador -> alta_estadia(1, "sofia@mail.com");
-		controlador -> finalizar_estadia(1,"sofia@mail.com");
-		controlador -> calificar_estadia("La posada del finger",1,"muy malo",2,"sofia@mail.com");
 		controlador -> alta_estadia(2, "frodo@mail.com");
 		controlador -> alta_estadia(2, "sam@mail.com");
 		controlador -> alta_estadia(2, "merry@mail.com");
 		controlador -> alta_estadia(2, "pippin@mail.com");
 		controlador -> alta_estadia(4, "seba@mail.com");
 			
+		// controlador -> finalizar_estadia(1,"sofia@mail.com");
+		// controlador -> calificar_estadia("La posada del finger",1,"muy malo",2,"sofia@mail.com");
+
 	/* Finalización de estadías */
 		// Estadía  Huesped   Check out
 		// ES1 		H1 		  10/05/22 - 9am

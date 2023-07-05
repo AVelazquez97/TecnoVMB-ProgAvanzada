@@ -13,7 +13,6 @@ DTHabitacion::DTHabitacion(int numero, float precio, int capacidad){
     this -> numero = numero;
     this -> precio = precio;
     this -> capacidad = capacidad;
-    //this -> nombre_hostal = puntero_hostal -> get_nombre();
 }
 
 int DTHabitacion::get_numero(){

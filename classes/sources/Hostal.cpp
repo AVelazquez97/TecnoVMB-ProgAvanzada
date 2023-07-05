@@ -90,7 +90,7 @@ float Hostal::get_promedio(){
     if(cantidad_dividir == 0){
         return this -> promedio;
     }else{
-    return suma_total/cantidad_dividir;
+        return suma_total/cantidad_dividir;
     }
 }
 
@@ -99,28 +99,30 @@ DTHostal Hostal::get_DT(){
 }
 
 DTHostal_completo Hostal::get_DTCompleto(){
-    /// Falta hacer magia acá
-    cout << endl <<  "Estoy en DTHostal_completo Hostal::get_DTCompleto()" << endl;
-    cout << "Hasta acá llega la lógica actualmente. Falta obtener el hostal completo" << endl; 
+    OrderedDictionary* DTHabitaciones = new OrderedDictionary(); 
+    OrderedDictionary* DTReviews = new OrderedDictionary(); 
+
+    /* Se recorren todas las habitaciones y se obtiene su DT para almacenarlo en la lista de DTHabitacion*/
+    for(IIterator* it = this->get_habitaciones()->getIterator(); it -> hasCurrent(); it -> next()){
+        Habitacion* habitacion = dynamic_cast<Habitacion*>(it -> getCurrent());
+
+        DTHabitacion* dt_habitacion = new DTHabitacion(habitacion->get_DT());
+
+        // Se agrega a la lista
+        DTHabitaciones -> add(new Integer(habitacion->get_numero()), dt_habitacion);
+    }
+
+    /* Se recorren todas las reviews y se obtiene su DT para almacenarlo en la lista de DTReview*/
+    for(IIterator* it = this->get_reviews()->getIterator(); it -> hasCurrent(); it -> next()){
+        Review* review = dynamic_cast<Review*>(it -> getCurrent());
+
+        DTReview* dt_review = new DTReview(review->get_DT());
+
+        // Se agrega a la lista
+        DTReviews -> add(new Integer(review->get_codigo()), dt_review);
+    }
     
-    // if(!(this->get_habitaciones()) && !(this->get_reviews())) {
-    //     // retornar dt sin habitaciones ni reviews
-    //     return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio());
-    // }
-    
-    // if(!(this->get_habitaciones())) {
-    //     // retornar dt sin habitaciones
-    // //    return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), this->get_reviews());
-    // }
-    
-    // if(!(this->get_reviews())){
-    //     // retornar dt sin reviews
-    //     // return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), this->get_habitaciones()); 
-    // }
-    
-    // Si no se cumple ninguna de las anteriores condiciones retornar dt completo
-    // return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), this->get_reviews(), this->get_habitaciones());
-    return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio());
+    return DTHostal_completo(this->get_nombre(), this->get_direccion(), this->get_telefono(), this->get_promedio(), DTReviews, DTHabitaciones);
 }
 
 void Hostal::alta_habitacion(DTHabitacion hab, Hostal* ptr_hostal){

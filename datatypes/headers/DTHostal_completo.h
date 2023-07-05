@@ -1,9 +1,14 @@
 #ifndef DTHOSTAL_COMPLETO_H_
 #define DTHOSTAL_COMPLETO_H_
 
+#define NC "\e[0m"
+#define GREEN "\e[0;32m"
+#define CYAN "\e[0;36m"
+
 #include "../../ICollection/interfaces/IDictionary.h"
 #include "../../ICollection/collections/OrderedDictionary.h"
 #include "../../ICollection/interfaces/ICollectible.h"
+#include "../../ICollection/Integer.h"
 #include "DTReview.h"
 #include "DTHabitacion.h"
 #include <iostream>
@@ -20,10 +25,7 @@ class DTHostal_completo: public ICollectible{
 
     public:
         DTHostal_completo();
-        DTHostal_completo(string nombre, string direccion, string telefono, float promedio);
-        // DTHostal_completo(string nombre, string direccion, string telefono, float promedio, OrderedDictionary* dt_reviews);
-        // DTHostal_completo(string nombre, string direccion, string telefono, float promedio, OrderedDictionary* dt_habitaciones);
-        // DTHostal_completo(string nombre, string direccion, string telefono, float promedio, OrderedDictionary* dt_reviews, OrderedDictionary* dt_habitaciones);
+        DTHostal_completo(string nombre, string direccion, string telefono, float promedio, OrderedDictionary* dt_reviews, OrderedDictionary* dt_habitaciones);
         string get_nombre();
         string get_direccion();
         string get_telefono();
