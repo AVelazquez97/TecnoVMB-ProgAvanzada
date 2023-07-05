@@ -57,8 +57,9 @@ string DTEstadia::get_promo(){
 ostream& operator << (ostream& salida, DTEstadia estadia){
     salida << "| Codigo: " << estadia.get_codigo() << " |" << endl 
         << "| Chekin: " << put_time(estadia.get_checkin(), "%d/%m/%Y - %H") << " hs" << " |" << endl 
-        << "| Checkout: " << put_time(estadia.get_checkout(), "%d/%m/%Y - %H") << " hs" << " |" << endl<< "| Empleado: " 
-        << estadia.get_email() << " |" <<endl <<"|" <<"promo:"<<estadia.get_promo() << endl << endl;
+        << "| Checkout: " << put_time(estadia.get_checkout(), "%d/%m/%Y - %H") << " hs" << " |" << endl 
+        << "| Huesped: " << estadia.get_email() << " |" << endl 
+        << "| Promo: "<< estadia.get_promo() << " |" << endl;
 
     return salida;
 }

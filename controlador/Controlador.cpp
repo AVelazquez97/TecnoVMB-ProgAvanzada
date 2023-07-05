@@ -743,6 +743,24 @@ OrderedDictionary* Controlador::obtener_huespedes(){
     return email_huespedes;
 }
 
+OrderedDictionary* Controlador::obtener_empelados(){
+    OrderedDictionary* email_empleados = new OrderedDictionary();
+
+    for(IIterator* it = empleados -> getIterator(); it -> hasCurrent(); it -> next()){
+        Empleado* empleado = dynamic_cast<Empleado*>(it -> getCurrent());
+
+        char parsed_email[empleado->get_email().length()+1];
+        strcpy(parsed_email, empleado->get_email().c_str());
+
+        IKey* ik = new String(parsed_email);
+        String* email_nombre = new String(parsed_email);
+
+        email_empleados -> add(ik, email_nombre);
+    }
+    return email_empleados;
+}
+
+
 /// @brief devuelve la capacidad de una habitacion valida dentro de un hostal
 /// @param numero_habitacion el numero de la habitacion del que nos interesa saber la capacidad
 /// @param nombre_hostal  el nombre del hostal donde se encuentra la habitacion

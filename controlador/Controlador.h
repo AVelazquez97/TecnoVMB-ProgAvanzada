@@ -93,6 +93,7 @@ class Controlador: public IControlador {
         OrderedDictionary* obtener_habitaciones_individuales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout);
         OrderedDictionary* obtener_habitaciones_grupales(string nombre_hostal, string str_tipo, tm *checkin, tm *checkout);
         OrderedDictionary* obtener_huespedes();
+        OrderedDictionary* obtener_empelados();
         int obtener_capacidad_habitacion(int numero_habitacion, string nombre_hostal);
         OrderedDictionary* obtener_reserva_usuario(string nombre_hostal,string email);
         int existe_estadia(string nombre_hostal, string email_huesped);

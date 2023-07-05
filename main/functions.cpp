@@ -360,15 +360,10 @@ void obtener_hostal_completo(string nombre_hostal) {
 
 /* Funciones del menu principal*/
 void alta_usuario(){
-	bool existe_email = true;
-	bool cancelar = false;
-	bool es_tecno;
-	string entrada = "";
-	string email;
-	string nombre;
-	string contrasena;
-	string tipo = "";
+	bool existe_email = true, cancelar = false, es_tecno;
+	string entrada = "", email, nombre, contrasena, tipo = "";
 	Cargo cargo;
+
 	/*el unico proposito de esta variable es guardar
 	en ella lo que sea que traiga el buffer asi nos evitamos que se salte
 	pedir por el nombre*/
@@ -377,13 +372,13 @@ void alta_usuario(){
 
 	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
 	
-	cout << "Ingrese el nombre: " << endl;
+	cout << endl << "Ingrese el nombre: ";
 	getline(cin,nombre);
 	if(nombre == "salir"){return;} /* en caso de que desee salir*/
 
 	while(existe_email){
-		cout << "Ingrese el email: " << endl;
-		getline(cin,email);
+		cout << endl << "Ingrese el email: ";
+		getline(cin, email);
 		if(email == "salir"){return;} /* en caso de que desee salir*/
 		existe_email = controlador -> verificar_email(email);
 		if(existe_email){
@@ -391,12 +386,12 @@ void alta_usuario(){
 		}
 	}
 
-	cout << "Ingrese la contraseña: " << endl;
+	cout << endl << "Ingrese la contraseña: ";
 	getline(cin,contrasena);
 	if(contrasena == "salir"){return;} /* en caso de que desee salir*/
 
 	while(tipo != "0" && tipo != "1"){
-		cout << "Ingrese el tipo de usuario que quiere registrar: 0 = Huesped | 1 = Empleado" << endl;
+		cout << endl << "Ingrese el tipo de usuario que quiere registrar (0 = Huesped | 1 = Empleado): ";
 		getline(cin,tipo);
 		if(tipo == "salir"){return;} /* en caso de que desee salir*/
 		if(tipo != "0" && tipo != "1" ){
@@ -406,7 +401,7 @@ void alta_usuario(){
 
 	if(tipo == "0"){
 		while(entrada != "0" && entrada != "1"){
-			cout << "El Huesped es Tecno?: 0 = No | 1 = Si" << endl;
+			cout << endl << "¿El Huesped es Tecno? (0 = No | 1 = Si): ";
 			getline(cin,entrada);
 			if(entrada == "salir"){return;} /* en caso de que desee salir*/
 			if(entrada == "0"){
@@ -418,10 +413,10 @@ void alta_usuario(){
 		/*hacer la llamada al sistema con el DTHuesped*/
 		DTHuesped nuevo_huesped(nombre, email, contrasena, es_tecno);
 		controlador -> alta_huesped(nuevo_huesped);
-		cout << "Huesped ingresado correctamente!" << endl;
+		cout << endl << GREEN "Huesped ingresado correctamente!" NC << endl;
 	}else{
 		while(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
-			cout << "Indique el cargo del empleado: 0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura " << endl;
+			cout << endl << "Indique el cargo del empleado (0 = Administracion | 1 = Limpieza | 2 = Recepcion | 3 = Infraestructura): ";
 			getline(cin,entrada);
 			if(entrada == "salir"){return;} /* en caso de que desee salir*/
 			if(entrada != "0" && entrada != "1" && entrada != "2" && entrada != "3"){
@@ -432,7 +427,7 @@ void alta_usuario(){
 		/*hacer la llamada al sistema con el DTEmpleado*/
 		DTEmpleado nuevo_empleado(nombre, email, contrasena, cargo);
 		controlador -> alta_empleado(nuevo_empleado);
-		cout << "Empleado ingresado correctamente!" << endl;
+		cout << endl << GREEN "Empleado ingresado correctamente!" NC << endl;
 	}
 }
 
@@ -888,7 +883,7 @@ void finalizar_estadia(){
 	try{
 		controlador -> no_existe_hostal(nombre_hostal);
 		do{
-			cout << "Ingrese el email del huesped que hizo la reserva para registrar la estadia: " << endl;
+			cout << "Ingrese el email del huesped para finalizar la estadía activa: " << endl;
 			getline(cin,email_huesped);
 			if(email_huesped == "salir"){return;}
 			if(!controlador -> verificar_email(email_huesped)){
@@ -934,6 +929,7 @@ void calificar_estadia(){
 			getline(cin,email_huesped);
 			if(email_huesped == "salir"){return;}
 		}while(!controlador -> verificar_email(email_huesped));
+		
 		obtener_estadias_huesped_fin(nombre_hostal,email_huesped);
 
 		//queda pendiente meter un control al numero de estadia ingresado
@@ -960,35 +956,50 @@ void calificar_estadia(){
 }
 
 void comentar_calificacion(){
-	string nombre_hostal;
-	string email_empleado;
-	string codigo_review;
-	string respuesta;
+	string nombre_hostal, email_empleado, codigo_review, respuesta;
+	bool existe_email = false;
 	OrderedDictionary* DT_reviews = new OrderedDictionary();
+	OrderedDictionary* empleados; 
+
 	string limpiar_buffer;
 	getline(cin,limpiar_buffer);
+
+	if(controlador->obtener_empelados()->isEmpty()){
+		cout << endl << REDB "Para poder comentar una calificación debes registrar empleados en el sistema." << NC << endl;
+		return;
+	}
+
+	cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
+	
+	while(!existe_email){
+		cout << endl <<  "Ingresa el email del empleado que va a responder la review: ";
+		getline(cin, email_empleado);
+		if(email_empleado == "salir"){return;} /* en caso de que desee salir*/
+		existe_email = controlador -> verificar_email(email_empleado);
+		if(!existe_email){
+			cout << endl << REDB "No existe un usuario registrado con ese email. Intenta de nuevo... " NC << endl;
+		}
+	}
+
+	DT_reviews = listar_comentarios_sr(email_empleado);
+	
+	cout << endl << "Ingrese el codigo de la review a comentar: ";
+	getline(cin, codigo_review);
+	if(codigo_review == "salir"){return;} /* en caso de que desee salir*/
+
+	cout << endl << "Ingrese la respuesta: ";
+	getline(cin, respuesta);
+	if(respuesta == "salir"){return;} /* en caso de que desee salir*/
+
 	try{
-		cout << CYAN "NOTA: Puede ingresar 'salir' en cualquier momento para volver al menu principal." NC << endl;
-		do{
-			cout << "Ingrese el nombre del empleado que va a responder la review: " << endl;
-			getline(cin,email_empleado);
-		}while(!controlador -> verificar_email(email_empleado));
-		//a controlar lo de le review que sea valido el codigo
-		DT_reviews = listar_comentarios_sr(email_empleado);
-		cout << "Ingrese el codigo de la review a comentar: " << endl;
-		getline(cin,codigo_review);
-		cout << "Ingrese la respuesta: " << endl;
-		getline(cin,respuesta);
+		//Falta controlar que el codigo review pertenezca al DT_reviews, algo similar se hace en registrar estadía
 		controlador -> alta_respuesta(stoi(codigo_review),email_empleado,respuesta);
-		cout << "RESPUESTA INGRESADA CORRECTAMENTE!" << endl;
+		cout << GREEN << "RESPUESTA INGRESADA CORRECTAMENTE!" NC << endl;
 	}catch(invalid_argument const& Excepcion){
 		cout << endl << REDB "ERROR: " << Excepcion.what() << NC << endl;
 	}
 
-
-	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
-
-
+	delete DT_reviews;
 }
 
 void consulta_usuario(){
@@ -1118,6 +1129,7 @@ void consulta_reserva(){
 }
 
 void consulta_estadia(){
+	cout << endl << REDB "La remamos como unos bestias pero no llegamos a hacer este caso de uso." NC << endl;
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 
