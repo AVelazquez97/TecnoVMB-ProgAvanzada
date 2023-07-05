@@ -90,8 +90,16 @@ Estado Reserva::get_estado(){
 bool Reserva::pertenece_a_hostal(string nombre_hostal){
     return ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
 }
+
 void Reserva::alta_estadia(Huesped* ptr_huesped){
     Estadia* ptr_estadia = new Estadia(controlador_reserva -> get_contador_estadia(),controlador_reserva -> get_fecha_sistema(),ptr_habitacion,ptr_huesped);
+    IKey* ik_estadia = new Integer(ptr_estadia -> get_codigo());
+    this -> estadias -> add(ik_estadia,ptr_estadia);
+    this -> estado_reserva = Cerrada;
+}
+
+void Reserva::alta_estadia(Huesped* ptr_huesped, tm* checkin){
+    Estadia* ptr_estadia = new Estadia(controlador_reserva -> get_contador_estadia(),checkin,ptr_habitacion,ptr_huesped);
     IKey* ik_estadia = new Integer(ptr_estadia -> get_codigo());
     this -> estadias -> add(ik_estadia,ptr_estadia);
     this -> estado_reserva = Cerrada;

@@ -71,6 +71,13 @@ bool Estadia::perteneceA(string nombre_hostal){
 void Estadia::finalizar(){
    this -> checkout = controlador_estadia -> get_fecha_sistema_chronos();
 }
+
+void Estadia::finalizar(tm* checkout){
+    tm checkout_tm = *checkout;
+    time_t checkout_time = mktime(&checkout_tm);
+    this -> checkout = chrono::system_clock::from_time_t(checkout_time);
+}
+
 string Estadia::get_email(){
     return this -> ptr_huesped -> get_email();
 }
@@ -109,20 +116,35 @@ void Estadia::agregarCalificacion(Hostal* ptr_hostal,string comentario,int calif
     nuevo_valor_contador += 1;
     controlador_estadia -> set_contador_review(nuevo_valor_contador);
 }
+
+void Estadia::agregarCalificacion(Hostal* ptr_hostal,string comentario,int calificacion,tm* fecha){
+    Review* review = new Review(controlador_estadia ->get_contador_review(),fecha,calificacion,comentario,ptr_hostal);
+    this -> ptr_review = review;
+    ptr_hostal -> asignar_review(review);
+    
+    int nuevo_valor_contador = controlador_estadia ->get_contador_review();
+    nuevo_valor_contador += 1;
+    controlador_estadia -> set_contador_review(nuevo_valor_contador);
+}
+
 bool Estadia::tenes_review(){
     return this -> ptr_review == NULL;
 }
+
 DTReview Estadia::darDTReview(){
     return this -> ptr_review -> get_DT();
 }
+
 Review* Estadia::get_review(){
     return this->ptr_review;
 }
+
 Review* Estadia::get_review_sin_responder(){
     if(this->ptr_review -> get_ptr_respuesta() == NULL){
         return this->ptr_review;
     }    
 }
+
 bool Estadia::coincide(int codigo_review){
     if(this -> ptr_review != NULL){
         if(this -> ptr_review -> get_codigo() == codigo_review){
@@ -135,7 +157,12 @@ bool Estadia::coincide(int codigo_review){
     }
 
 }
+
 void Estadia::alta_respuesta(Empleado* ptr_empleado,string respuesta){
     this -> ptr_review -> alta_respuesta(ptr_empleado,respuesta);
+}
+
+void Estadia::alta_respuesta(Empleado* ptr_empleado,string respuesta, tm* fecha){
+    this -> ptr_review -> alta_respuesta(ptr_empleado,respuesta,fecha);
 }
 #endif // ESTADIA_CPP_

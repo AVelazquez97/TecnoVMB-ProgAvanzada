@@ -47,6 +47,7 @@ void Huesped::asignar_reserva(ReservaIndividual* ri){
     IKey* ik_ri = new Integer(ri -> get_codigo());
     this -> reservas_individuales -> add(ik_ri,ri);
 }
+
 void Huesped::alta_estadia(Huesped* ptr_huesped, int codigo_reserva){
     IKey* Ik_reserva = new Integer(codigo_reserva);
     if(reservas_individuales -> member(Ik_reserva)){
@@ -57,6 +58,18 @@ void Huesped::alta_estadia(Huesped* ptr_huesped, int codigo_reserva){
         rg ->alta_estadia(ptr_huesped);
     }
 }
+
+void Huesped::alta_estadia(Huesped* ptr_huesped, int codigo_reserva, tm* checkin){
+    IKey* Ik_reserva = new Integer(codigo_reserva);
+    if(reservas_individuales -> member(Ik_reserva)){
+        ReservaIndividual* ri = static_cast<ReservaIndividual*>(reservas_individuales -> find(Ik_reserva));
+        ri ->alta_estadia(ptr_huesped,checkin);
+    }else if(reservas_grupales -> member(Ik_reserva)){
+        ReservaGrupal* rg = static_cast<ReservaGrupal*>(reservas_grupales -> find(Ik_reserva));
+        rg ->alta_estadia(ptr_huesped,checkin);
+    }
+}
+
 void Huesped::asignar_estadia_usuario(Estadia* ptr_estadia){
     IKey* ik_estadia = new Integer(ptr_estadia -> get_codigo());
     this -> estadias -> add(ik_estadia,ptr_estadia);
@@ -104,6 +117,12 @@ void Huesped::existe_estadia_activa(int codigo_estadia){
     ptr_estadia -> finalizar();
 }
 
+void Huesped::existe_estadia_activa(int codigo_estadia, tm* checkout){
+    IKey* ik_estadia = new Integer(codigo_estadia);   
+    Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
+    ptr_estadia -> finalizar(checkout);
+}
+
 OrderedDictionary* Huesped::estadia_fin(string nombre_hostal){
     OrderedDictionary* estadias_a_devolver = new OrderedDictionary();
     for(IIterator* it = estadias -> getIterator(); it -> hasCurrent(); it -> next()){
@@ -116,11 +135,19 @@ OrderedDictionary* Huesped::estadia_fin(string nombre_hostal){
     }
     return estadias_a_devolver;
 }
+
 void Huesped::calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion){
     IKey* ik_estadia = new Integer(codigo_estadia);
     Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
     ptr_estadia -> agregarCalificacion(ptr_hostal,comentario,calificacion);
 }
+
+void Huesped::calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion, tm* fecha){
+    IKey* ik_estadia = new Integer(codigo_estadia);
+    Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
+    ptr_estadia -> agregarCalificacion(ptr_hostal,comentario,calificacion,fecha);
+}
+
 OrderedDictionary* Huesped::listar_comentarios_sin_resp(string nombre_hostal){
     OrderedDictionary* reviews_a_devolver = new OrderedDictionary();
     for(IIterator* it = estadias->getIterator(); it -> hasCurrent(); it -> next()){
@@ -135,6 +162,7 @@ OrderedDictionary* Huesped::listar_comentarios_sin_resp(string nombre_hostal){
     }
     return reviews_a_devolver;
 }
+
 void Huesped::alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta){
     IIterator* it = estadias -> getIterator();
     bool coincide = false;
@@ -146,6 +174,21 @@ void Huesped::alta_respuesta(int codigo_review, Empleado* ptr_empleado,string re
             return;
             }
             
+        }
+        it ->next();
+    }
+}
+
+void Huesped::alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta, tm* fecha){
+    IIterator* it = estadias -> getIterator();
+    bool coincide = false;
+    while(it -> hasCurrent()){
+        Estadia* ptr_estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        if (ptr_estadia -> get_review() != NULL){
+            if(ptr_estadia -> get_review() ->get_codigo() == codigo_review){
+                ptr_estadia -> alta_respuesta(ptr_empleado,respuesta,fecha);
+            return;
+            }
         }
         it ->next();
     }

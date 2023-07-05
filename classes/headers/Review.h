@@ -29,6 +29,7 @@ class Review: public ICollectible{
         Respuesta* get_ptr_respuesta();
         bool get_sin_responder();
         void alta_respuesta(Empleado* ptr_empleado,string respuesta);
+        void alta_respuesta(Empleado* ptr_empleado,string respuesta, tm* fecha);
 };
 
 

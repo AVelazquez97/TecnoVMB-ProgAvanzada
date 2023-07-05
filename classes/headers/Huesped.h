@@ -26,13 +26,17 @@ class Huesped: public Usuario{
         void asignar_reserva(ReservaGrupal* rg);
         void asignar_reserva(ReservaIndividual* ri);
         void alta_estadia(Huesped* ptr_huesped,int codigo_reserva);
+        void alta_estadia(Huesped* ptr_huesped, int codigo_reserva, tm* checkin);
         void asignar_estadia_usuario(Estadia* ptr_estadia);
         int existe_estadia_activa(string nombre_hostal);
+        void existe_estadia_activa(int codigo_estadia, tm* checkout);
         void existe_estadia_activa(int codigo_estadia);
         OrderedDictionary* estadia_fin(string nombre_hostal);
         void calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion);
+        void calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion, tm* fecha);
         OrderedDictionary* listar_comentarios_sin_resp(string nombre_hostal);
         void alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta);
+        void alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta, tm* fecha);
         int contar_estadias_activas();
         int contar_estadias_activas(string nombre_hostal);
 };

@@ -46,4 +46,9 @@ void Review::alta_respuesta(Empleado* ptr_empleado,string respuesta){
     Respuesta* ptr_respuesta = new Respuesta(respuesta,ptr_empleado);
     this -> respuesta = ptr_respuesta;
 }
+
+void Review::alta_respuesta(Empleado* ptr_empleado,string respuesta,tm* fecha){
+    Respuesta* ptr_respuesta = new Respuesta(respuesta,ptr_empleado,fecha);
+    this -> respuesta = ptr_respuesta;
+}
 #endif // REVIEW_CPP_

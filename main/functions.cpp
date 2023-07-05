@@ -1269,21 +1269,44 @@ void datos_prueba(){
 			// /* ======================================================================================================= */
 		
 		/* Estadías */
-			controlador -> alta_estadia(1, "sofia@mail.com");
-			controlador -> alta_estadia(2, "frodo@mail.com");
-			controlador -> alta_estadia(2, "sam@mail.com");
-			controlador -> alta_estadia(2, "merry@mail.com");
-			controlador -> alta_estadia(2, "pippin@mail.com");
-			controlador -> alta_estadia(4, "seba@mail.com");
-				
-			// controlador -> finalizar_estadia(1,"sofia@mail.com");
+			tm checkin_5 = {};
+			istringstream iss_8("01/05/2022 - 18");
+			iss_8 >> get_time(&checkin_5, "%d/%m/%y - %H");
+			controlador -> alta_estadia(1, "sofia@mail.com",&checkin_5);
+			tm checkin_6 = {};
+			istringstream iss_9("04/01/2001 - 21");
+			iss_9 >> get_time(&checkin_6, "%d/%m/%y - %H");
+			controlador -> alta_estadia(2, "frodo@mail.com",&checkin_6);
+			controlador -> alta_estadia(2, "sam@mail.com",&checkin_6);
+			controlador -> alta_estadia(2, "merry@mail.com",&checkin_6);
+			controlador -> alta_estadia(2, "pippin@mail.com",&checkin_6);
+			tm checkin_7 = {};
+			istringstream iss_10("07/06/2022 - 18");
+			iss_10 >> get_time(&checkin_7, "%d/%m/%y - %H");
+			controlador -> alta_estadia(4, "seba@mail.com",&checkin_7);
+			
 			// controlador -> calificar_estadia("La posada del finger",1,"muy malo",2,"sofia@mail.com");
 
 		/* Finalización de estadías */
 			// Estadía  Huesped   Check out
 			// ES1 		H1 		  10/05/22 - 9am
-			// ES2 		H2 		  05/01/01 - 2am
+			tm checkout_8 = {};
+			istringstream iss_11("10/05/2022 - 09");
+			iss_11 >> get_time(&checkout_8, "%d/%m/%y - %H");
+			controlador -> finalizar_estadia(1,"sofia@mail.com",&checkout_8);
+			// // ES2 		H2 		  05/01/01 - 2am
+			tm checkout_9 = {};
+			istringstream iss_12("05/01/2001 - 02");
+			iss_12 >> get_time(&checkout_9, "%d/%m/%y - %H");
+			controlador -> finalizar_estadia(2,"frodo@mail.com",&checkout_9);
+			controlador -> finalizar_estadia(3,"sam@mail.com",&checkout_9);
+			controlador -> finalizar_estadia(4,"merry@mail.com",&checkout_9);
+			controlador -> finalizar_estadia(5,"pippin@mail.com",&checkout_9);
 			// ES6 		H6 		  15/06/22 - 10pm
+			tm checkout_10 = {};
+			istringstream iss_13("15/06/2022 - 22");
+			iss_13 >> get_time(&checkout_10, "%d/%m/%y - %H");
+			controlador -> finalizar_estadia(6,"seba@mail.com",&checkout_10);
 
 		/* Calificar estadía */
 			/* Ref Estadía Huesped Comentario Calificación Fecha */
@@ -1294,24 +1317,30 @@ void datos_prueba(){
 				el lago del Parque Rodó y el desayuno eran 2 tostadas con mermelada. Internet se pasaba cayendo. No vuelvo.
 				3 11/05/22 - 6pm
 			*/
-
+			tm fecha_0 = {};
+			istringstream iss_14("11/05/2022 - 18");
+			iss_14 >> get_time(&fecha_0, "%d/%m/%y - %H");
+			controlador -> calificar_estadia("La posada del finger", 1, "Un poco caro para lo que ofrecen. El famoso gimnasio era una caminadora (que hacía tremendo ruido) y 2 pesas, la piscina parecía el lago del Parque Rodó y el desayuno eran 2 tostadas con mermelada. Internet se pasaba cayendo. No vuelvo.",3,"sofia@mail.com", &fecha_0);
 			/* C2 ES2 H2 Se pone peligroso de noche, no recomiendo. Además no hay caja fuerte para guardar anillos.
 				2 05/01/01 - 3am 
 			*/
-			
+			tm fecha_1 = {};
+			istringstream iss_15("05/01/2001 - 03");
+			iss_15 >> get_time(&fecha_1, "%d/%m/%y - %H");
+			controlador -> calificar_estadia("El Pony Pisador", 2, "Se pone peligroso de noche, no recomiendo. Además no hay caja fuerte para guardar anillos.", 2, "frodo@mail.com",&fecha_1);
 			/* C3 ES6 H6 Había pulgas en la habitación. Que lugar más mamarracho!! 1 15/06/22 - 11pm */
+			tm fecha_2 = {};
+			istringstream iss_16("15/06/2022 - 23");
+			iss_16 >> get_time(&fecha_2, "%d/%m/%y - %H");
+			controlador -> calificar_estadia("Caverna Lujosa", 6, "Había pulgas en la habitación. Que lugar más mamarracho!!", 1, "seba@mail.com",&fecha_2);
 
 		/* Comentar calificación */
 			// Calificación Empleado Respuesta 						Fecha
 			// C2 			 E4 	  Desapareció y se fue sin pagar.   06/01/01 - 3pm
-
-		/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
-			controlador -> alta_habitacion(DTHabitacion(89,30,1),"La posada del finger");
-			controlador -> alta_hostal(DTHostal("prueba2","Rambla Costanera 333,Rocha","42579512",1.2));
-			controlador -> alta_hostal(DTHostal("prueba1","Av de la playa 123,Maldonado","099111111",0.3));
-			controlador -> alta_hostal(DTHostal("prueba3","Bree (preguntar por Gandalf)","000",4.5));
-		/*datos ficticios para probar cosas, borrar luego ya que no pertenecen a los datos de prueba*/
-
+			tm fecha_3 = {};
+			istringstream iss_17("15/06/2022 - 23");
+			iss_17 >> get_time(&fecha_3, "%d/%m/%y - %H");
+			controlador -> alta_respuesta(2,"barli@mail.com","Desapareció y se fue sin pagar",&fecha_3);
 		cout << GREEN "Datos de prueba cargados correctamente!" NC << endl;
 		controlador -> actualizar_estado_reservas();
 		getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea

@@ -41,6 +41,7 @@ class Reserva: public ICollectible{
         chrono::system_clock::time_point get_checkout_chrono();
         Estado get_estado();
         void alta_estadia(Huesped* ptr_huesped);
+        void alta_estadia(Huesped* ptr_huesped, tm* checkin);
         int get_cantidad_estadias();
         void set_estado(Estado estado);
 };

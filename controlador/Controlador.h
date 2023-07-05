@@ -71,9 +71,13 @@ class Controlador: public IControlador {
         void alta_reserva_grupal(string nombre_hostal, int numero_habitacion, OrderedDictionary* lista_huespedes_seleccionados, tm* checkin, tm* checkout);
         OrderedDictionary* obtener_top_3_hostales();
         void alta_estadia(int codigo_reserva,string email_huesped /* ,string nombre_hostal */);
+        void alta_estadia(int codigo_reserva,string email_huesped, tm* checkin);
         void finalizar_estadia(int codigo_estadia,string email_huesped);
+        void finalizar_estadia(int codigo_estadia,string email_huesped,tm* checkout);
         void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped);
+        void calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped,tm* fecha);
         void alta_respuesta(int codigo_review,string email_empleado, string respuesta);
+        void alta_respuesta(int codigo_review,string email_empleado, string respuesta, tm* fecha);
         OrderedDictionary* obtener_reservas_completas_hostal(string nombre_hostal);
         OrderedDictionary* obtener_reservas_hostal(string nombre_hostal);
         DTHostal_completo obtener_hostal_completo(string nombre_hostal);

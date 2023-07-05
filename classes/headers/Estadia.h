@@ -36,14 +36,17 @@ class Estadia: public ICollectible{
         chrono::system_clock::time_point get_checkin_chrono();
         bool perteneceA(string nombre_hostal);
         void finalizar();
+        void finalizar(tm* checkout);
         bool finalizo(string nombre_hostal);
         void agregarCalificacion(Hostal* ptr_hostal,string comentario,int calificacion);
+        void agregarCalificacion(Hostal* ptr_hostal,string comentario,int calificacion,tm* fecha);
         bool tenes_review();
         DTReview darDTReview();
         Review* get_review();
         Review* get_review_sin_responder();
         bool coincide(int codigo_review);
         void alta_respuesta(Empleado* ptr_empleado,string respuesta);
+        void alta_respuesta(Empleado* ptr_empleado,string respuesta, tm* fecha);
         bool no_finalizo();
         bool no_finalizo(string email);
 };

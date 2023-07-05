@@ -9,9 +9,11 @@ class Respuesta: public ICollectible{
     private:
         string comentario;
         Empleado* ptr_empleado;
+        chrono::system_clock::time_point fecha;
     public:
         Respuesta();
         Respuesta(string comentario, Empleado* ptr_empleado);
+        Respuesta(string comentario, Empleado* ptr_empleado, tm* fecha);
         string get_comentario();
         Empleado* get_ptr_empleado();
 };

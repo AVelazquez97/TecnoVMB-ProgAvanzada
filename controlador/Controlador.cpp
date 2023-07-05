@@ -247,6 +247,14 @@ void Controlador::finalizar_estadia(int codigo_estadia,string email_huesped){
     ptr_huesped -> existe_estadia_activa(codigo_estadia);
 }
 
+void Controlador::finalizar_estadia(int codigo_estadia,string email_huesped,tm* checkin){
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+    ptr_huesped -> existe_estadia_activa(codigo_estadia,checkin);
+}
+
 void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped){
     char parce_nombre_hostal[nombre_hostal.length()+1];
     strcpy(parce_nombre_hostal,nombre_hostal.c_str());
@@ -261,6 +269,20 @@ void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,stri
     ptr_huesped -> calificarHostal(ptr_hostal,codigo_estadia,comentario,calificacion);    
 }
 
+void Controlador::calificar_estadia(string nombre_hostal,int codigo_estadia,string comentario, int calificacion,string email_huesped, tm* fecha){
+    char parce_nombre_hostal[nombre_hostal.length()+1];
+    strcpy(parce_nombre_hostal,nombre_hostal.c_str());
+    IKey* ik_hostal = new String(parce_nombre_hostal);
+    Hostal* ptr_hostal = dynamic_cast<Hostal*>(hostales -> find(ik_hostal));
+
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* ptr_huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    ptr_huesped -> calificarHostal(ptr_hostal,codigo_estadia,comentario,calificacion,fecha);    
+}
+
 void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta){
     char parce_nombre_email[email_empleado.length()+1];
     strcpy(parce_nombre_email,email_empleado.c_str());
@@ -270,6 +292,19 @@ void Controlador::alta_respuesta(int codigo_review,string email_empleado, string
     for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
         Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
         huesped -> alta_respuesta(codigo_review,ptr_empleado,respuesta);
+    }
+
+}
+
+void Controlador::alta_respuesta(int codigo_review,string email_empleado, string respuesta, tm* fecha){
+    char parce_nombre_email[email_empleado.length()+1];
+    strcpy(parce_nombre_email,email_empleado.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Empleado* ptr_empleado = dynamic_cast<Empleado*>(empleados -> find(ik_email));
+
+    for(IIterator* it = huespedes->getIterator(); it -> hasCurrent(); it -> next()){
+        Huesped* huesped = dynamic_cast<Huesped*>(it -> getCurrent());
+        huesped -> alta_respuesta(codigo_review,ptr_empleado,respuesta,fecha);
     }
 
 }
@@ -708,7 +743,6 @@ OrderedDictionary* Controlador::obtener_habitaciones_grupales(string nombre_host
         IKey* ik_habitacion = new Integer(habitacion -> get_numero());
 
         if((habitacion -> get_reservas() -> isEmpty()) && habitacion -> get_capacidad() > 1) { 
-            cout << habitacion -> get_numero() << "caso1" << endl;
             disponible = true;
         }else if(habitacion -> get_capacidad() <= 1){
             disponible = false;
@@ -920,6 +954,17 @@ void Controlador::alta_estadia(int codigo_reserva, string email_huesped /* ,stri
     Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
 
     huesped -> alta_estadia(huesped,codigo_reserva);
+    this->set_contador_estadia(this->get_contador_estadia() + 1);
+}
+
+void Controlador::alta_estadia(int codigo_reserva, string email_huesped, tm* checkin){
+
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);   
+    Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+
+    huesped -> alta_estadia(huesped,codigo_reserva,checkin);
     this->set_contador_estadia(this->get_contador_estadia() + 1);
 }
 
