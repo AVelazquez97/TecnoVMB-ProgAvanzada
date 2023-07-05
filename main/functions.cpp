@@ -651,13 +651,11 @@ void realizar_reserva(){
 			
 				for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
 					DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
-					cout << "| Habitacion nro. " << habitacion -> get_numero() << " |" << endl 
-					<< "| Capacidad: " << habitacion -> get_capacidad() << " |" << endl
-					<< "| Precio: " << habitacion -> get_precio() << " |" << endl << endl;
+					cout << *habitacion << endl;
 				}
 
 				while(!habitacion_valida){
-					cout << "Ingrese el numero de la habitacion deseada" << endl;
+					cout << "Ingrese el numero de la habitacion deseada: ";
 					getline(cin,str_numero_habitacion);
 					IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
 					habitacion_valida = habitaciones -> member(ik_habitacion);
@@ -688,13 +686,11 @@ void realizar_reserva(){
 				
 					for(IIterator* it = habitaciones -> getIterator(); it -> hasCurrent(); it -> next()){
 						DTHabitacion* habitacion = dynamic_cast<DTHabitacion*>(it -> getCurrent());
-						cout << "| Habitacion nro. " << habitacion -> get_numero() << " |" << endl 
-						<< "| Precio: " << habitacion -> get_precio() << " |" << endl
-						<< "| Capacidad: " << habitacion -> get_capacidad() << " |" << endl << endl;
+						cout << *habitacion << endl;
 					}
 
 						while(!habitacion_valida){
-							cout << "Ingrese el numero de la habitacion deseada" << endl;
+							cout << "Ingrese el numero de la habitacion deseada: ";
 							getline(cin,str_numero_habitacion);
 							IKey* ik_habitacion = new Integer(stoi(str_numero_habitacion));
 							habitacion_valida = habitaciones -> member(ik_habitacion);
