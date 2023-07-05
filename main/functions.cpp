@@ -773,15 +773,20 @@ void realizar_reserva(){
 
 void consultar_top_3() {
 	OrderedDictionary* lista_top_3 = controlador -> obtener_top_3_hostales();
-	cout << GREEN << "Mostrando el top 3 de hostales" << NC << endl << endl; 
-    int puesto = 1;
-    for(IIterator* it = lista_top_3 -> getIterator(); it -> hasCurrent(); it -> next()){
-        DTHostal* dt_hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
-		cout << GREEN << "|posicion: " << puesto << " |" << NC << endl
-		<< "|nombre: " << dt_hostal->get_nombre() << " |" << endl <<
-		"|promedio: " << dt_hostal->get_promedio() << " |" << endl << endl;
-        puesto += 1;
-    }
+	if(lista_top_3 -> getSize() == 0){
+		cout << REDB << "No hay hoteles registrados en el sistema!" << NC << endl;
+	}else{
+		cout << GREEN << "Mostrando el top 3 de hostales" << NC << endl << endl; 
+		int puesto = 1;
+		for(IIterator* it = lista_top_3 -> getIterator(); it -> hasCurrent(); it -> next()){
+			DTHostal* dt_hostal = dynamic_cast<DTHostal*>(it -> getCurrent());
+			cout << GREEN << "|posicion: " << puesto << " |" << NC << endl
+			<< "|nombre: " << dt_hostal->get_nombre() << " |" << endl <<
+			"|promedio: " << dt_hostal->get_promedio() << " |" << endl << endl;
+			puesto += 1;
+		}
+	}
+	
 	getchar(); //Si al llegar a esta línea, pide el enter, eliminar línea
 }
 

@@ -13,7 +13,10 @@
 
 using namespace std;
 Hostal::Hostal(){
-
+    this -> promedio = 0;
+    this -> habitaciones = new OrderedDictionary();
+    this -> reviews = new OrderedDictionary();
+    this -> empleados = new OrderedDictionary();
 }
 
 Hostal::Hostal(DTHostal nuevo_hostal){
@@ -40,6 +43,10 @@ Hostal::Hostal(const Hostal& original){
     nombre = original.nombre;
     direccion = original.direccion;
     telefono = original.telefono;
+    habitaciones = original.habitaciones;
+    reviews = original.reviews;
+    empleados = original.empleados;
+    promedio = original.promedio;
 }
 
 Hostal::~Hostal(){
@@ -71,7 +78,20 @@ string Hostal::get_telefono(){
 }
 
 float Hostal::get_promedio(){
-    return this -> promedio;
+    float suma_total = 0;
+    float cantidad_dividir = 0;
+    for(IIterator* it = this -> reviews -> getIterator(); it -> hasCurrent(); it -> next()){
+        Review* review = dynamic_cast<Review*>(it -> getCurrent());
+        suma_total += review -> get_calificacion();
+        cantidad_dividir += 1;
+    }
+    /*si no tiene reviews, no puede dividir entre 0 porque da excepcion,
+    por lo que directamente se devuelve 0*/
+    if(cantidad_dividir == 0){
+        return this -> promedio;
+    }else{
+    return suma_total/cantidad_dividir;
+    }
 }
 
 DTHostal Hostal::get_DT(){

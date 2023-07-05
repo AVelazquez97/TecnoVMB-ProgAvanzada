@@ -3,6 +3,6 @@
 Este es un proyecto universitario realizado por los siguientes integrantes:
 
 - [Natalia López](https://github.com/Natalialopezutec)
-- [Ignacio Fernández](https://github.com/cocoamaker)
-- [Luciano Rosa](https://github.com/ignfer)
+- [Ignacio Fernández](https://github.com/ignfer)
+- [Luciano Rosa](https://github.com/cocoamaker)
 - [Alexis Velázquez](https://github.com/AVelazquez97)

@@ -79,6 +79,10 @@ void Estadia::agregarCalificacion(Hostal* ptr_hostal,string comentario,int calif
     Review* review = new Review(controlador_estadia ->get_contador_review(),controlador_estadia ->get_fecha_sistema(),calificacion,comentario,ptr_hostal);
     this -> ptr_review = review;
     ptr_hostal -> asignar_review(review);
+    
+    int nuevo_valor_contador = controlador_estadia ->get_contador_review();
+    nuevo_valor_contador += 1;
+    controlador_estadia -> set_contador_review(nuevo_valor_contador);
 }
 bool Estadia::tenes_review(){
     return this -> ptr_review == NULL;
