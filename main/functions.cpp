@@ -216,7 +216,7 @@ OrderedDictionary* obtener_hostales() {
 void obtener_estadias_huesped_fin(string nombre_hostal,string email_huesped){
 	OrderedDictionary* DT_Estadia = new OrderedDictionary();
 	DT_Estadia = controlador -> obtener_estadias_fin_huesped(nombre_hostal,email_huesped);
-	
+	cout << DT_Estadia -> getSize() << "tamaño" << endl; 
 	cout << endl << GREEN << "| Lista de estadias finalizadas |" << NC << endl << endl;
 
 	for(IIterator* it = DT_Estadia -> getIterator(); it -> hasCurrent(); it -> next()){
@@ -820,7 +820,10 @@ void registrar_estadia(){
 			cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
 		}
 	} while(!controlador ->validar_email_huesped(email_huesped));
-	
+	if(controlador -> contar_estadias_activas(email_huesped) != 0){
+		cout << RED << "Este huesped ya tiene una estadia activa, en caso de querer registrar otra, finalicela." << NC << endl;
+		return;
+	}
 	/* Se obtienen las reservas para el hostal y de un huesped determinado*/
 	lista_reservas_usuario = controlador -> obtener_reserva_usuario(nombre_hostal, email_huesped);
 
@@ -890,6 +893,10 @@ void finalizar_estadia(){
 				cout << endl << REDB "No existe un huésped registrado con ese email. Intenta de nuevo... " NC << endl;
 			}
 		}while(!controlador ->verificar_email(email_huesped));
+			if(controlador -> contar_estadias_activas(email_huesped,nombre_hostal) == 0){
+			cout << RED << "Este huesped no tiene ninguna estadia activa en este hostal." << NC << endl;
+			return;
+			}
 		estadia_a_finalizar = controlador ->existe_estadia(nombre_hostal,email_huesped);
 		controlador -> finalizar_estadia(estadia_a_finalizar,email_huesped);
 	}catch(invalid_argument const& Excepcion){

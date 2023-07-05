@@ -72,8 +72,32 @@ int Huesped::existe_estadia_activa(string nombre_hostal){
             }
             //ni idea pero aca puede que haga falta agregar ek it->next(), si llega a dar error tener esto en cuenta
         }
+        //it ->next();
     }
 }
+
+int Huesped::contar_estadias_activas(){
+    int cantidad = 0;
+    for(IIterator* it = estadias -> getIterator(); it -> hasCurrent(); it -> next()){
+        Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        if(estadia -> no_finalizo()){
+            cantidad += 1;
+        }
+    }
+    return cantidad;
+}
+
+int Huesped::contar_estadias_activas(string nombre_hostal){
+    int cantidad = 0;
+    for(IIterator* it = estadias -> getIterator(); it -> hasCurrent(); it -> next()){
+        Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        if(estadia -> no_finalizo(nombre_hostal)){
+            cantidad += 1;
+        }
+    }
+    return cantidad;
+}
+
 void Huesped::existe_estadia_activa(int codigo_estadia){
     IKey* ik_estadia = new Integer(codigo_estadia);   
     Estadia* ptr_estadia = dynamic_cast<Estadia*>(estadias -> find(ik_estadia));
@@ -83,7 +107,9 @@ OrderedDictionary* Huesped::estadia_fin(string nombre_hostal){
     OrderedDictionary* estadias_a_devolver = new OrderedDictionary();
     for(IIterator* it = estadias -> getIterator(); it -> hasCurrent(); it -> next()){
         Estadia* estadia = dynamic_cast<Estadia*>(it -> getCurrent());
+        cout << "ajuira" << endl;
         if(estadia -> finalizo(nombre_hostal)){
+            cout << "dentro" << endl;
             IKey* ik_estadia = new Integer(estadia -> get_codigo());
             DTEstadia* DT_Estadia = new DTEstadia(estadia -> get_codigo(),estadia -> get_checkin(),estadia -> get_email());
             estadias_a_devolver -> add(ik_estadia,DT_Estadia);

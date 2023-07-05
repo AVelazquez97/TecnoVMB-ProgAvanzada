@@ -33,6 +33,8 @@ class Huesped: public Usuario{
         void calificarHostal(Hostal* ptr_hostal,int codigo_estadia,string comentario, int calificacion);
         OrderedDictionary* listar_comentarios_sin_resp(string nombre_hostal);
         void alta_respuesta(int codigo_review, Empleado* ptr_empleado,string respuesta);
+        int contar_estadias_activas();
+        int contar_estadias_activas(string nombre_hostal);
 };
 
 

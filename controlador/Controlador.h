@@ -101,6 +101,8 @@ class Controlador: public IControlador {
         ComparacionFecha comparar_fechas_generico(tm* primera_fecha, tm* segunda_fecha);
         void actualizar_estado_reservas();
         OrderedDictionary* listar_comentarios_sin_responder(string email_empleado);
+        int contar_estadias_activas(string email_huesped);
+        int contar_estadias_activas(string email_huesped, string nombre_hostal);
         /* Fin operaciones auxiliares*/
 };
     

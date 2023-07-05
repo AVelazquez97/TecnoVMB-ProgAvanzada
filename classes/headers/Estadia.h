@@ -43,7 +43,8 @@ class Estadia: public ICollectible{
         Review* get_review_sin_responder();
         bool coincide(int codigo_review);
         void alta_respuesta(Empleado* ptr_empleado,string respuesta);
-        
+        bool no_finalizo();
+        bool no_finalizo(string email);
 };
 
 #endif // ESTADIA_H_

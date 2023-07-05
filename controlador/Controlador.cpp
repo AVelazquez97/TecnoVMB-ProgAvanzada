@@ -965,5 +965,23 @@ OrderedDictionary* Controlador::listar_comentarios_sin_responder(string email_em
    return reviews_a_devolver;
 }
 
+int Controlador::contar_estadias_activas(string email_huesped){
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);
+
+    Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+    return huesped -> contar_estadias_activas();
+}
+
+int Controlador::contar_estadias_activas(string email_huesped, string nombre_hostal){
+    char parce_nombre_email[email_huesped.length()+1];
+    strcpy(parce_nombre_email,email_huesped.c_str());
+    IKey* ik_email = new String(parce_nombre_email);
+
+    Huesped* huesped = dynamic_cast<Huesped*>(huespedes -> find(ik_email));
+    return huesped -> contar_estadias_activas(nombre_hostal);
+}
+
 /* Fin métodos auxiliares*/
 

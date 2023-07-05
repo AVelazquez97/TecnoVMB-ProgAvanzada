@@ -71,10 +71,29 @@ string Estadia::get_email(){
 bool Estadia::finalizo(string nombre_hostal){
     if(get_checkout_chrono().time_since_epoch() != decltype(get_checkout_chrono())::duration::zero()){
         return this -> ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
+        //return (this -> ptr_habitacion -> get_puntero_hostal() -> get_nombre() == nombre_hostal);
     }else{
         return false;
     }
 }
+
+bool Estadia::no_finalizo(){
+    if(get_checkout_chrono().time_since_epoch() == decltype(get_checkout_chrono())::duration::zero()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool Estadia::no_finalizo(string nombre_hostal){
+     if(get_checkout_chrono().time_since_epoch() == decltype(get_checkout_chrono())::duration::zero()){
+        return this -> ptr_habitacion -> pertenece_a_hostal(nombre_hostal);
+        //return (this -> ptr_habitacion -> get_puntero_hostal() -> get_nombre() == nombre_hostal);
+    }else{
+        return false;
+    }
+}
+
 void Estadia::agregarCalificacion(Hostal* ptr_hostal,string comentario,int calificacion){
     Review* review = new Review(controlador_estadia ->get_contador_review(),controlador_estadia ->get_fecha_sistema(),calificacion,comentario,ptr_hostal);
     this -> ptr_review = review;

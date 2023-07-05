@@ -84,7 +84,8 @@ class IControlador {
 
         virtual ComparacionFecha comparar_fechas_generico(tm* primera_fecha, tm* segunda_fecha) = 0;
         virtual void actualizar_estado_reservas() = 0;
-        
+        virtual int contar_estadias_activas(string email_huesped) = 0;
+        virtual int contar_estadias_activas(string email_huesped, string nombre_hostal) = 0;
 
         /* Fin operaciones auxiliares*/
 };
